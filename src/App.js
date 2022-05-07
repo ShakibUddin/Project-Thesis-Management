@@ -1,4 +1,4 @@
-import "antd/dist/antd.css";
+import 'antd/dist/antd.min.css'
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoginPage from "./Containers/Login/LoginPage";
 import MainLayout from './Containers/Main/MainLayout';

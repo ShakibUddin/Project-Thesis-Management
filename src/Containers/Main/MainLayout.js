@@ -9,13 +9,15 @@ import StudentProjectThesis from '../ProjectThesis/StudentProjectThesis';
 import StudentMeetups from '../Meetups/StudentMeetups';
 import StudentNotifications from '../Notifications/StudentNotifications';
 import StudentSettings from '../Settings/StudentSettings';
+import useWindowDimensions from '../../Hooks/useWindowDimensions';
 
 const { Header, Content, Footer, Sider } = Layout;
 export default function MainLayout() {
     const [currentItem, setCurrentItem] = useState('1');
-
+    const { width, height } = useWindowDimensions();
+    console.log(width)
     return (
-        <Layout className='h-screen'>
+        <Layout className='h-full'>
             <Sider
                 breakpoint="lg"
                 collapsedWidth="0"
@@ -24,6 +26,14 @@ export default function MainLayout() {
                 }}
                 onCollapse={(collapsed, type) => {
                     console.log(collapsed, type);
+                }}
+                style={{
+                    overflow: 'auto',
+                    height: '100vh',
+                    position: 'fixed',
+                    left: 0,
+                    top: 0,
+                    bottom: 0,
                 }}
             >
                 <div className="logo" />
@@ -52,10 +62,30 @@ export default function MainLayout() {
                     </Menu.Item>
                 </Menu>
             </Sider>
-            <Layout>
-                <Header className="site-layout-sub-header-background" style={{ padding: 0 }} />
-                <Content style={{ margin: '24px 16px 0' }}>
-                    <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
+            <Layout
+                className="site-layout"
+                style={{
+                    marginLeft: 200,
+                }}
+            >
+                <Header
+                    className="site-layout-background"
+                    style={{
+                        padding: 0,
+                    }}
+                />
+                <Content
+                    style={{
+                        margin: '24px 16px 0',
+                        overflow: 'initial',
+                    }}
+                >
+                    <div
+                        className="site-layout-background"
+                        style={{
+                            padding: 24,
+                        }}
+                    >
                         {currentItem === '1' && <StudentHome />}
                         {currentItem === '2' && <StudentTeam />}
                         {currentItem === '3' && <StudentProjectThesis />}
@@ -64,7 +94,6 @@ export default function MainLayout() {
                         {currentItem === '6' && <StudentSettings />}
                     </div>
                 </Content>
-                <Footer style={{ textAlign: 'center' }}>Project and Thesis Management</Footer>
             </Layout>
         </Layout>
     )
