@@ -77,7 +77,7 @@ export default function LoginPage() {
                         }}
                     >
                         <Button type="primary" htmlType="submit">
-                            <Link to="/mainlayout">Login</Link>
+                            <Link to="/home">Login</Link>
                         </Button>
                         <p> Don't have an account? <Link to="/signup">Create Now</Link></p>
                     </Form.Item>
