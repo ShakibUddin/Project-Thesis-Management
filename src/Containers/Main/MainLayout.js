@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Layout, Menu } from 'antd';
 import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
 import { Link, Outlet } from 'react-router-dom';
 import useWindowDimensions from '../../Hooks/useWindowDimensions';
 import { useSelector } from 'react-redux';
-
+import { callApi } from '../../client';
 const { Header, Content, Sider } = Layout;
 export default function MainLayout() {
     const userName = useSelector(state => state.user.name);
