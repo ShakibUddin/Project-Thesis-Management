@@ -1,10 +1,17 @@
-import React from 'react'
-import { Form, Input, Button, Checkbox } from 'antd';
+import React, { useEffect } from 'react'
+import { Form, Input, Button, Checkbox, Select, message } from 'antd';
 import signupRightImage from '../../../src/Assets/signupRightImage.svg';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import * as AuthActions from '../../State/Auth/AuthActions';
+import { makeApiCall } from '../../client';
+import { METHODS, PATHS } from '../../Constants/ApiConstants';
 
 export default function SignupPage() {
+    const dispatch = useDispatch();
+    const departments = useSelector(state => state?.auth?.departments);
     const onFinish = (values) => {
+        // signup(values)
         console.log('Success:', values);
     };
 
@@ -12,13 +19,17 @@ export default function SignupPage() {
         console.log('Failed:', errorInfo);
     };
 
+    useEffect(() => {
+        if (departments.length === 0) {
+            dispatch(AuthActions.getDepartments());
+        }
+    }, [departments]);
     return (
         <div className='flex'>
             <div className='w-1/2 flex flex-col justify-center items-center'>
                 <p className='text-3xl font-extrabold'>Signup</p>
                 <p className='text-2xl'>Manage your thesis or project progress</p>
                 <Form
-
                     name="basic"
                     labelCol={{
                         span: 8,
@@ -35,7 +46,7 @@ export default function SignupPage() {
                 >
                     <Form.Item
                         label="Name"
-                        name="Name"
+                        name="name"
                         rules={[
                             {
                                 required: true,
@@ -48,7 +59,7 @@ export default function SignupPage() {
 
                     <Form.Item
                         label="NUB Id"
-                        name="NUB Id"
+                        name="nub_id"
                         rules={[
                             {
                                 required: true,
@@ -59,9 +70,15 @@ export default function SignupPage() {
                         <Input />
                     </Form.Item>
 
+                    <Form.Item label="Select Department">
+                        <Select options={departments}>
+                            <Select.Option value="demo">Demo</Select.Option>
+                        </Select>
+                    </Form.Item>
+
                     <Form.Item
                         label="Email"
-                        name="Email"
+                        name="email"
                         rules={[
                             {
                                 required: true,
@@ -96,17 +113,6 @@ export default function SignupPage() {
                         ]}
                     >
                         <Input.Password />
-                    </Form.Item>
-
-                    <Form.Item
-                        name="remember"
-                        valuePropName="checked"
-                        wrapperCol={{
-                            offset: 8,
-                            span: 16,
-                        }}
-                    >
-                        <Checkbox>Remember me</Checkbox>
                     </Form.Item>
 
                     <Form.Item
