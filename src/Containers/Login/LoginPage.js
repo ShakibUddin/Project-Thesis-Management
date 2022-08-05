@@ -1,17 +1,36 @@
-import React from 'react'
-import { Form, Input, Button, Checkbox } from 'antd';
+import React, { useEffect } from 'react'
+import { Form, Input, Button, Checkbox, message } from 'antd';
 import loginRightImage from '../../../src/Assets/loginRIghtImage.svg';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import * as AuthActions from '../../State/Auth/AuthActions';
 
 export default function LoginPage() {
+    const navigate = useNavigate();
+    const user = useSelector(state => state.auth?.user);
+    const loginLoading = useSelector(state => state.auth?.loginLoading);
+    const dispatch = useDispatch();
     const onFinish = (values) => {
         console.log('Success:', values);
+
+        dispatch(AuthActions.login(values));
     };
 
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
 
+    useEffect(() => {
+        if (user?.email && !user?.token) {
+            message.success('Registration complete, Please login.');
+        }
+    }, [user])
+
+    useEffect(() => {
+        if (user?.token) {
+            navigate('/home', { replace: true });
+        }
+    }, [user])
     return (
         <div className='flex'>
             <div className='w-1/2 flex flex-col justify-center items-center'>
@@ -35,7 +54,7 @@ export default function LoginPage() {
                 >
                     <Form.Item
                         label="NUB Id"
-                        name="NUB Id"
+                        name="nub_id"
                         rules={[
                             {
                                 required: true,
@@ -60,24 +79,13 @@ export default function LoginPage() {
                     </Form.Item>
 
                     <Form.Item
-                        name="remember"
-                        valuePropName="checked"
                         wrapperCol={{
                             offset: 8,
                             span: 16,
                         }}
                     >
-                        <Checkbox>Remember me</Checkbox>
-                    </Form.Item>
-
-                    <Form.Item
-                        wrapperCol={{
-                            offset: 8,
-                            span: 16,
-                        }}
-                    >
-                        <Button type="primary" htmlType="submit">
-                            <Link to="/home">Login</Link>
+                        <Button loading={loginLoading} type="primary" htmlType="submit">
+                            Login
                         </Button>
                         <p> Don't have an account? <Link to="/signup">Create Now</Link></p>
                     </Form.Item>

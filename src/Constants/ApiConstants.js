@@ -8,5 +8,4 @@ export const METHODS = {
     DELETE: 'delete'
 };
 
-
-export const PATHS = { SIGNUP: 'users/createUser', DEPARTMENTS: 'users/getDep' };
+export const PATHS = { SIGNUP: 'users/createUser', DEPARTMENTS: 'users/getDep', CREATE_USER: 'users/createUser', PROGRAMS: 'users/getPrograms', LOGIN: 'users/login' };

@@ -8,6 +8,7 @@ import StudentProjectThesis from './Containers/ProjectThesis/StudentProjectThesi
 import StudentSettings from './Containers/Settings/StudentSettings';
 import SignupPage from "./Containers/Signup/SignupPage";
 import StudentTeam from './Containers/Team/StudentTeam';
+import PrivateRoutes from './Utils/PrivateRoutes';
 
 function App() {
   return (
@@ -16,11 +17,13 @@ function App() {
         <Routes>
           <Route index element={<LoginPage />} />
           <Route path="/" element={<MainLayout />} >
-            <Route path="home" element={<StudentHome />} />
-            <Route path="team" element={<StudentTeam />} />
-            <Route path="project" element={<StudentProjectThesis />} />
-            <Route path="meetup" element={<StudentMeetups />} />
-            <Route path="settings" element={<StudentSettings />} />
+            <Route element={<PrivateRoutes />}>
+              <Route path="home" element={<StudentHome />} />
+              <Route path="team" element={<StudentTeam />} />
+              <Route path="project" element={<StudentProjectThesis />} />
+              <Route path="meetup" element={<StudentMeetups />} />
+              <Route path="settings" element={<StudentSettings />} />
+            </Route>
           </Route>
           <Route path="login" element={<LoginPage />} />
           <Route path="signup" element={<SignupPage />} />

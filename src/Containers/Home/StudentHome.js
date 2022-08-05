@@ -1,9 +1,12 @@
 import React from 'react'
+import { useSelector } from 'react-redux';
 import MeetupCard from '../../Components/MeetupCard';
 import UserCard from '../../Components/UserCard'
 import * as Meetup from '../../Constants/MeetupConstants';
 
 export default function StudentHome() {
+    const user = useSelector(state => state.auth?.user);
+
     return (
         <div className='d-flex flex-col w-100'>
             <p>Project Thesis: ECommerce Website</p>

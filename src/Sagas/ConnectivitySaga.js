@@ -4,9 +4,9 @@ import { API_CALL_REQUESTED } from '../State/Connectivity/ConnectivityActions';
 import { makeApiCall } from '../client';
 
 function* fetchDepartments(action) {
-    const { method, path, actions } = action.payload;
+    const { method, path, body, actions } = action.payload;
     yield put({ type: actions.REQUESTED })
-    const { data, message, error } = yield makeApiCall({ method, path });
+    const { data, message, error } = yield makeApiCall({ method, path, body });
     if (error) {
         yield put({ type: actions.FAILED, payload: message })
     }

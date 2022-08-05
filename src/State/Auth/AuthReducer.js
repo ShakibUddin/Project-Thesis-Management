@@ -4,6 +4,14 @@ const initialState = {
     departments: [],
     departmentsLoading: false,
     departmentsError: null,
+    programs: [],
+    programsLoading: false,
+    programsError: null,
+    user: null,
+    createUserLoading: false,
+    createUserError: null,
+    loginLoading: false,
+    loginError: null,
 }
 
 export default function AuthReducer(state = initialState, action) {
@@ -26,9 +34,57 @@ export default function AuthReducer(state = initialState, action) {
             state.departmentsError = payload;
             break;
         }
+        case actions.GET_PROGRAMS.REQUESTED: {
+            state.programsLoading = true;
+            state.programs = [];
+            break;
+        }
+        case actions.GET_PROGRAMS.SUCCEEDED: {
+            state.programsLoading = false;
+            state.programs = payload;
+            break;
+        }
+        case actions.GET_PROGRAMS.FAILED: {
+            state.programsLoading = false;
+            state.programs = [];
+            state.programsError = payload;
+            break;
+        }
+        case actions.CREATE_USER.REQUESTED: {
+            state.createUserLoading = true;
+            state.user = null;
+            break;
+        }
+        case actions.CREATE_USER.SUCCEEDED: {
+            state.createUserLoading = false;
+            state.user = payload;
+            break;
+        }
+        case actions.CREATE_USER.FAILED: {
+            state.createUserLoading = false;
+            state.user = null;
+            state.createUserError = payload;
+            break;
+        }
+        case actions.LOGIN.REQUESTED: {
+            state.loginLoading = true;
+            state.user = null;
+            break;
+        }
+        case actions.LOGIN.SUCCEEDED: {
+            state.loginLoading = false;
+            state.user = payload;
+            break;
+        }
+        case actions.LOGIN.FAILED: {
+            state.loginLoading = false;
+            state.user = null;
+            state.loginError = payload;
+            break;
+        }
         default: {
             return state;
         }
     }
-    return state;
+    return { ...state };
 }

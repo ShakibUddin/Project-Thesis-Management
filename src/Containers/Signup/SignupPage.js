@@ -1,18 +1,37 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Form, Input, Button, Checkbox, Select, message } from 'antd';
 import signupRightImage from '../../../src/Assets/signupRightImage.svg';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import * as AuthActions from '../../State/Auth/AuthActions';
-import { makeApiCall } from '../../client';
-import { METHODS, PATHS } from '../../Constants/ApiConstants';
 
 export default function SignupPage() {
     const dispatch = useDispatch();
-    const departments = useSelector(state => state?.auth?.departments);
+    const navigate = useNavigate();
+    const departments = useSelector(state => state.auth?.departments);
+    const programs = useSelector(state => state.auth?.programs);
+    const departmentsLoading = useSelector(state => state.auth?.departmentsLoading);
+    const programsLoading = useSelector(state => state.auth?.programsLoading);
+    const createUserLoading = useSelector(state => state.auth?.createUserLoading);
+    const user = useSelector(state => state.auth?.user);
+    const [departmentOptions, setDepartmentOptions] = useState([]);
+    const [programOptions, setProgramOptions] = useState([]);
     const onFinish = (values) => {
-        // signup(values)
-        console.log('Success:', values);
+        for (let department of departments) {
+            if (department.name === values.department) {
+                values.department_id = department.department_id;
+                delete values.department;
+            }
+        }
+        for (let program of programs) {
+            if (program.name === values.program) {
+                values.program_id = program.program_id;
+                delete values.program;
+            }
+        }
+        values.avatar = null;
+        dispatch(AuthActions.createUser(values));
+        console.log(values)
     };
 
     const onFinishFailed = (errorInfo) => {
@@ -20,10 +39,28 @@ export default function SignupPage() {
     };
 
     useEffect(() => {
-        if (departments.length === 0) {
+        if (departments.length === 0 && !departmentsLoading) {
             dispatch(AuthActions.getDepartments());
         }
-    }, [departments]);
+        else if (departments.length > 0 && departmentOptions.length === 0) {
+            setDepartmentOptions(departments.map(department => ({ key: department.department_id, value: department.name })))
+        }
+    }, [departments, departmentsLoading]);
+
+    useEffect(() => {
+        if (programs.length === 0 && !programsLoading) {
+            dispatch(AuthActions.getPrograms());
+        }
+        else if (programs.length > 0 && programOptions.length === 0) {
+            setProgramOptions(programs.map(program => ({ key: program.program_id, value: program.name })))
+        }
+    }, [programs, programsLoading]);
+
+    useEffect(() => {
+        if (user) {
+            navigate('/login', { replace: true });
+        }
+    }, [user])
     return (
         <div className='flex'>
             <div className='w-1/2 flex flex-col justify-center items-center'>
@@ -56,10 +93,26 @@ export default function SignupPage() {
                     >
                         <Input />
                     </Form.Item>
-
+                    <Form.Item
+                        label="Email"
+                        name="email"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input your email!',
+                            },
+                            {
+                                type: 'email',
+                                message: 'The input is not valid E-mail!',
+                            },
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
                     <Form.Item
                         label="NUB Id"
                         name="nub_id"
+                        placeholder="Enter NUB Id. e.g. 04180xxxxxx"
                         rules={[
                             {
                                 required: true,
@@ -70,23 +123,26 @@ export default function SignupPage() {
                         <Input />
                     </Form.Item>
 
-                    <Form.Item label="Select Department">
-                        <Select options={departments}>
+                    <Form.Item label="Select Department" name="department" rules={[
+                        {
+                            required: true,
+                            message: 'Please select your department!',
+                        },
+                    ]}>
+                        <Select options={departmentOptions} placeholder="Please select Department">
                             <Select.Option value="demo">Demo</Select.Option>
                         </Select>
                     </Form.Item>
 
-                    <Form.Item
-                        label="Email"
-                        name="email"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input your email!',
-                            },
-                        ]}
-                    >
-                        <Input />
+                    <Form.Item label="Select Program" name="program" rules={[
+                        {
+                            required: true,
+                            message: 'Please select your program!',
+                        },
+                    ]}>
+                        <Select options={programOptions} placeholder="Please select Program">
+                            <Select.Option value="demo">Demo</Select.Option>
+                        </Select>
                     </Form.Item>
 
                     <Form.Item
@@ -98,6 +154,7 @@ export default function SignupPage() {
                                 message: 'Please input your password!',
                             },
                         ]}
+                        hasFeedback
                     >
                         <Input.Password />
                     </Form.Item>
@@ -110,7 +167,17 @@ export default function SignupPage() {
                                 required: true,
                                 message: 'Please input your password again!',
                             },
+                            ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                    if (!value || getFieldValue('password') === value) {
+                                        return Promise.resolve();
+                                    }
+
+                                    return Promise.reject(new Error('The two passwords that you entered do not match!'));
+                                },
+                            }),
                         ]}
+                        hasFeedback
                     >
                         <Input.Password />
                     </Form.Item>
@@ -121,10 +188,10 @@ export default function SignupPage() {
                             span: 16,
                         }}
                     >
-                        <Button type="primary" htmlType="submit">
+                        <Button loading={createUserLoading} type="primary" htmlType="submit">
                             Signup
                         </Button>
-                        <p> Already have an account? <Link to="/signin">Login</Link></p>
+                        <p> Already have an account? <Link to="/login">Login</Link></p>
                     </Form.Item>
                 </Form>
             </div>

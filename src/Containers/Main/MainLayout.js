@@ -8,7 +8,8 @@ import { makeApiCall } from '../../client';
 const { Header, Content, Sider } = Layout;
 
 export default function MainLayout() {
-    const userName = useSelector(state => state.user.name);
+    const user = useSelector(state => state.auth?.user);
+
     const { width, height } = useWindowDimensions();
     return (
         <Layout className='h-full'>
@@ -32,7 +33,7 @@ export default function MainLayout() {
             >
                 <div className="logo" />
                 <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-                    <p className='mt-10 text-lg font-bold text-center'>{userName}</p>
+                    <p className='mt-10 text-lg font-bold text-center'>{user?.name}</p>
                     <Menu.Item key="1" icon={<UserOutlined />}>
                         <Link to="/home">
                             Home
