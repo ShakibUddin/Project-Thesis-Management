@@ -1,3 +1,4 @@
+import { persistor } from '../../store';
 import * as actions from './AuthActions';
 
 const initialState = {
@@ -80,6 +81,10 @@ export default function AuthReducer(state = initialState, action) {
             state.loginLoading = false;
             state.user = null;
             state.loginError = payload;
+            break;
+        }
+        case actions.LOGOUT: {
+            state = initialState;
             break;
         }
         default: {

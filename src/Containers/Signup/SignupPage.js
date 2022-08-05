@@ -31,11 +31,10 @@ export default function SignupPage() {
         }
         values.avatar = null;
         dispatch(AuthActions.createUser(values));
-        console.log(values)
     };
 
     const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
+        message.error(errorInfo);
     };
 
     useEffect(() => {

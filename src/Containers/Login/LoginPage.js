@@ -11,13 +11,11 @@ export default function LoginPage() {
     const loginLoading = useSelector(state => state.auth?.loginLoading);
     const dispatch = useDispatch();
     const onFinish = (values) => {
-        console.log('Success:', values);
-
         dispatch(AuthActions.login(values));
     };
 
     const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
+        message.error(errorInfo);
     };
 
     useEffect(() => {

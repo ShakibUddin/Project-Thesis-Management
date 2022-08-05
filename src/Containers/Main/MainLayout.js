@@ -3,14 +3,18 @@ import { Layout, Menu } from 'antd';
 import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
 import { Link, Outlet } from 'react-router-dom';
 import useWindowDimensions from '../../Hooks/useWindowDimensions';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { makeApiCall } from '../../client';
+import * as AuthActions from '../../State/Auth/AuthActions';
 const { Header, Content, Sider } = Layout;
 
 export default function MainLayout() {
     const user = useSelector(state => state.auth?.user);
-
+    const dispatch = useDispatch();
     const { width, height } = useWindowDimensions();
+    const cleanAuthData = () => {
+        dispatch(AuthActions.logout());
+    }
     return (
         <Layout className='h-full'>
             <Sider
@@ -60,7 +64,7 @@ export default function MainLayout() {
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="7" icon={<UserOutlined />}>
-                        <Link to="/login">Logout</Link>
+                        <Link to="/login" onClick={cleanAuthData}>Logout</Link>
                     </Menu.Item>
                 </Menu>
             </Sider>

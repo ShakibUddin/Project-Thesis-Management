@@ -7,6 +7,7 @@ export const GET_DEPARTMENTS = requestActions(MODULE_NAME, 'GET_DEPARTMENTS');
 export const GET_PROGRAMS = requestActions(MODULE_NAME, 'GET_PROGRAMS');
 export const CREATE_USER = requestActions(MODULE_NAME, 'CREATE_USER');
 export const LOGIN = requestActions(MODULE_NAME, 'LOGIN');
+export const LOGOUT = 'LOGOUT';
 
 export const getDepartments = () => requestApiCall({
     actions: GET_DEPARTMENTS,
@@ -29,4 +30,7 @@ export const login = (body) => requestApiCall({
     method: METHODS.POST,
     path: PATHS.LOGIN,
     body: JSON.stringify(body)
+})
+export const logout = () => ({
+    type: LOGOUT
 })
