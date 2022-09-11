@@ -4,7 +4,7 @@ import loginRightImage from '../../../src/Assets/loginRIghtImage.svg';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import * as AuthActions from '../../State/Auth/AuthActions';
-import './LoginPageStyles.css';
+import styles from './LoginPage.module.css';
 
 export default function LoginPage() {
     const navigate = useNavigate();
@@ -77,7 +77,7 @@ export default function LoginPage() {
                     >
                         <Input.Password />
                     </Form.Item>
-                    {loginError && <Alert className="alert" message={loginError} type="error" />}
+                    {loginError && <Alert className={styles.alert} message={loginError} type="error" />}
                     <Form.Item
                         wrapperCol={{
                             offset: 8,

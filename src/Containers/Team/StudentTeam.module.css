@@ -2,6 +2,8 @@
     width: 100%;
     height: 100%;
     display: flex;
-    justify-content: flex-start;
     flex-direction: column;
+}
+.studentContainer{
+    margin: 1rem 0;
 }
