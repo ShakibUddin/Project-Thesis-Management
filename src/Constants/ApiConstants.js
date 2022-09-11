@@ -1,4 +1,4 @@
-export const BASE_URL = "http://137.59.50.227:9000/api/";
+export const BASE_URL = "https://smtprojectbackend.arifmannan.com/api/";
 export const REQUEST_TIMEOUT = 5000;
 
 export const METHODS = {
@@ -8,4 +8,4 @@ export const METHODS = {
     DELETE: 'delete'
 };
 
-export const PATHS = { SIGNUP: 'users/createUser', DEPARTMENTS: 'users/getDep', CREATE_USER: 'users/createUser', PROGRAMS: 'users/getPrograms', LOGIN: 'users/login' };
+export const PATHS = { SIGNUP: 'users/createUser', DEPARTMENTS: 'users/getDep', CREATE_USER: 'users/createUser', PROGRAMS: 'users/getPrograms', LOGIN: 'users/login', ALL_STUDENTS_FOR_REQUEST: 'users/getAllStudents', ALL_USERS: 'users/getUsers' };

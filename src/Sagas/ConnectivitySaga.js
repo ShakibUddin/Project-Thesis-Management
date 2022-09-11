@@ -3,10 +3,10 @@ import { call, put, race, takeLatest, delay, takeEvery } from 'redux-saga/effect
 import { API_CALL_REQUESTED } from '../State/Connectivity/ConnectivityActions';
 import { makeApiCall } from '../client';
 
-function* fetchDepartments(action) {
-    const { method, path, body, actions } = action.payload;
+function* processRequest(action) {
+    const { method, path, body, token, actions } = action.payload;
     yield put({ type: actions.REQUESTED })
-    const { data, message, error } = yield makeApiCall({ method, path, body });
+    const { data, message, error } = yield makeApiCall({ method, path, body, token });
     if (error) {
         yield put({ type: actions.FAILED, payload: message })
     }
@@ -15,5 +15,5 @@ function* fetchDepartments(action) {
     }
 }
 export function* connectivitySaga() {
-    yield takeEvery(API_CALL_REQUESTED, fetchDepartments)
+    yield takeEvery(API_CALL_REQUESTED, processRequest)
 }

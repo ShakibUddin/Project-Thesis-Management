@@ -1,14 +1,16 @@
 import React, { useEffect } from 'react'
-import { Form, Input, Button, Checkbox, message } from 'antd';
+import { Form, Input, Button, Checkbox, message, Alert } from 'antd';
 import loginRightImage from '../../../src/Assets/loginRIghtImage.svg';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import * as AuthActions from '../../State/Auth/AuthActions';
+import './LoginPageStyles.css';
 
 export default function LoginPage() {
     const navigate = useNavigate();
     const user = useSelector(state => state.auth?.user);
     const loginLoading = useSelector(state => state.auth?.loginLoading);
+    const loginError = useSelector(state => state.auth?.loginError);
     const dispatch = useDispatch();
     const onFinish = (values) => {
         dispatch(AuthActions.login(values));
@@ -75,7 +77,7 @@ export default function LoginPage() {
                     >
                         <Input.Password />
                     </Form.Item>
-
+                    {loginError && <Alert className="alert" message={loginError} type="error" />}
                     <Form.Item
                         wrapperCol={{
                             offset: 8,

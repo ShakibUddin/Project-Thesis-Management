@@ -38,22 +38,21 @@ export default function SignupPage() {
     };
 
     useEffect(() => {
-        if (departments.length === 0 && !departmentsLoading) {
-            dispatch(AuthActions.getDepartments());
-        }
-        else if (departments.length > 0 && departmentOptions.length === 0) {
-            setDepartmentOptions(departments.map(department => ({ key: department.department_id, value: department.name })))
-        }
-    }, [departments, departmentsLoading]);
+        dispatch(AuthActions.getDepartments());
+        dispatch(AuthActions.getPrograms());
+    }, []);
 
     useEffect(() => {
-        if (programs.length === 0 && !programsLoading) {
-            dispatch(AuthActions.getPrograms());
+        if (departments.length > 0 && departmentOptions.length === 0) {
+            setDepartmentOptions(departments.map(department => ({ key: department.department_id, value: department.name })))
         }
-        else if (programs.length > 0 && programOptions.length === 0) {
+    }, [departmentOptions, departments]);
+
+    useEffect(() => {
+        if (programs.length > 0 && programOptions.length === 0) {
             setProgramOptions(programs.map(program => ({ key: program.program_id, value: program.name })))
         }
-    }, [programs, programsLoading]);
+    }, [programs, programOptions]);
 
     useEffect(() => {
         if (user) {

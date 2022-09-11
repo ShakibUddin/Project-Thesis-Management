@@ -1,21 +1,25 @@
 import { applyMiddleware, combineReducers, compose, createStore } from "redux";
 import { composeWithDevTools } from 'redux-devtools-extension';
 import AuthReducer from "./State/Auth/AuthReducer";
-import UserReducer from "./State/User/UserReducer";
+import TeamReducer from "./State/Team/TeamReducer";
 import rootSaga from './Sagas';
 import createSagaMiddleware from 'redux-saga';
 import { persistStore, persistReducer } from 'redux-persist'
 import storageSession from 'redux-persist/es/storage/session'
+import createFilter from 'redux-persist-transform-filter';
 
 const rootReducers = combineReducers({
-    user: UserReducer,
     auth: AuthReducer,
+    team: TeamReducer,
 });
+
+const saveUserSubsetFilter = createFilter("auth", ["user"]);
 
 const persistConfig = {
     key: 'root',
     storage: storageSession,
-    whitelist: ['auth'] // only auth will be persisted
+    whitelist: ['auth'],
+    transforms: [saveUserSubsetFilter]
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducers)

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
 import MeetupCard from '../../Components/MeetupCard';
-import UserCard from '../../Components/UserCard'
+import UserCard from '../../Components/UserCard/UserCard'
 import * as Meetup from '../../Constants/MeetupConstants';
 
 export default function StudentHome() {
