@@ -1,0 +1,22 @@
+@import "../../Constants//styleConstants.css";
+
+#components_layout_demo_responsive .logo {
+  height: 32px;
+  margin: 16px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.site_layout_sub_header_background {
+  background: #fff;
+}
+
+.site_layout_background {
+  background: #fff;
+}
+.layout {
+  height: 100vh;
+}
+.sider,
+.menu {
+  background-color: var(--primaryColor) !important;
+}

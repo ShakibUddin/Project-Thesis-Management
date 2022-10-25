@@ -16,4 +16,5 @@ export const PATHS = {
   ALL_STUDENTS_FOR_REQUEST: "users/getAllStudents",
   ALL_USERS: "users/getUsers",
   SEND_REQUEST: "users/createMemberRequest",
+  GET_MEMBER_REQUEST_NOTIFICATIONS: "users/getMemberRequestNotification",
 };

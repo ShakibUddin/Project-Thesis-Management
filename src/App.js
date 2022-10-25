@@ -1,14 +1,15 @@
-import 'antd/dist/antd.min.css'
+import "antd/dist/antd.min.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import StudentHome from './Containers/Home/StudentHome';
+import StudentHome from "./Containers/Home/StudentHome";
 import LoginPage from "./Containers/Login/LoginPage";
-import MainLayout from './Containers/Main/MainLayout';
-import StudentMeetups from './Containers/Meetups/StudentMeetups';
-import StudentProjectThesis from './Containers/ProjectThesis/StudentProjectThesis';
-import StudentSettings from './Containers/Settings/StudentSettings';
+import MainLayout from "./Containers/Main/MainLayout";
+import StudentMeetups from "./Containers/Meetups/StudentMeetups";
+import StudentProjectThesis from "./Containers/ProjectThesis/StudentProjectThesis";
+import StudentSettings from "./Containers/Settings/StudentSettings";
 import SignupPage from "./Containers/Signup/SignupPage";
-import StudentTeam from './Containers/Team/StudentTeam';
-import PrivateRoutes from './Utils/PrivateRoutes';
+import StudentTeam from "./Containers/Team/StudentTeam";
+import PrivateRoutes from "./Utils/PrivateRoutes";
+import StudentNotifications from "./Containers/Notifications/StudentNotifications";
 
 function App() {
   return (
@@ -16,12 +17,13 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route index element={<LoginPage />} />
-          <Route path="/" element={<MainLayout />} >
+          <Route path="/" element={<MainLayout />}>
             <Route element={<PrivateRoutes />}>
               <Route path="home" element={<StudentHome />} />
               <Route path="team" element={<StudentTeam />} />
               <Route path="project" element={<StudentProjectThesis />} />
               <Route path="meetup" element={<StudentMeetups />} />
+              <Route path="notifications" element={<StudentNotifications />} />
               <Route path="settings" element={<StudentSettings />} />
             </Route>
           </Route>
