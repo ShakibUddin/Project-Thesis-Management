@@ -2,9 +2,10 @@
 
 .container {
   display: flex !important;
+  flex-grow: 1;
   width: 30%;
   min-width: 300px;
-  max-width: 500px;
+  max-width: 300px !important;
   flex-direction: column;
   background-color: var(--cardColor);
   border-radius: 10px;
@@ -63,4 +64,25 @@
 
 .avatar {
   width: 100%;
+}
+
+.memberRequestActionButtonDiv {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.acceptButton,
+.rejectButton {
+  color: var(--memberRequestActionButtonTextColor);
+  margin: 1rem;
+}
+
+.acceptButton {
+  background-color: var(--acceptButtonColor);
+}
+
+.rejectButton {
+  background-color: var(--rejectButtonColor);
 }

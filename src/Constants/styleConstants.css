@@ -5,4 +5,7 @@
   --disabledActionButtonColor: #dfdfdf;
   --activeActionButtonTextColor: rgb(207, 207, 207);
   --disabledActionButtonTextColor: #6369d1;
+  --acceptButtonColor: #63d17b;
+  --memberRequestActionButtonTextColor: #ffffff;
+  --rejectButtonColor: #d16363;
 }

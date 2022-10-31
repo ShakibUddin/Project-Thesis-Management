@@ -3,7 +3,7 @@ import { Layout, Menu } from "antd";
 import {
   UploadOutlined,
   UserOutlined,
-  VideoCameraOutlined,
+  UsergroupDeleteOutlined,
 } from "@ant-design/icons";
 import { Link, Outlet } from "react-router-dom";
 import useWindowDimensions from "../../Hooks/useWindowDimensions";
@@ -35,23 +35,21 @@ export default function MainLayout() {
         }}
       >
         <div className={styles.logo} />
-        <Menu
-          className={styles.menu}
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={["1"]}
-        >
+        <Menu className={styles.menu} theme="dark" mode="inline">
           <p className="mt-10 text-lg font-bold text-center">{user?.name}</p>
           <Menu.Item key="1" icon={<UserOutlined />}>
             <Link to="/home">Home</Link>
           </Menu.Item>
-          <Menu.Item key="2" icon={<VideoCameraOutlined />}>
+          <Menu.Item key="2" icon={<UsergroupDeleteOutlined />}>
             <Link to="/team">My Team</Link>
           </Menu.Item>
           <Menu.Item key="3" icon={<UploadOutlined />}>
             <Link to="/project">Project/Thesis</Link>
           </Menu.Item>
-          <Menu.Item key="4" icon={<UserOutlined />}>
+          <Menu.Item key="4" icon={<UploadOutlined />}>
+            <Link to="/notifications">Notifications</Link>
+          </Menu.Item>
+          <Menu.Item key="5" icon={<UserOutlined />}>
             <Link to="/meetup">Meetups</Link>
           </Menu.Item>
           <Menu.Item key="6" icon={<UserOutlined />}>

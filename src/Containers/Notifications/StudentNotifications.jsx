@@ -43,6 +43,8 @@ export default function StudentNotifications() {
             id={notification.nub_id}
             department={notification.department_name}
             program={notification.program_name}
+            showingNotification={true}
+            memberRequestId={notification.id}
           />
         ))}
       </div>

@@ -6,6 +6,7 @@ export const METHODS = {
   POST: "post",
   UPDATE: "update",
   DELETE: "delete",
+  PUT: "put",
 };
 export const PATHS = {
   SIGNUP: "users/createUser",
@@ -17,4 +18,7 @@ export const PATHS = {
   ALL_USERS: "users/getUsers",
   SEND_REQUEST: "users/createMemberRequest",
   GET_MEMBER_REQUEST_NOTIFICATIONS: "users/getMemberRequestNotification",
+  ACCEPT_REQUEST: "users/memberRequestAccept",
+  REJECT_REQUEST: "users/memberRequestReject",
+  TEAM_DETAILS: "users/getSingleTeamById",
 };
