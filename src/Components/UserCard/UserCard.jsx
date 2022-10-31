@@ -20,6 +20,7 @@ export default function UserCard({
   sendMemberRequest = null,
   requestSent = false,
   showingNotification = false,
+  showRequestActions = false,
   memberRequestId = null,
   requestSentIds,
   setRequestSentIds,
@@ -92,7 +93,7 @@ export default function UserCard({
         </div>
       </div>
       <div className={styles.action}>
-        {showingNotification ? (
+        {showingNotification && (
           <div className={styles.memberRequestActionButtonDiv}>
             <button
               onClick={acceptMemberRequest}
@@ -119,7 +120,8 @@ export default function UserCard({
               )}
             </button>
           </div>
-        ) : (
+        )}
+        {showRequestActions && (
           <button
             disabled={disableButton}
             onClick={sendMemberRequest}

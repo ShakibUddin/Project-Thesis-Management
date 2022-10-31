@@ -15,6 +15,9 @@ const initialState = {
   rejectmemberRequestLoading: false,
   memberRequestRejected: false,
   memberRequestRejectError: null,
+  teamDetailsLoading: false,
+  teamDetails: [],
+  teamDetailsError: null,
 };
 
 export default function AuthReducer(state = initialState, action) {

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as TeamActions from "../../State/Team/TeamActions";
 import UserCard from "../../Components/UserCard/UserCard";
 import { useState } from "react";
+import { Tabs, Space, Spin } from "antd";
 
 const { Search } = Input;
 
@@ -30,13 +31,11 @@ export default function StudentTeam() {
   const memberRequestError = useSelector(
     (state) => state.team?.memberRequestError
   );
-  const memberRequestLoading = useSelector(
-    (state) => state.team?.memberRequestLoading
+  const teamDetails = useSelector((state) => state.team?.teamDetails);
+  const teamDetailsLoading = useSelector(
+    (state) => state.team?.teamDetailsLoading
   );
   const token = useSelector((state) => state.auth?.user?.token);
-  const totalTeamMembers = useSelector(
-    (state) => state.auth?.user?.total_members
-  );
   useEffect(() => {
     const body = {
       nub_id: currentUser?.nub_id,
@@ -75,30 +74,63 @@ export default function StudentTeam() {
   }, [memberRequestError, memberRequestSent]);
   return (
     <div className={styles.container}>
-      <div>
-        <Search
-          placeholder="Search team member"
-          enterButton="Search"
-          size="large"
-          onSearch={(value) => console.log(value)}
-        />
-      </div>
-      <div className={styles.studentContainer}>
-        {students.map((student) => (
-          <UserCard
-            name={student.name}
-            id={student.nub_id}
-            department={student.department_name}
-            program={student.program_name}
-            requestStatus={student.request_status}
-            requestStatusId={student.request_status_id}
-            receiverNubId={receiverNubId}
-            sendMemberRequest={() => {
-              sendMemberRequest(student.nub_id);
-            }}
-          />
-        ))}
-      </div>
+      <Tabs defaultActiveKey="1">
+        <Tabs.TabPane tab="My Team" key="1">
+          {teamDetails.length > 0 ? (
+            <div className={styles.studentContainer}>
+              {teamDetails.map((teammate) => (
+                <UserCard
+                  name={teammate.name}
+                  id={teammate.nub_id}
+                  department={teammate.department_name}
+                  program={teammate.program_name}
+                />
+              ))}
+            </div>
+          ) : (
+            <div>
+              {teamDetailsLoading ? (
+                <Space size="middle">
+                  <Spin size="large" />
+                </Space>
+              ) : (
+                <p>You don't have any team mates yet!</p>
+              )}
+            </div>
+          )}
+        </Tabs.TabPane>
+        <Tabs.TabPane tab="Get Teammates" key="2">
+          {teamDetails.length < 3 && (
+            <div className={styles.container}>
+              <div>
+                <Search
+                  placeholder="Search team member"
+                  enterButton="Search"
+                  size="large"
+                  onSearch={(value) => console.log(value)}
+                />
+              </div>
+              <div className={styles.studentContainer}>
+                {students.map((student) => (
+                  <UserCard
+                    name={student.name}
+                    id={student.nub_id}
+                    department={student.department_name}
+                    program={student.program_name}
+                    requestStatus={student.request_status}
+                    requestStatusId={student.request_status_id}
+                    receiverNubId={receiverNubId}
+                    showRequestActions
+                    sendMemberRequest={() => {
+                      sendMemberRequest(student.nub_id);
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+        </Tabs.TabPane>
+      </Tabs>
     </div>
   );
 }
