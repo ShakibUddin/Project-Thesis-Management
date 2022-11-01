@@ -12,6 +12,7 @@ export const REJECT_MEMBER_REQUEST = requestActions(
   MODULE_NAME,
   "REJECT_MEMBER_REQUEST"
 );
+export const SET_ACCEPTED_REQUEST = "SET_ACCEPTED_REQUEST";
 export const GET_TEAM_DETAILS = requestActions(MODULE_NAME, "GET_TEAM_DETAILS");
 
 export const getAllStudents = ({ body, token }) =>
@@ -46,3 +47,8 @@ export const getTeamDetails = ({ body, token }) =>
     body,
     token,
   });
+
+export const setAcceptedRequest = (data) => ({
+  type: SET_ACCEPTED_REQUEST,
+  payload: data,
+});

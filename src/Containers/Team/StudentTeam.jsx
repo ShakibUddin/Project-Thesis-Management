@@ -12,9 +12,7 @@ const openNotification = (message) => {
   notification.open({
     message,
     placement: "bottomLeft",
-    onClick: () => {
-      console.log("Notification Clicked!");
-    },
+    onClick: () => {},
   });
 };
 
@@ -33,16 +31,10 @@ export default function StudentTeam() {
     (state) => state.team?.teamDetailsLoading
   );
   const token = useSelector((state) => state.auth?.user?.token);
+  const body = {
+    nub_id: currentUser?.nub_id,
+  };
   useEffect(() => {
-    const body = {
-      nub_id: currentUser?.nub_id,
-    };
-    dispatch(
-      TeamActions.getAllStudents({
-        body,
-        token,
-      })
-    );
     dispatch(
       TeamActions.getTeamDetails({
         body,
@@ -58,7 +50,19 @@ export default function StudentTeam() {
   }, [memberRequestError, memberRequestSent]);
   return (
     <div className={styles.container}>
-      <Tabs defaultActiveKey="1">
+      <Tabs
+        defaultActiveKey="1"
+        onChange={(key) => {
+          if (key === "2" && teamDetails.length < 3) {
+            dispatch(
+              TeamActions.getAllStudents({
+                body,
+                token,
+              })
+            );
+          }
+        }}
+      >
         <Tabs.TabPane tab="My Team" key="1">
           {teamDetails.length > 0 ? (
             <div className={styles.studentContainer}>

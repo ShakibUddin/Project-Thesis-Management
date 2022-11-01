@@ -18,6 +18,7 @@ const initialState = {
   teamDetailsLoading: false,
   teamDetails: [],
   teamDetailsError: null,
+  acceptedRequest: 0,
 };
 
 export default function AuthReducer(state = initialState, action) {
@@ -94,6 +95,10 @@ export default function AuthReducer(state = initialState, action) {
       state.teamDetailsLoading = false;
       state.teamDetails = false;
       state.teamDetailsError = payload?.message;
+      break;
+    }
+    case actions.SET_ACCEPTED_REQUEST: {
+      state.acceptedRequest = action.payload;
       break;
     }
     default: {
