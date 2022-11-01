@@ -1,0 +1,8 @@
+label {
+  font-size: 18px !important;
+  max-width: 50px;
+}
+
+.ant-col-8 {
+  flex: 0 0 20.33333333% !important;
+}

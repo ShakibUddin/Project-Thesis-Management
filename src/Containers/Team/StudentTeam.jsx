@@ -19,6 +19,9 @@ const openNotification = (message) => {
 export default function StudentTeam() {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.auth?.user);
+  const totalTeamMmbers = useSelector(
+    (state) => state.auth?.user?.total_members
+  );
   const students = useSelector((state) => state.team?.students);
   const memberRequestSent = useSelector(
     (state) => state.team?.memberRequestSent
@@ -64,7 +67,7 @@ export default function StudentTeam() {
         }}
       >
         <Tabs.TabPane tab="My Team" key="1">
-          {teamDetails.length > 0 ? (
+          {totalTeamMmbers > 1 ? (
             <div className={styles.studentContainer}>
               {teamDetails.map((teammate) => (
                 <UserCard
@@ -88,7 +91,7 @@ export default function StudentTeam() {
           )}
         </Tabs.TabPane>
         <Tabs.TabPane tab="Get Teammates" key="2">
-          {teamDetails.length < 3 && (
+          {totalTeamMmbers < 3 && (
             <div className={styles.container}>
               <div>
                 <Search
