@@ -45,27 +45,6 @@ export default function AuthReducer(state = initialState, action) {
       state.studentsError = payload?.message;
       break;
     }
-    case actions.SEND_MEMBER_REQUEST.REQUESTED: {
-      state.memberRequestLoading = true;
-      state.memberRequestSent = false;
-      state.memberRequestError = null;
-      state.memberRequestSent = null;
-      break;
-    }
-    case actions.SEND_MEMBER_REQUEST.SUCCEEDED: {
-      state.memberRequestLoading = false;
-      state.memberRequestSent = payload?.data?.requestSent;
-      if (!payload?.data?.requestSent) {
-        state.memberRequestError = payload?.message;
-      }
-      break;
-    }
-    case actions.SEND_MEMBER_REQUEST.FAILED: {
-      state.memberRequestLoading = false;
-      state.memberRequestSent = null;
-      state.memberRequestError = payload?.message;
-      break;
-    }
     case actions.ACCEPT_MEMBER_REQUEST.REQUESTED: {
       state.acceptmemberRequestLoading = true;
       state.memberRequestAccepted = false;

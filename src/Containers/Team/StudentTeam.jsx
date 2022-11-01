@@ -4,7 +4,6 @@ import { Input, notification } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import * as TeamActions from "../../State/Team/TeamActions";
 import UserCard from "../../Components/UserCard/UserCard";
-import { useState } from "react";
 import { Tabs, Space, Spin } from "antd";
 
 const { Search } = Input;
@@ -21,8 +20,6 @@ const openNotification = (message) => {
 
 export default function StudentTeam() {
   const dispatch = useDispatch();
-  const [receiverNubId, setReceiverNubId] = useState();
-  const [requestSentIds, setRequestSentIds] = useState([]);
   const currentUser = useSelector((state) => state.auth?.user);
   const students = useSelector((state) => state.team?.students);
   const memberRequestSent = useSelector(
@@ -53,19 +50,6 @@ export default function StudentTeam() {
       })
     );
   }, []);
-  const sendMemberRequest = (receiverId) => {
-    const body = {
-      sender_nub_id: currentUser.nub_id,
-      receiver_nub_id: receiverId,
-    };
-    dispatch(
-      TeamActions.sendMemberRequest({
-        body,
-        token,
-      })
-    );
-    setReceiverNubId(receiverId);
-  };
 
   useEffect(() => {
     if (memberRequestError || memberRequestSent === false) {
@@ -119,11 +103,7 @@ export default function StudentTeam() {
                     program={student.program_name}
                     requestStatus={student.request_status}
                     requestStatusId={student.request_status_id}
-                    receiverNubId={receiverNubId}
                     showRequestActions
-                    sendMemberRequest={() => {
-                      sendMemberRequest(student.nub_id);
-                    }}
                   />
                 ))}
               </div>

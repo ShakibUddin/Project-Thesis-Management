@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./UserCard.module.css";
 import defaultAvatar from "../../Assets/avatar.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import * as TeamActions from "../../State/Team/TeamActions";
+import { makeApiCall } from "../../client";
+import { METHODS, PATHS } from "../../Constants/ApiConstants";
 
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
@@ -14,20 +16,20 @@ export default function UserCard({
   department,
   program,
   avatar = null,
-  receiverNubId = null,
   requestStatus = null,
   requestStatusId = null,
-  sendMemberRequest = null,
   requestSent = false,
   showingNotification = false,
   showRequestActions = false,
   memberRequestId = null,
-  requestSentIds,
-  setRequestSentIds,
 }) {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth?.user?.token);
-
+  const currentUser = useSelector((state) => state.auth?.user);
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState();
+  const [message, setMessage] = useState();
+  const [error, setError] = useState();
   const memberRequestLoading = useSelector(
     (state) => state.team?.memberRequestLoading
   );
@@ -43,14 +45,13 @@ export default function UserCard({
   const memberRequestAccepted = useSelector(
     (state) => state.team?.memberRequestAccepted
   );
-  const memberRequestSent = useSelector(
-    (state) => state.team?.memberRequestSent
-  );
+  const requestSentIds = useSelector((state) => state.team?.requestSentIds);
 
-  const disableButton =
-    requestStatusId === 1 || (memberRequestSent && receiverNubId === id);
+  const disableButton = requestStatusId === 1 || data?.requestSent;
 
   const acceptMemberRequest = () => {
+    setLoading(true);
+
     const body = {
       id: memberRequestId,
     };
@@ -63,15 +64,49 @@ export default function UserCard({
   };
 
   const rejectMemberRequest = () => {
+    setLoading(true);
+
     const body = {
       id: memberRequestId,
     };
+    makeApiCall({
+      method: METHODS.DELETE,
+      path: PATHS.REJECT_REQUEST,
+      body,
+      token,
+    }).then((response) => {
+      const { data, message, error } = response;
+      setData(data);
+      setMessage(message);
+      setError(error);
+      setLoading(false);
+    });
     dispatch(
       TeamActions.rejectMemberRequest({
         body,
         token,
       })
     );
+  };
+
+  const sendMemberRequest = async () => {
+    setLoading(true);
+    const body = {
+      sender_nub_id: currentUser.nub_id,
+      receiver_nub_id: id,
+    };
+    makeApiCall({
+      method: METHODS.POST,
+      path: PATHS.SEND_REQUEST,
+      body,
+      token,
+    }).then((response) => {
+      const { data, message, error } = response;
+      setData(data);
+      setMessage(message);
+      setError(error);
+      setLoading(false);
+    });
   };
   return (
     <div className={styles.container}>
@@ -130,7 +165,7 @@ export default function UserCard({
               disableButton ? styles.disabled : styles.active,
             ].join(" ")}
           >
-            {memberRequestLoading && receiverNubId === id ? (
+            {loading ? (
               <Spin indicator={antIcon} />
             ) : disableButton ? (
               "Pending"
