@@ -21,4 +21,6 @@ export const PATHS = {
   ACCEPT_REQUEST: "users/memberRequestAccept",
   REJECT_REQUEST: "users/memberRequestReject",
   TEAM_DETAILS: "users/getSingleTeamById",
+  PROJECT_DETAILS: "users/singlePojectProposalCrud",
+  CREATE_PROJECT_PROPOSAL: "users/createProjectProposal",
 };

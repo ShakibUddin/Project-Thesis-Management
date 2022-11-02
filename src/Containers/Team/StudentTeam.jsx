@@ -67,7 +67,7 @@ export default function StudentTeam() {
         }}
       >
         <Tabs.TabPane tab="My Team" key="1">
-          {totalTeamMmbers > 1 ? (
+          {totalTeamMmbers > 1 && teamDetails.length ? (
             <div className={styles.studentContainer}>
               {teamDetails.map((teammate) => (
                 <UserCard
@@ -91,7 +91,7 @@ export default function StudentTeam() {
           )}
         </Tabs.TabPane>
         <Tabs.TabPane tab="Get Teammates" key="2">
-          {totalTeamMmbers < 3 && (
+          {totalTeamMmbers < 3 ? (
             <div className={styles.container}>
               <div>
                 <Search
@@ -115,6 +115,8 @@ export default function StudentTeam() {
                 ))}
               </div>
             </div>
+          ) : (
+            "You can not have anymore team mates"
           )}
         </Tabs.TabPane>
       </Tabs>

@@ -8,4 +8,6 @@
   --acceptButtonColor: #63d17b;
   --memberRequestActionButtonTextColor: #ffffff;
   --rejectButtonColor: #d16363;
+  --pendingStatus: #63d17b;
+  --rejectedStatus: #d16363;
 }

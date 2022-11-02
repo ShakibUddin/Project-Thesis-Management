@@ -3,6 +3,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import AuthReducer from "./State/Auth/AuthReducer";
 import TeamReducer from "./State/Team/TeamReducer";
 import NotificationsReducer from "./State/Notifications/NotificationsReducer";
+import ProjectReducer from "./State/Project/ProjectReducer";
 import rootSaga from "./Sagas";
 import createSagaMiddleware from "redux-saga";
 import { persistStore, persistReducer } from "redux-persist";
@@ -13,6 +14,7 @@ const rootReducers = combineReducers({
   auth: AuthReducer,
   team: TeamReducer,
   notifications: NotificationsReducer,
+  project: ProjectReducer,
 });
 
 const saveUserSubsetFilter = createFilter("auth", ["user"]);
