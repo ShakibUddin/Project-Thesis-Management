@@ -10,6 +10,7 @@ import SignupPage from "./Containers/Signup/SignupPage";
 import StudentTeam from "./Containers/Team/StudentTeam";
 import PrivateRoutes from "./Utils/PrivateRoutes";
 import StudentNotifications from "./Containers/Notifications/StudentNotifications";
+import Proposals from "./Containers/Proposals/Proposals";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route element={<PrivateRoutes />}>
               <Route path="home" element={<StudentHome />} />
               <Route path="team" element={<StudentTeam />} />
+              <Route path="proposals" element={<Proposals />} />
               <Route path="project" element={<StudentProjectThesis />} />
               <Route path="meetup" element={<StudentMeetups />} />
               <Route path="notifications" element={<StudentNotifications />} />

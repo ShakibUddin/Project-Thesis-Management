@@ -1,6 +1,7 @@
 :root {
   --primaryColor: #6369d1;
   --cardColor: #ebedff;
+  --cardColor2: #fafafa;
   --activeActionButtonColor: #6369d1;
   --disabledActionButtonColor: #dfdfdf;
   --activeActionButtonTextColor: rgb(207, 207, 207);

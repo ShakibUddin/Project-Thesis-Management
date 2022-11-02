@@ -46,7 +46,6 @@ export default function ProjectReducer(state = initialState, action) {
       break;
     }
     case actions.CREATE_PROJECT_PROPOSAL.SUCCEEDED: {
-      console.log("payload", payload);
       state.createProjectProposalLoading = true;
       state.createProjectProposal = payload?.data?.createProjectProposal;
       break;

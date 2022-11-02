@@ -29,7 +29,6 @@ export default function StudentProjectThesis() {
     useSelector((state) => state.auth?.user?.total_members) < 3;
   const onFinish = (values) => {
     const { type, title, description, technologies } = values;
-    console.log(values);
     const body = {
       nub_id: currentUser?.nub_id,
       project: type === "project" ? 1 : 0,
@@ -75,8 +74,6 @@ export default function StudentProjectThesis() {
   }, []);
 
   useEffect(() => {
-    console.log("createProjectProposal", createProjectProposal);
-
     if (createProjectProposal) {
       success();
     }

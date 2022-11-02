@@ -23,4 +23,5 @@ export const PATHS = {
   TEAM_DETAILS: "users/getSingleTeamById",
   PROJECT_DETAILS: "users/singlePojectProposalCrud",
   CREATE_PROJECT_PROPOSAL: "users/createProjectProposal",
+  GET_PROJECT_PROPOSALS: "users/allPendingProposal",
 };

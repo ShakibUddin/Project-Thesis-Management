@@ -24,7 +24,7 @@ export default function ProjectCard({
           showIcon
         />
       )}
-      <div className="w-full my-4 flex flex-row justify-between align-center">
+      <div className="w-full my-4 flex flex-row justify-between align-middle">
         <span className="mr-4">
           <b>Title:</b> {title}
         </span>

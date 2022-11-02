@@ -41,7 +41,11 @@ export default function MainLayout() {
             <Link to="/home">Home</Link>
           </Menu.Item>
           <Menu.Item key="2" icon={<UsergroupDeleteOutlined />}>
-            <Link to="/team">My Team</Link>
+            {user.member_status_id === 1 ? (
+              <Link to="/team">My Team</Link>
+            ) : (
+              <Link to="/proposals">Proposals</Link>
+            )}
           </Menu.Item>
           <Menu.Item key="3" icon={<UploadOutlined />}>
             <Link to="/project">Project/Thesis</Link>
