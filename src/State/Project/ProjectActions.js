@@ -11,6 +11,10 @@ export const CREATE_PROJECT_PROPOSAL = requestActions(
   MODULE_NAME,
   "CREATE_PROJECT_PROPOSAL"
 );
+export const UPDATE_PROJECT_PROPOSAL = requestActions(
+  MODULE_NAME,
+  "UPDATE_PROJECT_PROPOSAL"
+);
 export const SET_CREATE_PROJECT_PROPOSAL = "CREATE_PROJECT_PROPOSAL";
 
 export const createProjectProposal = ({ token, body }) =>
@@ -18,6 +22,14 @@ export const createProjectProposal = ({ token, body }) =>
     actions: CREATE_PROJECT_PROPOSAL,
     method: METHODS.POST,
     path: PATHS.CREATE_PROJECT_PROPOSAL,
+    token,
+    body,
+  });
+export const updateProjectProposal = ({ token, body }) =>
+  requestApiCall({
+    actions: UPDATE_PROJECT_PROPOSAL,
+    method: METHODS.PUT,
+    path: PATHS.UPDATE_PROJECT_PROPOSAL,
     token,
     body,
   });

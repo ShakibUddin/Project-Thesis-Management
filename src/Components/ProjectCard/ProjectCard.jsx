@@ -12,6 +12,7 @@ export default function ProjectCard({
   status,
   statusId,
   feedback,
+  handleEdit,
 }) {
   return (
     <div className={styles.projectCardContainer}>
@@ -36,13 +37,13 @@ export default function ProjectCard({
         >
           <b>{status}</b>
         </span>
-        {feedback && (
+        {statusId === 4 && (
           <Button
             className="ml-4"
             space={{ py: 2 }}
             icon={editIcon}
             type="primary"
-            htmlType="submit"
+            onClick={handleEdit}
           >
             Edit
           </Button>

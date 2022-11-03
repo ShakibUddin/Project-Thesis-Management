@@ -8,6 +8,9 @@ const initialState = {
   createProjectProposal: false,
   createProjectProposalLoading: false,
   createProjectProposalError: null,
+  updateProjectProposal: false,
+  updateProjectProposalLoading: false,
+  updateProjectProposalError: null,
 };
 
 export default function ProjectReducer(state = initialState, action) {
@@ -54,6 +57,24 @@ export default function ProjectReducer(state = initialState, action) {
       state.createProjectProposalLoading = false;
       state.createProjectProposal = false;
       state.createProjectProposalError = payload?.message;
+      break;
+    }
+    case actions.UPDATE_PROJECT_PROPOSAL.REQUESTED: {
+      state.updateProjectProposalLoading = true;
+      state.updateProjectProposal = false;
+      state.updateProjectProposalError = null;
+      break;
+    }
+    case actions.UPDATE_PROJECT_PROPOSAL.SUCCEEDED: {
+      console.log(payload);
+      state.updateProjectProposalLoading = true;
+      state.updateProjectProposal = payload?.data?.updateProjectProposal;
+      break;
+    }
+    case actions.UPDATE_PROJECT_PROPOSAL.FAILED: {
+      state.updateProjectProposalLoading = false;
+      state.updateProjectProposal = false;
+      state.updateProjectProposalError = payload?.message;
       break;
     }
 

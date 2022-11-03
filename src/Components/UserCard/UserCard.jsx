@@ -16,6 +16,7 @@ export default function UserCard({
   id,
   department,
   program,
+  leader = null,
   avatar = null,
   requestStatus = null,
   requestStatusId = null,
@@ -121,6 +122,13 @@ export default function UserCard({
               src={avatar || defaultAvatar}
               alt=""
             />
+            {leader === 1 ? (
+              <p className="font-bold text-green-800 text-center text-lg m-0">
+                Team Leader
+              </p>
+            ) : (
+              <p></p>
+            )}
           </div>
         </div>
         <div className={styles.rightDiv}>

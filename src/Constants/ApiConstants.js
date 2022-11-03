@@ -24,4 +24,8 @@ export const PATHS = {
   PROJECT_DETAILS: "users/singlePojectProposalCrud",
   CREATE_PROJECT_PROPOSAL: "users/createProjectProposal",
   GET_PROJECT_PROPOSALS: "users/allPendingProposal",
+  REJECT_PROJECT_PROPOSALS: "users/rejectProjectProposal",
+  UPDATE_PROJECT_PROPOSAL: "users/singlePojectProposalCrud",
+  GET_ALL_SUPERVISORS: "users/getAllSupervisors",
+  APPROVE_PROJECT_PROPOSAL: "users/approveProjectProposal",
 };
