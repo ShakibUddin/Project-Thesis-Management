@@ -89,7 +89,7 @@ export default function ProposalReducer(state = initialState, action) {
     }
     case actions.APPROVE_PROJECT_PROPOSAL.SUCCEEDED: {
       state.approveProposalLoading = false;
-      state.approveProposal = payload?.data?.approveProposal;
+      state.approveProposal = payload?.data?.projectApproval;
       break;
     }
     case actions.APPROVE_PROJECT_PROPOSAL.FAILED: {

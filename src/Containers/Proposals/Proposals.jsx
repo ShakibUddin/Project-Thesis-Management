@@ -29,7 +29,6 @@ export default function Proposals() {
     );
   }, []);
   const onChange = (e) => {
-    console.log(`checked = ${e.target.checked}`);
     setAutoAssignSupervisor(e.target.checked);
   };
   useEffect(() => {
@@ -57,7 +56,7 @@ export default function Proposals() {
                 handleRejectOrApproveProjectProposal={
                   handleRejectOrApproveProjectProposal
                 }
-                autoAssignSupervisor
+                autoAssignSupervisor={autoAssignSupervisor}
               />
             ))}
           </div>

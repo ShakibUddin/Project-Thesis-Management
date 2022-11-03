@@ -31,10 +31,6 @@ export default function StudentProjectThesis() {
     (state) => state.project?.updateProjectProposalLoading
   );
   useEffect(() => {
-    console.log("updatedProjectProposalLoading", updatedProjectProposalLoading);
-  }, [updatedProjectProposalLoading]);
-  useEffect(() => {
-    console.log("updateProjectProposal", updateProjectProposal);
     if (updateProjectProposal) {
       setEditing(false);
       const body = {
@@ -44,10 +40,8 @@ export default function StudentProjectThesis() {
     }
   }, [updateProjectProposal]);
   const [editing, setEditing] = useState(false);
-  const teamNotComplete =
-    useSelector((state) => state.auth?.user?.total_members) < 3;
+
   const onFinish = (values) => {
-    console.log(values);
     const { type, title, description, technologies } = values;
     const body = {
       nub_id: currentUser?.nub_id,
@@ -125,9 +119,6 @@ export default function StudentProjectThesis() {
     setEditing(true);
   };
 
-  useEffect(() => {
-    console.log("editing", editing);
-  }, [editing]);
   return (
     <div className="w-full h-screen" style={{ fontSize: "1.5rem" }}>
       {projectLoading ? (

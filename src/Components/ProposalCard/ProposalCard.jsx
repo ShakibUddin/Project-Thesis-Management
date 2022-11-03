@@ -16,12 +16,9 @@ export default function ProposalCard({
   handleRejectOrApproveProjectProposal,
   autoAssignSupervisor = false,
 }) {
-  console.log("autoAssignSupervisor", autoAssignSupervisor);
   const dispatch = useDispatch();
   const { title, description, technologies } = project;
-  const onChange = (key) => {
-    console.log(key);
-  };
+  const onChange = (key) => {};
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [supervisorOptions, setSupervisorOptions] = useState([]);
   const [supervisorId, setSupervisorId] = useState();
@@ -38,7 +35,6 @@ export default function ProposalCard({
   );
 
   const showModal = () => {
-    console.log("showing modal");
     setIsModalOpen(true);
   };
   const handleApprove = () => {
@@ -64,13 +60,11 @@ export default function ProposalCard({
         token,
       })
     );
-    console.log("showing showSupervisorModal");
     setIsSupervisorSelectionModalOpen(true);
   };
 
   const onFinish = (values) => {
     setIsModalOpen(false);
-    console.log("feedback", values);
     const body = {
       feedback: values.feedback,
       projectId: project.projectId,
@@ -84,7 +78,6 @@ export default function ProposalCard({
   };
   const onSupervisorSelectionFinish = (values) => {
     setIsSupervisorSelectionModalOpen(false);
-    console.log("supervisor", values);
     const body = {
       teamId: project.teamId,
       supervisor_nub_id: supervisorId,
@@ -119,12 +112,9 @@ export default function ProposalCard({
   };
 
   const onChangeSupervisor = (value) => {
-    console.log(`selected ${value}`);
     setSupervisorId(value);
   };
-  const onSearch = (value) => {
-    console.log("search:", value);
-  };
+  const onSearch = (value) => {};
 
   useEffect(() => {
     if (supervisors?.length > 0) {
@@ -136,10 +126,6 @@ export default function ProposalCard({
       );
     }
   }, [supervisors]);
-
-  useEffect(() => {
-    console.log(supervisorOptions);
-  }, [supervisorOptions]);
   return (
     <div
       className={`flex flex-col justify-start align-top w-full p-4 ${styles.proposalCard}`}

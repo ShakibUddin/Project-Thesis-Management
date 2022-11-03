@@ -66,7 +66,6 @@ export default function ProjectReducer(state = initialState, action) {
       break;
     }
     case actions.UPDATE_PROJECT_PROPOSAL.SUCCEEDED: {
-      console.log(payload);
       state.updateProjectProposalLoading = true;
       state.updateProjectProposal = payload?.data?.updateProjectProposal;
       break;
