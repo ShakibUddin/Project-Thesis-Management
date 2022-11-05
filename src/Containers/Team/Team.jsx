@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
-import styles from "./StudentTeam.module.css";
+import styles from "./Team.module.css";
 import { Input, notification } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import * as TeamActions from "../../State/Team/TeamActions";
 import UserCard from "../../Components/UserCard/UserCard";
 import { Tabs, Space, Spin } from "antd";
+import * as MeetupsActions from "../../State/Meetup/MeetupActions.js";
+import ProposalCard from "../../Components/ProposalCard/ProposalCard";
 
 const { Search } = Input;
 
@@ -16,7 +18,7 @@ const openNotification = (message) => {
   });
 };
 
-export default function StudentTeam() {
+export default function Team() {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.auth?.user);
   const totalTeamMmbers = useSelector(
@@ -33,6 +35,9 @@ export default function StudentTeam() {
   const teamDetailsLoading = useSelector(
     (state) => state.team?.teamDetailsLoading
   );
+  const teamsUnderSupervisor = useSelector(
+    (state) => state.meetup.teamsUnderSupervisor
+  );
   const token = useSelector((state) => state.auth?.user?.token);
   const body = {
     nub_id: currentUser?.nub_id,
@@ -46,6 +51,17 @@ export default function StudentTeam() {
     );
   }, []);
 
+  useEffect(() => {
+    const body = {
+      supervisor_nub_id: currentUser.nub_id, //TODO:check body here
+    };
+    dispatch(
+      MeetupsActions.getTeamsUnderSupervisor({
+        body,
+        token,
+      })
+    );
+  }, []);
   useEffect(() => {
     if (memberRequestError || memberRequestSent === false) {
       openNotification(memberRequestError);
@@ -77,6 +93,9 @@ export default function StudentTeam() {
                   program={teammate.program_name}
                 />
               ))}
+              {teamsUnderSupervisor.map((proposal) => (
+                <ProposalCard project={proposal.project} team={proposal.team} />
+              ))}
             </div>
           ) : (
             <div>
@@ -90,35 +109,37 @@ export default function StudentTeam() {
             </div>
           )}
         </Tabs.TabPane>
-        <Tabs.TabPane tab="Get Teammates" key="2">
-          {totalTeamMmbers < 3 ? (
-            <div className={styles.container}>
-              <div>
-                <Search
-                  placeholder="Search team member"
-                  enterButton="Search"
-                  size="large"
-                  onSearch={(value) => console.log(value)}
-                />
-              </div>
-              <div className={styles.studentContainer}>
-                {students.map((student) => (
-                  <UserCard
-                    name={student.name}
-                    id={student.nub_id}
-                    department={student.department_name}
-                    program={student.program_name}
-                    requestStatus={student.request_status}
-                    requestStatusId={student.request_status_id}
-                    showRequestActions
+        {currentUser.member_status_id === 1 && (
+          <Tabs.TabPane tab="Get Teammates" key="2">
+            {totalTeamMmbers < 3 ? (
+              <div className={styles.container}>
+                <div>
+                  <Search
+                    placeholder="Search team member"
+                    enterButton="Search"
+                    size="large"
+                    onSearch={(value) => console.log(value)}
                   />
-                ))}
+                </div>
+                <div className={styles.studentContainer}>
+                  {students.map((student) => (
+                    <UserCard
+                      name={student.name}
+                      id={student.nub_id}
+                      department={student.department_name}
+                      program={student.program_name}
+                      requestStatus={student.request_status}
+                      requestStatusId={student.request_status_id}
+                      showRequestActions
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
-          ) : (
-            "You can not have anymore team mates"
-          )}
-        </Tabs.TabPane>
+            ) : (
+              "You can not have anymore team mates"
+            )}
+          </Tabs.TabPane>
+        )}
       </Tabs>
     </div>
   );

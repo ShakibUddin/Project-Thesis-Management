@@ -13,7 +13,7 @@ const { Panel } = Collapse;
 export default function ProposalCard({
   project,
   team,
-  handleRejectOrApproveProjectProposal,
+  handleRejectOrApproveProjectProposal = null,
   autoAssignSupervisor = false,
 }) {
   const dispatch = useDispatch();
@@ -25,6 +25,7 @@ export default function ProposalCard({
   const [isSupervisorSelectionModalOpen, setIsSupervisorSelectionModalOpen] =
     useState(false);
   const token = useSelector((state) => state.auth?.user?.token);
+  const currentUser = useSelector((state) => state.auth?.user);
   const rejectProposal = useSelector((state) => state.proposal?.rejectProposal);
   const approveProposal = useSelector(
     (state) => state.proposal?.approveProposal
@@ -162,20 +163,22 @@ export default function ProposalCard({
         )}
       </Collapse>
 
-      <div className="flex justify-center align-middle flex-wrap">
-        <button
-          className={[styles.actionButton, styles.acceptButton].join(" ")}
-          onClick={handleApprove}
-        >
-          Approve
-        </button>
-        <button
-          className={[styles.actionButton, styles.rejectButton].join(" ")}
-          onClick={showModal}
-        >
-          Reject
-        </button>
-      </div>
+      {currentUser.member_status_id === 2 && (
+        <div className="flex justify-center align-middle flex-wrap">
+          <button
+            className={[styles.actionButton, styles.acceptButton].join(" ")}
+            onClick={handleApprove}
+          >
+            Approve
+          </button>
+          <button
+            className={[styles.actionButton, styles.rejectButton].join(" ")}
+            onClick={showModal}
+          >
+            Reject
+          </button>
+        </div>
+      )}
 
       <Modal
         title="Reject Proposal"

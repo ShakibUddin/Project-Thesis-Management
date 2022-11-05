@@ -28,4 +28,7 @@ export const PATHS = {
   UPDATE_PROJECT_PROPOSAL: "users/singlePojectProposalCrud",
   GET_ALL_SUPERVISORS: "users/getAllSupervisors",
   APPROVE_PROJECT_PROPOSAL: "users/approveProjectProposal",
+  CREATE_MEETUP: "users/meetup",
+  GET_SUPERVISOR_TEAMS: "users/supervisorTeams", //TODO:replace endpoint
+  GET_MEETUPS: "users/meetups", //TODO:replace endpoint
 };

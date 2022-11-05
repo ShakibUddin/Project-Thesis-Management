@@ -41,23 +41,28 @@ export default function MainLayout() {
             <Link to="/home">Home</Link>
           </Menu.Item>
           <Menu.Item key="2" icon={<UsergroupDeleteOutlined />}>
-            {user.member_status_id === 1 ? (
+            {user.member_status_id === 1 || user.member_status_id === 3 ? (
               <Link to="/team">My Team</Link>
             ) : (
               <Link to="/proposals">Proposals</Link>
             )}
           </Menu.Item>
-          <Menu.Item key="3" icon={<UploadOutlined />}>
-            <Link to="/project">Project/Thesis</Link>
-          </Menu.Item>
+          {user.member_status_id === 1 && (
+            <Menu.Item key="3" icon={<UploadOutlined />}>
+              <Link to="/project">Project/Thesis</Link>
+            </Menu.Item>
+          )}
           <Menu.Item key="4" icon={<UploadOutlined />}>
             <Link to="/notifications">Notifications</Link>
           </Menu.Item>
-          <Menu.Item key="5" icon={<UserOutlined />}>
-            <Link to="/meetup">Meetups</Link>
-          </Menu.Item>
+          {user.member_status_id === 1 ||
+            (user.member_status_id === 3 && (
+              <Menu.Item key="5" icon={<UserOutlined />}>
+                <Link to="/meetup">Meetups</Link>
+              </Menu.Item>
+            ))}
           <Menu.Item key="6" icon={<UserOutlined />}>
-            <Link to="/meetup">Settings</Link>
+            <Link to="/settings">Settings</Link>
           </Menu.Item>
           <Menu.Item key="7" icon={<UserOutlined />}>
             <Link to="/login" onClick={cleanAuthData}>
