@@ -1,2 +1,2 @@
-export const UPCOMING = 'UPCOMING';
-export const OVER = 'OVER';
+export const PENDING = "PENDING";
+export const COMPLETE = "COMPLETE";

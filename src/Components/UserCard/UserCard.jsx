@@ -2,14 +2,11 @@ import React, { useEffect, useState } from "react";
 import styles from "./UserCard.module.css";
 import defaultAvatar from "../../Assets/avatar.jpg";
 import { useDispatch, useSelector } from "react-redux";
-import { Spin } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
 import * as TeamActions from "../../State/Team/TeamActions";
 import { makeApiCall } from "../../client";
 import { METHODS, PATHS } from "../../Constants/ApiConstants";
 import * as NotificationsActions from "../../State/Notifications/NotificationsActions";
-
-const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+import Loader from "../Loader/Loader";
 
 export default function UserCard({
   name,
@@ -147,7 +144,7 @@ export default function UserCard({
                 className={[styles.actionButton, styles.acceptButton].join(" ")}
               >
                 {loadingAcceptRequest ? (
-                  <Spin indicator={antIcon} />
+                  <Loader />
                 ) : data?.memberRequestAccepted ? (
                   "Accepted"
                 ) : (
@@ -161,7 +158,7 @@ export default function UserCard({
                 className={[styles.actionButton, styles.rejectButton].join(" ")}
               >
                 {loadingRejectRequest ? (
-                  <Spin indicator={antIcon} />
+                  <Loader />
                 ) : data?.memberRequestRejected ? (
                   "Rejected"
                 ) : (
@@ -180,13 +177,7 @@ export default function UserCard({
               disableButton ? styles.disabled : styles.active,
             ].join(" ")}
           >
-            {loading ? (
-              <Spin indicator={antIcon} />
-            ) : disableButton ? (
-              "Pending"
-            ) : (
-              requestStatus
-            )}
+            {loading ? <Loader /> : disableButton ? "Pending" : requestStatus}
           </button>
         )}
       </div>

@@ -55,6 +55,7 @@ export default function AuthReducer(state = initialState, action) {
     case actions.ACCEPT_MEMBER_REQUEST.SUCCEEDED: {
       state.acceptmemberRequestLoading = false;
       state.memberRequestAccepted = payload?.data?.memberRequestAccepted;
+      state.memberRequestAcceptError = payload?.message;
       break;
     }
     case actions.ACCEPT_MEMBER_REQUEST.FAILED: {
@@ -72,6 +73,7 @@ export default function AuthReducer(state = initialState, action) {
     case actions.REJECT_MEMBER_REQUEST.SUCCEEDED: {
       state.rejectmemberRequestLoading = false;
       state.memberRequestRejected = payload?.data?.memberRequestRejected;
+      state.memberRequestRejectError = payload?.message;
       break;
     }
     case actions.REJECT_MEMBER_REQUEST.FAILED: {

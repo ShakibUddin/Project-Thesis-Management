@@ -4,9 +4,8 @@ import { Input, notification } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import * as TeamActions from "../../State/Team/TeamActions";
 import UserCard from "../../Components/UserCard/UserCard";
-import { Tabs, Space, Spin } from "antd";
-import * as MeetupsActions from "../../State/Meetup/MeetupActions.js";
-import ProposalCard from "../../Components/ProposalCard/ProposalCard";
+import { Tabs } from "antd";
+import Loader from "../../Components/Loader/Loader";
 
 const { Search } = Input;
 
@@ -35,9 +34,9 @@ export default function Team() {
   const teamDetailsLoading = useSelector(
     (state) => state.team?.teamDetailsLoading
   );
-  const teamsUnderSupervisor = useSelector(
-    (state) => state.meetup.teamsUnderSupervisor
-  );
+  // const teamsUnderSupervisor = useSelector(
+  //   (state) => state.meetup.teamsUnderSupervisor
+  // );
   const token = useSelector((state) => state.auth?.user?.token);
   const body = {
     nub_id: currentUser?.nub_id,
@@ -51,17 +50,6 @@ export default function Team() {
     );
   }, []);
 
-  useEffect(() => {
-    const body = {
-      supervisor_nub_id: currentUser.nub_id, //TODO:check body here
-    };
-    dispatch(
-      MeetupsActions.getTeamsUnderSupervisor({
-        body,
-        token,
-      })
-    );
-  }, []);
   useEffect(() => {
     if (memberRequestError || memberRequestSent === false) {
       openNotification(memberRequestError);
@@ -93,16 +81,14 @@ export default function Team() {
                   program={teammate.program_name}
                 />
               ))}
-              {teamsUnderSupervisor.map((proposal) => (
+              {/* {teamsUnderSupervisor.map((proposal) => (
                 <ProposalCard project={proposal.project} team={proposal.team} />
-              ))}
+              ))} */}
             </div>
           ) : (
             <div>
               {teamDetailsLoading ? (
-                <Space size="middle">
-                  <Spin size="large" />
-                </Space>
+                <Loader />
               ) : (
                 <p>You don't have any team mates yet!</p>
               )}

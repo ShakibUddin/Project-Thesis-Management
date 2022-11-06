@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import UserCard from "../UserCard/UserCard";
 import styles from "./ProposalCard.module.css";
 import { Collapse, Select } from "antd";
-import { Button, Form, Input, Modal, Space, Spin } from "antd";
+import { Button, Form, Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import * as ProposalActions from "../../State/Proposal/ProposalActions.js";
 import TextArea from "antd/lib/input/TextArea";
@@ -122,7 +122,14 @@ export default function ProposalCard({
       setSupervisorOptions(
         supervisors.map((supervisor) => ({
           value: supervisor.nub_id,
-          label: `${supervisor.name}\nTeams:${supervisor.total_assign_team}`,
+          label: (
+            <div className="bg-indigo-300 shadow-lg px-2 pb-2">
+              <p className="m-0 font-bold">Name: {supervisor.name}</p>
+              <p className="m-0 font-bold">
+                Teams: {supervisor.total_assign_team}
+              </p>
+            </div>
+          ),
         }))
       );
     }
@@ -188,12 +195,6 @@ export default function ProposalCard({
       >
         <Form
           name="basic"
-          labelCol={{
-            span: 5,
-          }}
-          wrapperCol={{
-            span: 20,
-          }}
           initialValues={{
             remember: true,
           }}
@@ -241,12 +242,6 @@ export default function ProposalCard({
       >
         <Form
           name="basic"
-          labelCol={{
-            span: 5,
-          }}
-          wrapperCol={{
-            span: 20,
-          }}
           initialValues={{
             remember: true,
           }}

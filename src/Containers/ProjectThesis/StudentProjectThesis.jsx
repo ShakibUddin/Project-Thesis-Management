@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Button, Form, Input, Radio, Space, Upload, Modal, Spin } from "antd";
+import { Button, Form, Input, Radio, Space, Upload, Modal } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { InboxOutlined, UploadOutlined } from "@ant-design/icons";
+import { InboxOutlined } from "@ant-design/icons";
 import "./StudentProjectThesis.module.css";
-import { LoadingOutlined } from "@ant-design/icons";
 import * as ProjectActions from "../../State/Project/ProjectActions.js";
 import ProjectCard from "../../Components/ProjectCard/ProjectCard";
-const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+import Loader from "../../Components/Loader/Loader";
 
 const { TextArea } = Input;
 
 export default function StudentProjectThesis() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const currentUser = useSelector((state) => state.auth?.user);
   const token = useSelector((state) => state.auth?.user?.token);
   const createProjectProposalLoading = useSelector(
@@ -123,7 +121,7 @@ export default function StudentProjectThesis() {
     <div className="w-full h-screen" style={{ fontSize: "1.5rem" }}>
       {projectLoading ? (
         <Space size="middle">
-          <Spin size="large" />
+          <Loader />
         </Space>
       ) : Object.keys(projectDetails).length > 0 && !editing ? (
         <ProjectCard
@@ -141,12 +139,6 @@ export default function StudentProjectThesis() {
           {(!createProjectProposal || editing) && (
             <Form
               name="project"
-              labelCol={{
-                span: 4,
-              }}
-              wrapperCol={{
-                span: 20,
-              }}
               initialValues={{
                 remember: true,
                 type: projectDetails?.project === 1 ? "project" : "thesis",
@@ -252,20 +244,12 @@ export default function StudentProjectThesis() {
               >
                 {!editing && (
                   <Button size="big" type="primary" htmlType="submit">
-                    {createProjectProposalLoading ? (
-                      <Spin indicator={antIcon} />
-                    ) : (
-                      "Submit"
-                    )}
+                    {createProjectProposalLoading ? <Loader /> : "Submit"}
                   </Button>
                 )}
                 {editing && (
                   <Button size="big" type="primary" htmlType="submit">
-                    {updatedProjectProposalLoading ? (
-                      <Spin indicator={antIcon} />
-                    ) : (
-                      "Update"
-                    )}
+                    {updatedProjectProposalLoading ? <Loader /> : "Update"}
                   </Button>
                 )}
               </Form.Item>
@@ -276,12 +260,6 @@ export default function StudentProjectThesis() {
       {projectDetails.project_status === 3 && (
         <Form
           name="paper"
-          labelCol={{
-            span: 5,
-          }}
-          wrapperCol={{
-            span: 16,
-          }}
           initialValues={{
             remember: true,
           }}

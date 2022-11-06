@@ -56,6 +56,7 @@ export default function ProposalReducer(state = initialState, action) {
     case actions.REJECT_PROJECT_PROPOSALS.SUCCEEDED: {
       state.rejectProposalLoading = false;
       state.rejectProposal = payload?.data?.rejectProjectProposal;
+      state.rejectProposalError = payload?.message;
       break;
     }
     case actions.REJECT_PROJECT_PROPOSALS.FAILED: {
@@ -90,6 +91,7 @@ export default function ProposalReducer(state = initialState, action) {
     case actions.APPROVE_PROJECT_PROPOSAL.SUCCEEDED: {
       state.approveProposalLoading = false;
       state.approveProposal = payload?.data?.projectApproval;
+      state.approveProposalError = payload?.message;
       break;
     }
     case actions.APPROVE_PROJECT_PROPOSAL.FAILED: {

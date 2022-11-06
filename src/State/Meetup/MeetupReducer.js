@@ -8,9 +8,12 @@ const initialState = {
   createMeetup: false,
   createMeetupLoading: false,
   createMeetupError: null,
-  teamsUnderSupervisor: false,
+  teamsUnderSupervisor: [],
   teamsUnderSupervisorLoading: false,
   teamsUnderSupervisorError: null,
+  updateMeetup: false,
+  updateMeetupLoading: false,
+  updateMeetupError: null,
 };
 
 export default function MeetupReducer(state = initialState, action) {
@@ -30,6 +33,7 @@ export default function MeetupReducer(state = initialState, action) {
     case actions.CREATE_MEETUP.SUCCEEDED: {
       state.createMeetupLoading = false;
       state.createMeetup = payload?.data?.createMeetup;
+      state.createMeetupError = payload?.message;
       break;
     }
     case actions.CREATE_MEETUP.FAILED: {
@@ -70,6 +74,24 @@ export default function MeetupReducer(state = initialState, action) {
       state.teamsUnderSupervisorLoading = false;
       state.teamsUnderSupervisor = [];
       state.teamsUnderSupervisorError = payload?.message;
+      break;
+    }
+    case actions.UPDATE_MEETUP.REQUESTED: {
+      state.updateMeetupLoading = true;
+      state.updateMeetup = false;
+      state.updateMeetupError = null;
+      break;
+    }
+    case actions.UPDATE_MEETUP.SUCCEEDED: {
+      state.updateMeetupLoading = false;
+      state.updateMeetup = payload?.data?.completeMeetup;
+      state.updateMeetupError = payload?.message;
+      break;
+    }
+    case actions.UPDATE_MEETUP.FAILED: {
+      state.updateMeetupLoading = false;
+      state.updateMeetup = false;
+      state.updateMeetupError = payload?.message;
       break;
     }
 

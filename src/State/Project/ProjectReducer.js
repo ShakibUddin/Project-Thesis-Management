@@ -51,6 +51,7 @@ export default function ProjectReducer(state = initialState, action) {
     case actions.CREATE_PROJECT_PROPOSAL.SUCCEEDED: {
       state.createProjectProposalLoading = true;
       state.createProjectProposal = payload?.data?.createProjectProposal;
+      state.createProjectProposalError = payload?.message;
       break;
     }
     case actions.CREATE_PROJECT_PROPOSAL.FAILED: {
@@ -68,6 +69,7 @@ export default function ProjectReducer(state = initialState, action) {
     case actions.UPDATE_PROJECT_PROPOSAL.SUCCEEDED: {
       state.updateProjectProposalLoading = true;
       state.updateProjectProposal = payload?.data?.updateProjectProposal;
+      state.updateProjectProposalError = payload?.message;
       break;
     }
     case actions.UPDATE_PROJECT_PROPOSAL.FAILED: {

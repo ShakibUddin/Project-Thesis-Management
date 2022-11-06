@@ -31,7 +31,7 @@ export default function CreateMeetup() {
       meetup_time: values.meetupTime,
     };
     dispatch(
-      MeetupsActions.getTeamsUnderSupervisor({
+      MeetupsActions.createMeetup({
         body,
         token,
       })
@@ -58,12 +58,6 @@ export default function CreateMeetup() {
       <div className="w-full h-auto ">
         <Form
           name="basic"
-          labelCol={{
-            span: 4,
-          }}
-          wrapperCol={{
-            span: 16,
-          }}
           initialValues={{
             remember: true,
           }}
@@ -120,7 +114,7 @@ export default function CreateMeetup() {
               },
             ]}
           >
-            <TimePicker use12Hours format="h:mm a" />
+            <TimePicker format="h:mm a" />
           </Form.Item>
           <Form.Item
             wrapperCol={{
