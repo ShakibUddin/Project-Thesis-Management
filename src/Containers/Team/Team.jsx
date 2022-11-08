@@ -6,6 +6,7 @@ import * as TeamActions from "../../State/Team/TeamActions";
 import UserCard from "../../Components/UserCard/UserCard";
 import { Tabs } from "antd";
 import Loader from "../../Components/Loader/Loader";
+import StudentNotifications from "../Notifications/StudentNotifications";
 
 const { Search } = Input;
 
@@ -79,6 +80,7 @@ export default function Team() {
                   id={teammate.nub_id}
                   department={teammate.department_name}
                   program={teammate.program_name}
+                  showDeleteOption
                 />
               ))}
               {/* {teamsUnderSupervisor.map((proposal) => (
@@ -88,7 +90,7 @@ export default function Team() {
           ) : (
             <div>
               {teamDetailsLoading ? (
-                <Loader />
+                <Loader size="large" />
               ) : (
                 <p>You don't have any team mates yet!</p>
               )}
@@ -99,14 +101,14 @@ export default function Team() {
           <Tabs.TabPane tab="Get Teammates" key="2">
             {totalTeamMmbers < 3 ? (
               <div className={styles.container}>
-                <div>
+                {/* <div>
                   <Search
                     placeholder="Search team member"
                     enterButton="Search"
                     size="large"
                     onSearch={(value) => console.log(value)}
                   />
-                </div>
+                </div> */}
                 <div className={styles.studentContainer}>
                   {students.map((student) => (
                     <UserCard
@@ -126,6 +128,9 @@ export default function Team() {
             )}
           </Tabs.TabPane>
         )}
+        <Tabs.TabPane tab="My Requests" key="3">
+          <StudentNotifications />
+        </Tabs.TabPane>
       </Tabs>
     </div>
   );

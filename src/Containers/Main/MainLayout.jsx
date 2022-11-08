@@ -41,9 +41,10 @@ export default function MainLayout() {
             <Link to="/home">Home</Link>
           </Menu.Item>
           <Menu.Item key="2" icon={<UsergroupDeleteOutlined />}>
-            {user.member_status_id === 1 || user.member_status_id === 3 ? (
+            {(user.member_status_id === 1 || user.member_status_id === 3) && (
               <Link to="/team">My Team</Link>
-            ) : (
+            )}
+            {user.member_status_id === 2 && (
               <Link to="/proposals">Proposals</Link>
             )}
           </Menu.Item>
@@ -52,9 +53,6 @@ export default function MainLayout() {
               <Link to="/project">Project/Thesis</Link>
             </Menu.Item>
           )}
-          <Menu.Item key="4" icon={<UploadOutlined />}>
-            <Link to="/notifications">Notifications</Link>
-          </Menu.Item>
           {user.member_status_id === 1 ||
             (user.member_status_id === 3 && (
               <Menu.Item key="5" icon={<UserOutlined />}>

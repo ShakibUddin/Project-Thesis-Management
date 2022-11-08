@@ -32,4 +32,5 @@ export const PATHS = {
   GET_SUPERVISOR_TEAMS: "users/getSupervisorTeamId",
   GET_MEETUPS: "users/getMeetups",
   UPDATE_MEETUP: "users/completeMeetup",
+  REMOVE_TEAM_MATE: "users/deleteTeamMember",
 };

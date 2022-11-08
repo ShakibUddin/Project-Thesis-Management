@@ -21,19 +21,22 @@ export default function UserCard({
   showingNotification = false,
   showRequestActions = false,
   memberRequestId = null,
+  showDeleteOption = false,
 }) {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth?.user?.token);
   const currentUser = useSelector((state) => state.auth?.user);
   const [loading, setLoading] = useState(false);
   const [loadingAcceptRequest, setLoadingAcceptRequest] = useState(false);
-  const [loadingRejectRequest, setloadingRejectRequest] = useState(false);
+  const [loadingRejectRequest, setLoadingRejectRequest] = useState(false);
+  const [loadingRemoveTeammate, setLoadingRemoveTeammate] = useState(false);
   const [data, setData] = useState();
   const [message, setMessage] = useState();
   const [error, setError] = useState();
   const [accepted, setAccepted] = useState(0);
 
-  const disableButton = requestStatusId === 1 || data?.requestSent;
+  const disableButton =
+    requestStatusId === 1 || data?.requestSent || data?.memberDeleted;
   const acceptedRequest = useSelector((state) => state?.team?.acceptedRequest);
   useEffect(() => {
     if (acceptedRequest === 2) {
@@ -71,7 +74,7 @@ export default function UserCard({
   };
 
   const rejectMemberRequest = () => {
-    setloadingRejectRequest(true);
+    setLoadingRejectRequest(true);
 
     const body = {
       id: memberRequestId,
@@ -86,7 +89,27 @@ export default function UserCard({
       setData(data);
       setMessage(message);
       setError(error);
-      setloadingRejectRequest(false);
+      setLoadingRejectRequest(false);
+    });
+  };
+  const removeTeammate = () => {
+    setLoadingRemoveTeammate(true);
+
+    const body = {
+      team_leader_id: currentUser.nub_id,
+      team_member_id: id,
+    };
+    makeApiCall({
+      method: METHODS.DELETE,
+      path: PATHS.REMOVE_TEAM_MATE,
+      body,
+      token,
+    }).then((response) => {
+      const { data, message, error } = response;
+      setData(data);
+      setMessage(message);
+      setError(error);
+      setLoadingRemoveTeammate(false);
     });
   };
 
@@ -178,6 +201,24 @@ export default function UserCard({
             ].join(" ")}
           >
             {loading ? <Loader /> : disableButton ? "Pending" : requestStatus}
+          </button>
+        )}
+        {showDeleteOption && id !== currentUser.nub_id && (
+          <button
+            disabled={disableButton}
+            onClick={removeTeammate}
+            className={[
+              styles.actionButton,
+              disableButton ? styles.disabled : styles.active,
+            ].join(" ")}
+          >
+            {loadingRemoveTeammate ? (
+              <Loader />
+            ) : disableButton ? (
+              "Removed"
+            ) : (
+              "Remove"
+            )}
           </button>
         )}
       </div>

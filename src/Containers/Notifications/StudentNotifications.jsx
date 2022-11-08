@@ -28,14 +28,14 @@ export default function StudentNotifications() {
 
   return (
     <div className={styles.container}>
-      <div>
+      {/* <div>
         <Search
           placeholder="Search team member"
           enterButton="Search"
           size="large"
           onSearch={(value) => console.log(value)}
         />
-      </div>
+      </div> */}
       <div className={styles.studentContainer}>
         {memberRequestNotifications.map((notification) => (
           <UserCard

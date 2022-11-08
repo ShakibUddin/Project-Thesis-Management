@@ -25,7 +25,6 @@ function App() {
               <Route path="proposals" element={<Proposals />} />
               <Route path="project" element={<StudentProjectThesis />} />
               <Route path="meetup" element={<Meetups />} />
-              <Route path="notifications" element={<StudentNotifications />} />
               <Route path="settings" element={<StudentSettings />} />
             </Route>
           </Route>
