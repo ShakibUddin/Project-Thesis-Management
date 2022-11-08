@@ -6,6 +6,7 @@ import {
   Form,
   Input,
   Modal,
+  notification,
   Select,
   TimePicker,
 } from "antd";
@@ -20,29 +21,57 @@ import styles from "./MeetupCard.modle.css";
 export default function MeetupCard(props) {
   const currentUser = useSelector((state) => state.auth?.user);
   const token = useSelector((state) => state.auth?.user?.token);
+  const updateMeetup = useSelector((state) => state.meetup?.updateMeetup);
+
   const dispatch = useDispatch();
-  const { id, date, time, status, attendance, team = [] } = props;
+  const {
+    id,
+    date,
+    time,
+    status,
+    attendance,
+    team = [],
+    remarks,
+    getMeetupOfATeam,
+    selectedTeamId,
+    handleTabChange,
+  } = props;
   const [isUpdateMeetupModalOpen, setIsUpdateMeetupModalOpen] = useState(false);
+
   useEffect(() => {
-    console.log(isUpdateMeetupModalOpen);
-  }, [isUpdateMeetupModalOpen]);
+    if (updateMeetup) {
+      dispatch(MeetupActions.setUpdateMeetup(false));
+      getMeetupOfATeam(selectedTeamId);
+      handleTabChange("2");
+    }
+  }, [updateMeetup]);
 
   const openUpdateMeetupForm = () => {
     showModal();
   };
   const studentIds = team.length > 0 && team.map((student) => student.nub_id);
+  const convertTo12Hour = (time) => {
+    // Check correct time format and split into components
+    time = time
+      .toString()
+      .match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
 
+    if (time.length > 1) {
+      // If time format correct
+      time = time.slice(1); // Remove full string match value
+      time[5] = +time[0] < 12 ? "AM" : "PM"; // Set AM/PM
+      time[0] = +time[0] % 12 || 12; // Adjust hours
+    }
+    return time.join(""); // return adjusted time or original string
+  };
   const onFinish = (values) => {
     setIsUpdateMeetupModalOpen(false);
-    console.log(values);
-    console.log(values.attendance);
     const body = {
-      team_id: 72,
+      team_id: selectedTeamId,
       meetupId: id,
       remarks: values.remarks,
-      attendance: values.attendance || [],
+      attendance: JSON.stringify(values.attendance) || JSON.stringify([]),
     };
-    console.log("body", body);
     dispatch(MeetupActions.updateMeetup({ body, token }));
   };
   const onFinishFailed = (errorInfo) => {
@@ -52,13 +81,9 @@ export default function MeetupCard(props) {
     setIsUpdateMeetupModalOpen(true);
   };
   const handleCancel = () => {
-    console.log("cancel");
     setIsUpdateMeetupModalOpen(false);
-    console.log("canceled");
   };
-  const onChange = (checkedValues) => {
-    console.log("checked = ", checkedValues);
-  };
+  const onChange = (checkedValues) => {};
   return (
     <div
       onClick={openUpdateMeetupForm}
@@ -72,19 +97,24 @@ export default function MeetupCard(props) {
         <b>{status}</b>
       </p>
       <p>
-        <b>Meetup Id:</b> {id}
+        <b>Date:</b> {date.split("T")[0]}
       </p>
       <p>
-        <b>Date:</b> {date}
+        <b>TIme:</b> {convertTo12Hour(time.split(".")[0].substr(0, 5))}
       </p>
-      <p>
-        <b>TIme:</b> {time}
-      </p>
+      {status === Meetup.COMPLETE && (
+        <p>
+          <b>Remarks:</b> {remarks}
+        </p>
+      )}
       {status === Meetup.COMPLETE && attendance.length > 0 ? (
         <p>
           <b>Present:</b>{" "}
-          {attendance.map((id) => (
-            <span>{id},</span>
+          {attendance.map((id, index) => (
+            <>
+              <span>{id}</span>
+              {index < attendance.length - 1 && <span>,</span>}
+            </>
           ))}
         </p>
       ) : (
@@ -96,9 +126,7 @@ export default function MeetupCard(props) {
         title="Update Meetup"
         visible={isUpdateMeetupModalOpen}
         footer={null}
-        onCancel={() => {
-          setIsUpdateMeetupModalOpen(false);
-        }}
+        onCancel={handleCancel}
       >
         <Form
           name="basic"

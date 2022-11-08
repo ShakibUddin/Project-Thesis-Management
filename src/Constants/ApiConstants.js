@@ -28,7 +28,7 @@ export const PATHS = {
   UPDATE_PROJECT_PROPOSAL: "users/singlePojectProposalCrud",
   GET_ALL_SUPERVISORS: "users/getAllSupervisors",
   APPROVE_PROJECT_PROPOSAL: "users/approveProjectProposal",
-  CREATE_MEETUP: "users/meetup",
+  CREATE_MEETUP: "users/createMeetups",
   GET_SUPERVISOR_TEAMS: "users/getSupervisorTeamId",
   GET_MEETUPS: "users/getMeetups",
   UPDATE_MEETUP: "users/completeMeetup",

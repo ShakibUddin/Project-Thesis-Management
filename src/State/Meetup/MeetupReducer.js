@@ -24,6 +24,24 @@ export default function MeetupReducer(state = initialState, action) {
       state = initialState;
       break;
     }
+    case actions.REMOVE_MEETUP: {
+      state.meetups.pending.filter((meetup) => meetup.meetupId !== payload);
+      state.meetups = { ...state.meetups };
+      break;
+    }
+    case actions.ADD_MEETUP: {
+      state.meetups.pending.push(payload);
+      state.meetups = { ...state.meetups };
+      break;
+    }
+    case actions.SET_CREATE_MEETUP: {
+      state.createMeetup = payload;
+      break;
+    }
+    case actions.SET_UPDATE_MEETUP: {
+      state.updateMeetup = payload;
+      break;
+    }
     case actions.CREATE_MEETUP.REQUESTED: {
       state.createMeetupLoading = true;
       state.createMeetup = false;

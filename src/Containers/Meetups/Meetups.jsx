@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Button, Form, Select, Spin, Tabs } from "antd";
+import { Button, Form, notification, Select, Spin, Tabs } from "antd";
 import CreateMeetup from "./CreateMeetup/CreateMeetup";
 import { useDispatch, useSelector } from "react-redux";
 import * as MeetupsActions from "../../State/Meetup/MeetupActions";
@@ -19,10 +19,28 @@ export default function Meetups() {
   const teamsUnderSupervisor = useSelector(
     (state) => state.meetup.teamsUnderSupervisor
   );
+  const createMeetup = useSelector((state) => state.meetup?.createMeetup);
+  const updateMeetupError = useSelector(
+    (state) => state.meetup?.updateMeetupError
+  );
   const [teamOptions, setTeamOptions] = useState([]);
+  const [selectedTeamId, setSelectedTeamId] = useState();
+  const [activeKey, setActiveKey] = React.useState("1");
 
   const dispatch = useDispatch();
-
+  const openNotification = (message) => {
+    notification.open({
+      message,
+      placement: "bottomLeft",
+      onClick: () => {},
+    });
+  };
+  useEffect(() => {
+    console.log("selectedTeamId", selectedTeamId);
+  }, [selectedTeamId]);
+  useEffect(() => {
+    if (updateMeetupError) openNotification(updateMeetupError);
+  }, [updateMeetupError]);
   useEffect(() => {
     const body = {
       supervisor_nub_id: currentUser.nub_id,
@@ -38,7 +56,6 @@ export default function Meetups() {
     const body = {
       team_id: teamId,
     };
-    console.log(body);
     dispatch(
       MeetupsActions.getMeetups({
         body,
@@ -60,6 +77,12 @@ export default function Meetups() {
     }
   }, [currentUser]);
 
+  useEffect(() => {
+    if (createMeetup) {
+      dispatch(MeetupsActions.setCreateMeetup(false));
+      getMeetupOfATeam(selectedTeamId);
+    }
+  }, [createMeetup]);
   useEffect(() => {
     if (teamsUnderSupervisor?.length > 0) {
       setTeamOptions(
@@ -91,6 +114,7 @@ export default function Meetups() {
     }
   }, [teamsUnderSupervisor]);
   const onTeamSelectionFinish = (values) => {
+    setSelectedTeamId(values.teamId);
     getMeetupOfATeam(values.teamId);
   };
   const onChangeTeam = (value) => {};
@@ -98,6 +122,11 @@ export default function Meetups() {
     //   message.error(errorInfo);
   };
   const onSearch = (value) => {};
+
+  const handleTabChange = (key) => {
+    console.log("change tab to ", key);
+    setActiveKey(key);
+  };
 
   return (
     <div className="h-screen">
@@ -155,7 +184,11 @@ export default function Meetups() {
         <p>You are not assigned any teams yet</p>
       )}
       {Object.keys(meetups).length > 0 && (
-        <Tabs defaultActiveKey="1">
+        <Tabs
+          defaultActiveKey={"1"}
+          activeKey={activeKey}
+          onChange={handleTabChange}
+        >
           <Tabs.TabPane tab="Pending" key="1">
             <div className="w-full flex flex-wrap justify-start align-top">
               {Object.keys(meetups).length > 0 &&
@@ -166,6 +199,9 @@ export default function Meetups() {
                     time={meetup.meetup_time}
                     status={"PENDING"}
                     team={meetups.team}
+                    getMeetupOfATeam={getMeetupOfATeam}
+                    selectedTeamId={selectedTeamId}
+                    handleTabChange={handleTabChange}
                   />
                 ))}
             </div>
@@ -178,6 +214,7 @@ export default function Meetups() {
                     id={meetup.meetupId}
                     date={meetup.meetup_date}
                     time={meetup.meetup_time}
+                    remarks={meetup.remarks}
                     status={"COMPLETE"}
                     attendance={JSON.parse(meetup?.attendance)}
                   />
@@ -186,7 +223,10 @@ export default function Meetups() {
           </Tabs.TabPane>
           {currentUser.member_status_id === 3 && (
             <Tabs.TabPane tab="Create" key="3">
-              <CreateMeetup />
+              <CreateMeetup
+                selectedTeamId={selectedTeamId}
+                handleTabChange={handleTabChange}
+              />
             </Tabs.TabPane>
           )}
         </Tabs>
