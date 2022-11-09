@@ -27,21 +27,18 @@ export default function CreateMeetup({ selectedTeamId, handleTabChange }) {
     return time.replace(/(AM|PM)/, "");
   };
   const onFinish = (fieldsValue) => {
-    console.log("meetup values:", fieldsValue);
     const values = {
       ...fieldsValue,
       meetupDate: fieldsValue["meetupDate"].format("YYYY-MM-DD"),
 
       meetupTime: fieldsValue["meetupTime"].format("HH:mm:ss"),
     };
-    console.log("values", values);
     const body = {
       team_id: selectedTeamId,
       supervisor_nub_id: currentUser.nub_id,
       meetup_date: values.meetupDate,
       meetup_time: convertTo24Hour(values.meetupTime),
     };
-    console.log("body", body);
     dispatch(
       MeetupsActions.createMeetup({
         body,

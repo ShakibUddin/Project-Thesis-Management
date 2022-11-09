@@ -9,5 +9,7 @@
   --memberRequestActionButtonTextColor: #ffffff;
   --rejectButtonColor: #d16363;
   --pendingStatus: #63d17b;
+  --completeStatus: #63d17b;
   --rejectedStatus: #d16363;
+  --ongoingStatus: #f17500;
 }

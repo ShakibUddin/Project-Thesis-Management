@@ -7,7 +7,7 @@ import UserCard from "../../Components/UserCard/UserCard";
 import { Tabs } from "antd";
 import Loader from "../../Components/Loader/Loader";
 import StudentNotifications from "../Notifications/StudentNotifications";
-
+import ProposalCard from "../../Components/ProposalCard/ProposalCard";
 const { Search } = Input;
 
 const openNotification = (message) => {
@@ -25,6 +25,9 @@ export default function Team() {
     (state) => state.auth?.user?.total_members
   );
   const students = useSelector((state) => state.team?.students);
+  const supervisorTeamDetails = useSelector(
+    (state) => state.team?.supervisorTeamDetails
+  );
   const memberRequestSent = useSelector(
     (state) => state.team?.memberRequestSent
   );
@@ -35,20 +38,36 @@ export default function Team() {
   const teamDetailsLoading = useSelector(
     (state) => state.team?.teamDetailsLoading
   );
-  // const teamsUnderSupervisor = useSelector(
-  //   (state) => state.meetup.teamsUnderSupervisor
-  // );
+  const supervisorTeamDetailsLoading = useSelector(
+    (state) => state.team?.supervisorTeamDetailsLoading
+  );
+
   const token = useSelector((state) => state.auth?.user?.token);
-  const body = {
-    nub_id: currentUser?.nub_id,
+  const getTeamDetailsForCurrentMember = () => {
+    if (currentUser.member_status_id === 1) {
+      const body = {
+        nub_id: currentUser?.nub_id,
+      };
+      dispatch(
+        TeamActions.getTeamDetails({
+          body,
+          token,
+        })
+      );
+    } else if (currentUser.member_status_id === 3) {
+      const body = {
+        supervisor_nub_id: currentUser?.nub_id,
+      };
+      dispatch(
+        TeamActions.getSupervisorTeamDetails({
+          body,
+          token,
+        })
+      );
+    }
   };
   useEffect(() => {
-    dispatch(
-      TeamActions.getTeamDetails({
-        body,
-        token,
-      })
-    );
+    getTeamDetailsForCurrentMember();
   }, []);
 
   useEffect(() => {
@@ -62,17 +81,14 @@ export default function Team() {
         defaultActiveKey="1"
         onChange={(key) => {
           if (key === "2" && teamDetails.length < 3) {
-            dispatch(
-              TeamActions.getAllStudents({
-                body,
-                token,
-              })
-            );
+            getTeamDetailsForCurrentMember();
           }
         }}
       >
         <Tabs.TabPane tab="My Team" key="1">
-          {totalTeamMmbers > 1 && teamDetails.length ? (
+          {currentUser.member_status_id === 1 &&
+          totalTeamMmbers > 1 &&
+          teamDetails.length ? (
             <div className={styles.studentContainer}>
               {teamDetails.map((teammate) => (
                 <UserCard
@@ -83,13 +99,27 @@ export default function Team() {
                   showDeleteOption
                 />
               ))}
-              {/* {teamsUnderSupervisor.map((proposal) => (
-                <ProposalCard project={proposal.project} team={proposal.team} />
-              ))} */}
             </div>
           ) : (
             <div>
               {teamDetailsLoading ? (
+                <Loader size="large" />
+              ) : (
+                <p>You don't have any team mates yet!</p>
+              )}
+            </div>
+          )}
+          {currentUser.member_status_id === 3 &&
+          supervisorTeamDetails.length > 0 ? (
+            supervisorTeamDetails.map((proposal) => (
+              <ProposalCard
+                projectDetails={proposal.project}
+                teamDetails={proposal.team}
+              />
+            ))
+          ) : (
+            <div>
+              {supervisorTeamDetailsLoading ? (
                 <Loader size="large" />
               ) : (
                 <p>You don't have any team mates yet!</p>
@@ -128,9 +158,11 @@ export default function Team() {
             )}
           </Tabs.TabPane>
         )}
-        <Tabs.TabPane tab="My Requests" key="3">
-          <StudentNotifications />
-        </Tabs.TabPane>
+        {currentUser.member_status_id === 1 && (
+          <Tabs.TabPane tab="My Requests" key="3">
+            <StudentNotifications />
+          </Tabs.TabPane>
+        )}
       </Tabs>
     </div>
   );

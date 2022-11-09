@@ -69,6 +69,7 @@ export default function MeetupReducer(state = initialState, action) {
     case actions.GET_MEETUPS.SUCCEEDED: {
       state.meetupsLoading = false;
       state.meetups = payload?.data;
+      state.meetupsError = payload?.message;
       break;
     }
     case actions.GET_MEETUPS.FAILED: {
@@ -86,6 +87,7 @@ export default function MeetupReducer(state = initialState, action) {
     case actions.GET_SUPERVISOR_TEAMS.SUCCEEDED: {
       state.teamsUnderSupervisorLoading = false;
       state.teamsUnderSupervisor = payload?.data;
+      state.teamsUnderSupervisorError = payload?.message;
       break;
     }
     case actions.GET_SUPERVISOR_TEAMS.FAILED: {

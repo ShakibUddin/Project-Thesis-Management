@@ -19,6 +19,10 @@ const initialState = {
   teamDetails: [],
   teamDetailsError: null,
   acceptedRequest: 0,
+  supervisorTeamDetailsLoading: false,
+  supervisorTeamDetails: [],
+  supervisorTeamDetailsError: null,
+  acceptedRequest: 0,
 };
 
 export default function AuthReducer(state = initialState, action) {
@@ -38,6 +42,7 @@ export default function AuthReducer(state = initialState, action) {
     case actions.GET_ALL_STUDENTS.SUCCEEDED: {
       state.studentsLoading = false;
       state.students = payload?.data;
+      state.studentsError = payload?.message;
       break;
     }
     case actions.GET_ALL_STUDENTS.FAILED: {
@@ -84,19 +89,38 @@ export default function AuthReducer(state = initialState, action) {
     }
     case actions.GET_TEAM_DETAILS.REQUESTED: {
       state.teamDetailsLoading = true;
-      state.teamDetails = false;
+      state.teamDetails = [];
       state.teamDetailsError = null;
       break;
     }
     case actions.GET_TEAM_DETAILS.SUCCEEDED: {
       state.teamDetailsLoading = false;
       state.teamDetails = payload?.data;
+      state.teamDetailsError = payload?.message;
       break;
     }
     case actions.GET_TEAM_DETAILS.FAILED: {
       state.teamDetailsLoading = false;
-      state.teamDetails = false;
+      state.teamDetails = [];
       state.teamDetailsError = payload?.message;
+      break;
+    }
+    case actions.GET_SUPERVISOR_TEAM_DETAILS.REQUESTED: {
+      state.supervisorTeamDetailsLoading = true;
+      state.supervisorTeamDetails = false;
+      state.supervisorTeamDetailsError = null;
+      break;
+    }
+    case actions.GET_SUPERVISOR_TEAM_DETAILS.SUCCEEDED: {
+      state.supervisorTeamDetailsLoading = false;
+      state.supervisorTeamDetails = payload?.data;
+      state.supervisorTeamDetailsError = payload?.message;
+      break;
+    }
+    case actions.GET_SUPERVISOR_TEAM_DETAILS.FAILED: {
+      state.supervisorTeamDetailsLoading = false;
+      state.supervisorTeamDetails = false;
+      state.supervisorTeamDetailsError = payload?.message;
       break;
     }
     case actions.SET_ACCEPTED_REQUEST: {

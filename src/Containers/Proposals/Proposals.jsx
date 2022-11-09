@@ -61,8 +61,8 @@ export default function Proposals() {
             </div>
             {proposals.map((proposal) => (
               <ProposalCard
-                project={proposal.project}
-                team={proposal.team}
+                projectDetails={proposal.project}
+                teamDetails={proposal.team}
                 handleRejectOrApproveProjectProposal={
                   handleRejectOrApproveProjectProposal
                 }

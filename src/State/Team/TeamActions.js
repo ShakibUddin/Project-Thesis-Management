@@ -8,6 +8,10 @@ export const ACCEPT_MEMBER_REQUEST = requestActions(
   MODULE_NAME,
   "ACCEPT_MEMBER_REQUEST"
 );
+export const GET_SUPERVISOR_TEAM_DETAILS = requestActions(
+  MODULE_NAME,
+  "GET_SUPERVISOR_TEAM_DETAILS"
+);
 export const REJECT_MEMBER_REQUEST = requestActions(
   MODULE_NAME,
   "REJECT_MEMBER_REQUEST"
@@ -44,6 +48,14 @@ export const getTeamDetails = ({ body, token }) =>
     actions: GET_TEAM_DETAILS,
     method: METHODS.POST,
     path: PATHS.TEAM_DETAILS,
+    body,
+    token,
+  });
+export const getSupervisorTeamDetails = ({ body, token }) =>
+  requestApiCall({
+    actions: GET_SUPERVISOR_TEAM_DETAILS,
+    method: METHODS.POST,
+    path: PATHS.GET_SUPERVISOR_TEAM_DETAILS,
     body,
     token,
   });

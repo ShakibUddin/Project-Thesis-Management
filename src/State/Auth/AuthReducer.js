@@ -28,6 +28,7 @@ export default function AuthReducer(state = initialState, action) {
     case actions.GET_DEPARTMENTS.SUCCEEDED: {
       state.departmentsLoading = false;
       state.departments = payload?.data;
+      state.departmentsError = payload?.message;
       break;
     }
     case actions.GET_DEPARTMENTS.FAILED: {
@@ -45,6 +46,7 @@ export default function AuthReducer(state = initialState, action) {
     case actions.GET_PROGRAMS.SUCCEEDED: {
       state.programsLoading = false;
       state.programs = payload?.data;
+      state.programsError = payload?.message;
       break;
     }
     case actions.GET_PROGRAMS.FAILED: {
@@ -62,6 +64,7 @@ export default function AuthReducer(state = initialState, action) {
     case actions.CREATE_USER.SUCCEEDED: {
       state.createUserLoading = false;
       state.user = payload?.data;
+      state.createUserError = payload?.message;
       break;
     }
     case actions.CREATE_USER.FAILED: {
@@ -79,6 +82,7 @@ export default function AuthReducer(state = initialState, action) {
     case actions.LOGIN.SUCCEEDED: {
       state.loginLoading = false;
       state.user = payload?.data;
+      state.loginError = payload?.message;
       break;
     }
     case actions.LOGIN.FAILED: {

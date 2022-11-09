@@ -26,3 +26,10 @@
   background-color: var(--cardColor);
   border-radius: 15px;
 }
+.ongoingStatus {
+  color: var(--ongoingStatus);
+}
+
+.completeStatus {
+  color: var(--completeStatus);
+}

@@ -34,6 +34,7 @@ export default function ProjectReducer(state = initialState, action) {
     case actions.GET_PROJECT_DETAILS.SUCCEEDED: {
       state.projectLoading = false;
       state.project = payload?.data;
+      state.projectError = payload?.message;
       break;
     }
     case actions.GET_PROJECT_DETAILS.FAILED: {

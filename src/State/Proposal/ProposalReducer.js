@@ -39,6 +39,7 @@ export default function ProposalReducer(state = initialState, action) {
     case actions.GET_PROJECT_PROPOSALS.SUCCEEDED: {
       state.proposalsLoading = false;
       state.proposals = payload?.data;
+      state.proposalsError = payload?.message;
       break;
     }
     case actions.GET_PROJECT_PROPOSALS.FAILED: {
@@ -74,6 +75,7 @@ export default function ProposalReducer(state = initialState, action) {
     case actions.GET_ALL_SUPERVISORS.SUCCEEDED: {
       state.supervisorsLoading = false;
       state.supervisors = payload?.data;
+      state.supervisorsError = payload?.message;
       break;
     }
     case actions.GET_ALL_SUPERVISORS.FAILED: {

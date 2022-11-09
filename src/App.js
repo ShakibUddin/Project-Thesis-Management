@@ -1,6 +1,6 @@
 import "antd/dist/antd.min.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import StudentHome from "./Containers/Home/StudentHome";
+import Home from "./Containers/Home/Home";
 import LoginPage from "./Containers/Login/LoginPage";
 import MainLayout from "./Containers/Main/MainLayout";
 import Meetups from "./Containers/Meetups/Meetups";
@@ -20,7 +20,7 @@ function App() {
           <Route index element={<LoginPage />} />
           <Route path="/" element={<MainLayout />}>
             <Route element={<PrivateRoutes />}>
-              <Route path="home" element={<StudentHome />} />
+              <Route path="home" element={<Home />} />
               <Route path="team" element={<Team />} />
               <Route path="proposals" element={<Proposals />} />
               <Route path="project" element={<StudentProjectThesis />} />

@@ -24,6 +24,7 @@ export default function NotificationsReducer(state = initialState, action) {
     case actions.GET_ALL_MEMBER_REQUEST_NOTIFICATIONS.SUCCEEDED: {
       state.memberRequestNotificationsLoading = false;
       state.memberRequestNotifications = payload?.data;
+      state.memberRequestNotificationsError = payload?.message;
       break;
     }
     case actions.GET_ALL_MEMBER_REQUEST_NOTIFICATIONS.FAILED: {

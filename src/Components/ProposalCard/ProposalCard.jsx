@@ -11,13 +11,22 @@ import { useEffect } from "react";
 const { Panel } = Collapse;
 
 export default function ProposalCard({
-  project,
-  team,
+  projectDetails,
+  teamDetails,
   handleRejectOrApproveProjectProposal = null,
   autoAssignSupervisor = false,
 }) {
   const dispatch = useDispatch();
-  const { title, description, technologies } = project;
+  const {
+    project,
+    thesis,
+    project_status_id,
+    total_meetup,
+    paper,
+    title,
+    description,
+    technologies,
+  } = projectDetails;
   const onChange = (key) => {};
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [supervisorOptions, setSupervisorOptions] = useState([]);
@@ -41,7 +50,7 @@ export default function ProposalCard({
   const handleApprove = () => {
     if (autoAssignSupervisor) {
       const body = {
-        teamId: project.teamId,
+        teamId: projectDetails.teamId,
         supervisor_nub_id: null,
         auto_assign: autoAssignSupervisor,
       };
@@ -68,7 +77,7 @@ export default function ProposalCard({
     setIsModalOpen(false);
     const body = {
       feedback: values.feedback,
-      projectId: project.projectId,
+      projectId: projectDetails.projectId,
     };
     dispatch(
       ProposalActions.rejectProposal({
@@ -80,7 +89,7 @@ export default function ProposalCard({
   const onSupervisorSelectionFinish = (values) => {
     setIsSupervisorSelectionModalOpen(false);
     const body = {
-      teamId: project.teamId,
+      teamId: projectDetails.teamId,
       supervisor_nub_id: supervisorId,
       auto_assign: autoAssignSupervisor,
     };
@@ -94,7 +103,7 @@ export default function ProposalCard({
 
   useEffect(() => {
     if (rejectProposal || approveProposal) {
-      handleRejectOrApproveProjectProposal(project.projectId);
+      handleRejectOrApproveProjectProposal(projectDetails.projectId);
     }
   }, [rejectProposal, approveProposal]);
 
@@ -136,10 +145,23 @@ export default function ProposalCard({
   }, [supervisors]);
   return (
     <div
-      className={`flex flex-col justify-start align-top w-full p-4 ${styles.proposalCard}`}
+      className={`flex flex-col justify-start align-top w-full p-4 mb-3 ${styles.proposalCard}`}
     >
       <Collapse defaultActiveKey={["1"]} onChange={onChange}>
         <Panel header="Project" key="1">
+          <span
+            className={
+              project_status_id === 2
+                ? styles.ongoingStatus
+                : project_status_id === 3 && styles.completeStatus
+            }
+          ></span>
+          {currentUser.member_status_id === 3 && (
+            <p>
+              <b>Type:</b>{" "}
+              {project === 1 ? "Project" : thesis === 1 && "Thesis"}
+            </p>
+          )}
           <p>
             <b>Title:</b> {title}
           </p>
@@ -149,10 +171,15 @@ export default function ProposalCard({
           <p>
             <b>Technologies:</b> {technologies}
           </p>
+          {currentUser.member_status_id === 3 && (
+            <p>
+              <b>Total Completed Meetups:</b> {total_meetup}
+            </p>
+          )}
         </Panel>
         <Panel header="Team" key="2">
           <div className={styles.studentContainer}>
-            {team.map((member) => (
+            {teamDetails.map((member) => (
               <UserCard
                 name={member.name}
                 id={member.nub_id}
@@ -163,9 +190,9 @@ export default function ProposalCard({
             ))}
           </div>
         </Panel>
-        {project?.feedback?.length > 0 && (
+        {projectDetails?.feedback?.length > 0 && (
           <Panel header="Previous Feedback" key="3">
-            <p>{project.feedback}</p>
+            <p>{projectDetails.feedback}</p>
           </Panel>
         )}
       </Collapse>

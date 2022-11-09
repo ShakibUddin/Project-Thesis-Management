@@ -35,9 +35,7 @@ export default function Meetups() {
       onClick: () => {},
     });
   };
-  useEffect(() => {
-    console.log("selectedTeamId", selectedTeamId);
-  }, [selectedTeamId]);
+
   useEffect(() => {
     if (updateMeetupError) openNotification(updateMeetupError);
   }, [updateMeetupError]);
