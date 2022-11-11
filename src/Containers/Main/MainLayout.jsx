@@ -42,7 +42,9 @@ export default function MainLayout() {
             <div className="w-full mt-4 flex justify-center align-middle">
               <img
                 className={styles.avatar}
-                src={`${AVATAR_BASE}${user.avatar}` || defaultAvatar}
+                src={
+                  user.avatar ? `${AVATAR_BASE}${user.avatar}` : defaultAvatar
+                }
                 alt="avatar"
               />
             </div>

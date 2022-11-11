@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import ImgCrop from "antd-img-crop";
 import { BASE_URL, PATHS } from "../../Constants/ApiConstants";
 import { useSelector } from "react-redux";
+import axios from "axios";
 const App = () => {
   const currentUser = useSelector((state) => state.auth.user);
   const [fileList, setFileList] = useState([]);
@@ -12,20 +13,21 @@ const App = () => {
 
   const handleUpload = () => {
     const formData = new FormData();
-    formData.append("avatar", fileList[0]);
+    formData.append("avatar", fileList[0].originFileObj);
     formData.append("nub_id", currentUser.nub_id);
     setUploading(true);
     // You can use any AJAX library you like
-    fetch(path, {
-      method: "POST",
-      body: formData,
+    axios({
+      method: "post",
+      url: path,
+      data: formData,
+      headers: { "Content-Type": "multipart/form-data" },
     })
-      .then((res) => res.json())
-      .then(() => {
+      .then(function (response) {
         setFileList([]);
         message.success("upload successfully.");
       })
-      .catch(() => {
+      .catch(function (response) {
         message.error("upload failed.");
       })
       .finally(() => {
@@ -33,6 +35,21 @@ const App = () => {
       });
   };
   const props = {
+    listType: "picture-card",
+    onPreview: async (file) => {
+      let src = file.url;
+      if (!src) {
+        src = await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file.originFileObj);
+          reader.onload = () => resolve(reader.result);
+        });
+      }
+      const image = new Image();
+      image.src = src;
+      const imgWindow = window.open(src);
+      imgWindow?.document.write(image.outerHTML);
+    },
     onRemove: (file) => {
       const index = fileList.indexOf(file);
       const newFileList = fileList.slice();
@@ -49,24 +66,25 @@ const App = () => {
       if (!isLt2M) {
         message.error("Image must smaller than 500kb!");
       }
-      if (isJpgOrPng && isLt2M) setFileList([...fileList, file]);
+      if (isJpgOrPng && isLt2M) setFileList([file]);
       return false;
     },
     fileList,
   };
+  const onChange = ({ fileList: newFileList }) => {
+    setFileList(newFileList);
+  };
   return (
     <>
       <ImgCrop rotate>
-        <Upload {...props}>
-          {fileList.length < 1 && (
-            <Button icon={<UploadOutlined />}>Select File</Button>
-          )}
+        <Upload onChange={onChange} {...props}>
+          {fileList?.length < 1 && "Upload"}
         </Upload>
       </ImgCrop>
       <Button
         type="primary"
         onClick={handleUpload}
-        disabled={fileList.length === 0}
+        disabled={fileList?.length === 0}
         loading={uploading}
         style={{
           marginTop: 16,

@@ -132,7 +132,6 @@ export default function UserCard({
       setLoading(false);
     });
   };
-  console.log(`${AVATAR_BASE}${avatar}`);
   return (
     <div className={styles.container}>
       <div>
@@ -140,7 +139,7 @@ export default function UserCard({
           <div className={styles.avatarContainer}>
             <img
               className={styles.avatar}
-              src={`${AVATAR_BASE}${avatar}` || defaultAvatar}
+              src={avatar ? `${AVATAR_BASE}${avatar}` : defaultAvatar}
               alt=""
             />
             {leader === 1 ? (
