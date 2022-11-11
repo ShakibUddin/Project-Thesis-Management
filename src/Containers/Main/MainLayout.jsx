@@ -40,14 +40,16 @@ export default function MainLayout() {
           <Menu.Item key="1" icon={<UserOutlined />}>
             <Link to="/home">Home</Link>
           </Menu.Item>
-          <Menu.Item key="2" icon={<UsergroupDeleteOutlined />}>
-            {(user.member_status_id === 1 || user.member_status_id === 3) && (
+          {(user.member_status_id === 1 || user.member_status_id === 3) && (
+            <Menu.Item key="2" icon={<UsergroupDeleteOutlined />}>
               <Link to="/team">My Team</Link>
-            )}
-            {user.member_status_id === 2 && (
-              <Link to="/proposals">Proposals</Link>
-            )}
-          </Menu.Item>
+            </Menu.Item>
+          )}
+          {user.member_status_id === 2 && (
+            <Menu.Item key="2" icon={<UsergroupDeleteOutlined />}>
+              (<Link to="/proposals">Proposals</Link>)
+            </Menu.Item>
+          )}
           {user.member_status_id === 1 && (
             <Menu.Item key="3" icon={<UploadOutlined />}>
               <Link to="/project">Project/Thesis</Link>
