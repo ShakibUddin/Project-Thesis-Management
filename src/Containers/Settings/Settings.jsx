@@ -40,7 +40,16 @@ const App = () => {
       setFileList(newFileList);
     },
     beforeUpload: (file) => {
-      setFileList([...fileList, file]);
+      const isJpgOrPng =
+        file.type === "image/jpeg" || file.type === "image/png";
+      if (!isJpgOrPng) {
+        message.error("You can only upload JPG/PNG file!");
+      }
+      const isLt2M = file.size / 1024 < 500;
+      if (!isLt2M) {
+        message.error("Image must smaller than 500kb!");
+      }
+      if (isJpgOrPng && isLt2M) setFileList([...fileList, file]);
       return false;
     },
     fileList,
