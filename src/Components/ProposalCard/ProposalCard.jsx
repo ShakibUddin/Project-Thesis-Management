@@ -186,6 +186,7 @@ export default function ProposalCard({
                 department={member.department_name}
                 program={member.program_name}
                 leader={member.team_leader}
+                avatar={member.avatar}
               />
             ))}
           </div>

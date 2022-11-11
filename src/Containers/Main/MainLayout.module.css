@@ -20,3 +20,9 @@
 .menu {
   background-color: var(--primaryColor) !important;
 }
+.avatar {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 100px;
+}

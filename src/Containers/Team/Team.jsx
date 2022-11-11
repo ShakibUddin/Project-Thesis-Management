@@ -96,6 +96,7 @@ export default function Team() {
                   id={teammate.nub_id}
                   department={teammate.department_name}
                   program={teammate.program_name}
+                  avatar={teammate.avatar}
                   showDeleteOption
                 />
               ))}
@@ -148,6 +149,7 @@ export default function Team() {
                       program={student.program_name}
                       requestStatus={student.request_status}
                       requestStatusId={student.request_status_id}
+                      avatar={student.avatar}
                       showRequestActions
                     />
                   ))}

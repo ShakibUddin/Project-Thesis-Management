@@ -45,6 +45,7 @@ export default function StudentNotifications() {
             program={notification.program_name}
             showingNotification={true}
             memberRequestId={notification.id}
+            avatar={notification.avatar}
           />
         ))}
       </div>

@@ -5,7 +5,7 @@ import LoginPage from "./Containers/Login/LoginPage";
 import MainLayout from "./Containers/Main/MainLayout";
 import Meetups from "./Containers/Meetups/Meetups";
 import StudentProjectThesis from "./Containers/ProjectThesis/StudentProjectThesis";
-import StudentSettings from "./Containers/Settings/StudentSettings";
+import Settings from "./Containers/Settings/Settings";
 import SignupPage from "./Containers/Signup/SignupPage";
 import Team from "./Containers/Team/Team";
 import PrivateRoutes from "./Utils/PrivateRoutes";
@@ -25,7 +25,7 @@ function App() {
               <Route path="proposals" element={<Proposals />} />
               <Route path="project" element={<StudentProjectThesis />} />
               <Route path="meetup" element={<Meetups />} />
-              <Route path="settings" element={<StudentSettings />} />
+              <Route path="settings" element={<Settings />} />
             </Route>
           </Route>
           <Route path="login" element={<LoginPage />} />

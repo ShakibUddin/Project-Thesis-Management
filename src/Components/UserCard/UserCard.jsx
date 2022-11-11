@@ -7,7 +7,7 @@ import { makeApiCall } from "../../client";
 import { METHODS, PATHS } from "../../Constants/ApiConstants";
 import * as NotificationsActions from "../../State/Notifications/NotificationsActions";
 import Loader from "../Loader/Loader";
-
+import { AVATAR_BASE } from "../../Constants/ImageConstants.js";
 export default function UserCard({
   name,
   id,
@@ -132,6 +132,7 @@ export default function UserCard({
       setLoading(false);
     });
   };
+  console.log(`${AVATAR_BASE}${avatar}`);
   return (
     <div className={styles.container}>
       <div>
@@ -139,7 +140,7 @@ export default function UserCard({
           <div className={styles.avatarContainer}>
             <img
               className={styles.avatar}
-              src={avatar || defaultAvatar}
+              src={`${AVATAR_BASE}${avatar}` || defaultAvatar}
               alt=""
             />
             {leader === 1 ? (

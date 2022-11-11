@@ -11,6 +11,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { makeApiCall } from "../../client";
 import * as AuthActions from "../../State/Auth/AuthActions";
 import styles from "./MainLayout.module.css";
+import defaultAvatar from "../../Assets/avatar.jpg";
+import { AVATAR_BASE } from "../../Constants/ImageConstants";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -36,7 +38,16 @@ export default function MainLayout() {
       >
         <div className={styles.logo} />
         <Menu className={styles.menu} theme="dark" mode="inline">
-          <p className="mt-10 text-lg font-bold text-center">{user?.name}</p>
+          <div className="w-full flex flex-col justify-center align-middle">
+            <div className="w-full mt-4 flex justify-center align-middle">
+              <img
+                className={styles.avatar}
+                src={`${AVATAR_BASE}${user.avatar}` || defaultAvatar}
+                alt="avatar"
+              />
+            </div>
+            <p className="mt-2 text-lg font-bold text-center">{user?.name}</p>
+          </div>
           <Menu.Item key="1" icon={<UserOutlined />}>
             <Link to="/home">Home</Link>
           </Menu.Item>
