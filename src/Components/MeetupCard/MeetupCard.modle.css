@@ -1,0 +1,12 @@
+.studentContainer {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+}
+.ant-checkbox-group-item {
+  margin-right: 2rem;
+}
+.meetupCard:hover {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  background-color: red;
+}
