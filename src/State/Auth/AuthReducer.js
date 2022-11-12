@@ -19,6 +19,11 @@ export default function AuthReducer(state = initialState, action) {
   const payload = action?.payload;
 
   switch (action.type) {
+    case actions.DECREASE_TOTAL_TEAM_MEMBERS: {
+      state.user.total_members = state.user.total_members - 1;
+      state.user = { ...state.user };
+      break;
+    }
     case actions.GET_DEPARTMENTS.REQUESTED: {
       state.departmentsLoading = true;
       state.departments = [];

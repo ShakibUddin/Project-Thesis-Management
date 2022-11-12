@@ -75,7 +75,7 @@ const App = () => {
     setFileList(newFileList);
   };
   return (
-    <>
+    <div className="w-full h-screen">
       <ImgCrop rotate>
         <Upload onChange={onChange} {...props}>
           {fileList?.length < 1 && "Upload"}
@@ -92,7 +92,7 @@ const App = () => {
       >
         {uploading ? "Uploading" : "Start Upload"}
       </Button>
-    </>
+    </div>
   );
 };
 export default App;

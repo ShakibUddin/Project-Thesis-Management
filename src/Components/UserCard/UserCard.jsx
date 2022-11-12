@@ -7,7 +7,9 @@ import { makeApiCall } from "../../client";
 import { METHODS, PATHS } from "../../Constants/ApiConstants";
 import * as NotificationsActions from "../../State/Notifications/NotificationsActions";
 import Loader from "../Loader/Loader";
+import * as AuthActions from "../../State/Auth/AuthActions.js";
 import { AVATAR_BASE } from "../../Constants/ImageConstants.js";
+import { notification } from "antd";
 export default function UserCard({
   name,
   id,
@@ -65,6 +67,13 @@ export default function UserCard({
       token,
     }).then((response) => {
       const { data, message, error } = response;
+      if (!data.memberRequestAccepted) {
+        notification.open({
+          message,
+          placement: "bottomLeft",
+          onClick: () => {},
+        });
+      }
       setData(data);
       setMessage(message);
       setError(error);
@@ -86,6 +95,13 @@ export default function UserCard({
       token,
     }).then((response) => {
       const { data, message, error } = response;
+      if (!data.memberRequestRejected) {
+        notification.open({
+          message,
+          placement: "bottomLeft",
+          onClick: () => {},
+        });
+      }
       setData(data);
       setMessage(message);
       setError(error);
@@ -106,6 +122,16 @@ export default function UserCard({
       token,
     }).then((response) => {
       const { data, message, error } = response;
+      console.log("error", error);
+      if (data.memberDeleted) {
+        dispatch(AuthActions.decreaseTotalTeamMembers());
+      } else {
+        notification.open({
+          message,
+          placement: "bottomLeft",
+          onClick: () => {},
+        });
+      }
       setData(data);
       setMessage(message);
       setError(error);

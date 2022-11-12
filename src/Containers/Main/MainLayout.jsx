@@ -37,7 +37,12 @@ export default function MainLayout() {
         }}
       >
         <div className={styles.logo} />
-        <Menu className={styles.menu} theme="dark" mode="inline">
+        <Menu
+          className={styles.menu}
+          theme="dark"
+          mode="inline"
+          defaultSelectedKeys={"1"}
+        >
           <div className="w-full flex flex-col justify-center align-middle">
             <div className="w-full mt-4 flex justify-center align-middle">
               <img
@@ -60,7 +65,7 @@ export default function MainLayout() {
           )}
           {user.member_status_id === 2 && (
             <Menu.Item key="2" icon={<UsergroupDeleteOutlined />}>
-              (<Link to="/proposals">Proposals</Link>)
+              <Link to="/proposals">Proposals</Link>
             </Menu.Item>
           )}
           {user.member_status_id === 1 && (

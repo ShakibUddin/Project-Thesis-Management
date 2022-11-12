@@ -8,6 +8,8 @@ import { Tabs } from "antd";
 import Loader from "../../Components/Loader/Loader";
 import StudentNotifications from "../Notifications/StudentNotifications";
 import ProposalCard from "../../Components/ProposalCard/ProposalCard";
+import * as NotificationsActions from "../../State/Notifications/NotificationsActions";
+import { useState } from "react";
 const { Search } = Input;
 
 const openNotification = (message) => {
@@ -20,6 +22,7 @@ const openNotification = (message) => {
 
 export default function Team() {
   const dispatch = useDispatch();
+  const [selectedKey, setSelectedKey] = useState(1);
   const currentUser = useSelector((state) => state.auth?.user);
   const totalTeamMmbers = useSelector(
     (state) => state.auth?.user?.total_members
@@ -66,10 +69,28 @@ export default function Team() {
       );
     }
   };
+  const getAllStudents = () => {
+    const body = {
+      nub_id: currentUser.nub_id,
+    };
+    dispatch(TeamActions.getAllStudents({ body, token }));
+  };
+
+  const getAllMemberRequests = () => {
+    const body = {
+      receiver_nub_id: currentUser?.nub_id,
+    };
+    dispatch(
+      NotificationsActions.getAllMemberRequestNotifications({
+        body,
+        token,
+      })
+    );
+  };
+
   useEffect(() => {
     getTeamDetailsForCurrentMember();
   }, []);
-
   useEffect(() => {
     if (memberRequestError || memberRequestSent === false) {
       openNotification(memberRequestError);
@@ -80,8 +101,18 @@ export default function Team() {
       <Tabs
         defaultActiveKey="1"
         onChange={(key) => {
-          if (key === "2" && teamDetails.length < 3) {
+          // setSelectedKey(key);
+          console.log("key", key);
+          console.log("totalTeamMmbers", totalTeamMmbers);
+          if (key === "1" && totalTeamMmbers > 1) {
+            console.log("calling getTeamDetailsForCurrentMember");
             getTeamDetailsForCurrentMember();
+          } else if (key === "2" && totalTeamMmbers < 3) {
+            console.log("calling getAllStudents");
+            getAllStudents();
+          } else if (key === "3" && totalTeamMmbers < 3) {
+            console.log("calling getAllMemberRequests");
+            getAllMemberRequests();
           }
         }}
       >
@@ -106,7 +137,9 @@ export default function Team() {
               {teamDetailsLoading ? (
                 <Loader size="large" />
               ) : (
-                <p>You don't have any team mates yet!</p>
+                currentUser.member_status_id === 1 && (
+                  <p>You don't have any team mates yet!</p>
+                )
               )}
             </div>
           )}
@@ -123,7 +156,9 @@ export default function Team() {
               {supervisorTeamDetailsLoading ? (
                 <Loader size="large" />
               ) : (
-                <p>You don't have any team mates yet!</p>
+                currentUser.member_status_id === 3 && (
+                  <p>You don't have any team mates yet!</p>
+                )
               )}
             </div>
           )}

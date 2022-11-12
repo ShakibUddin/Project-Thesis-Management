@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import styles from "./StudentNotifications.module.css";
 import { Input } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import * as NotificationsActions from "../../State/Notifications/NotificationsActions";
 import UserCard from "../../Components/UserCard/UserCard";
 
 const { Search } = Input;
@@ -14,17 +13,6 @@ export default function StudentNotifications() {
     (state) => state.notifications?.memberRequestNotifications
   );
   const token = useSelector((state) => state.auth?.user?.token);
-  useEffect(() => {
-    const body = {
-      receiver_nub_id: currentUser?.nub_id,
-    };
-    dispatch(
-      NotificationsActions.getAllMemberRequestNotifications({
-        body,
-        token,
-      })
-    );
-  }, []);
 
   return (
     <div className={styles.container}>

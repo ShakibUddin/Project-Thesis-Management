@@ -60,7 +60,7 @@ const beforeUpload = (file) => {
 export default function Home() {
   const user = useSelector((state) => state.auth?.user);
   return (
-    <div className="flex w-full">
+    <div className="flex w-full h-screen">
       {user.member_status_id === 5 ? (
         <div className="flex w-full">
           <div className="flex flex-col justify-start align-middle w-1/2">
