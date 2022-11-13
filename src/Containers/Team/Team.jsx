@@ -22,7 +22,6 @@ const openNotification = (message) => {
 
 export default function Team() {
   const dispatch = useDispatch();
-  const [selectedKey, setSelectedKey] = useState(1);
   const currentUser = useSelector((state) => state.auth?.user);
   const totalTeamMmbers = useSelector(
     (state) => state.auth?.user?.total_members
@@ -122,16 +121,20 @@ export default function Team() {
             totalTeamMmbers > 1 &&
             teamDetails.length ? (
               <div className={styles.studentContainer}>
-                {teamDetails.map((teammate) => (
-                  <UserCard
-                    name={teammate.name}
-                    id={teammate.nub_id}
-                    department={teammate.department_name}
-                    program={teammate.program_name}
-                    avatar={teammate.avatar}
-                    showDeleteOption
-                  />
-                ))}
+                {teamDetails.map((teammate) => {
+                  if (teammate.nub_id !== currentUser.nub_id)
+                    return (
+                      <UserCard
+                        name={teammate.name}
+                        id={teammate.nub_id}
+                        department={teammate.department_name}
+                        program={teammate.program_name}
+                        avatar={teammate.avatar}
+                        leader={teammate.team_leader}
+                        showDeleteOption={currentUser.team_leader === 1}
+                      />
+                    );
+                })}
               </div>
             ) : (
               <div>
@@ -186,6 +189,7 @@ export default function Team() {
                         requestStatus={student.request_status}
                         requestStatusId={student.request_status_id}
                         avatar={student.avatar}
+                        leader={student.team_leader}
                         showRequestActions
                       />
                     ))}
