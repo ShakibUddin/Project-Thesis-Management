@@ -98,76 +98,77 @@ export default function Team() {
   }, [memberRequestError, memberRequestSent]);
   return (
     <div className={styles.container}>
-      <Tabs
-        defaultActiveKey="1"
-        onChange={(key) => {
-          // setSelectedKey(key);
-          console.log("key", key);
-          console.log("totalTeamMmbers", totalTeamMmbers);
-          if (key === "1" && totalTeamMmbers > 1) {
-            console.log("calling getTeamDetailsForCurrentMember");
-            getTeamDetailsForCurrentMember();
-          } else if (key === "2" && totalTeamMmbers < 3) {
-            console.log("calling getAllStudents");
-            getAllStudents();
-          } else if (key === "3" && totalTeamMmbers < 3) {
-            console.log("calling getAllMemberRequests");
-            getAllMemberRequests();
-          }
-        }}
-      >
-        <Tabs.TabPane tab="My Team" key="1">
-          {currentUser.member_status_id === 1 &&
-          totalTeamMmbers > 1 &&
-          teamDetails.length ? (
-            <div className={styles.studentContainer}>
-              {teamDetails.map((teammate) => (
-                <UserCard
-                  name={teammate.name}
-                  id={teammate.nub_id}
-                  department={teammate.department_name}
-                  program={teammate.program_name}
-                  avatar={teammate.avatar}
-                  showDeleteOption
+      <div>
+        <Tabs
+          defaultActiveKey="1"
+          onChange={(key) => {
+            // setSelectedKey(key);
+            console.log("key", key);
+            console.log("totalTeamMmbers", totalTeamMmbers);
+            if (key === "1" && totalTeamMmbers > 1) {
+              console.log("calling getTeamDetailsForCurrentMember");
+              getTeamDetailsForCurrentMember();
+            } else if (key === "2" && totalTeamMmbers < 3) {
+              console.log("calling getAllStudents");
+              getAllStudents();
+            } else if (key === "3" && totalTeamMmbers < 3) {
+              console.log("calling getAllMemberRequests");
+              getAllMemberRequests();
+            }
+          }}
+        >
+          <Tabs.TabPane tab="My Team" key="1">
+            {currentUser.member_status_id === 1 &&
+            totalTeamMmbers > 1 &&
+            teamDetails.length ? (
+              <div className={styles.studentContainer}>
+                {teamDetails.map((teammate) => (
+                  <UserCard
+                    name={teammate.name}
+                    id={teammate.nub_id}
+                    department={teammate.department_name}
+                    program={teammate.program_name}
+                    avatar={teammate.avatar}
+                    showDeleteOption
+                  />
+                ))}
+              </div>
+            ) : (
+              <div>
+                {teamDetailsLoading
+                  ? currentUser.member_status_id === 1 && (
+                      <Loader size="large" />
+                    )
+                  : currentUser.member_status_id === 1 && (
+                      <p>You don't have any team mates yet!</p>
+                    )}
+              </div>
+            )}
+            {currentUser.member_status_id === 3 &&
+            supervisorTeamDetails.length > 0 ? (
+              supervisorTeamDetails.map((proposal) => (
+                <ProposalCard
+                  projectDetails={proposal.project}
+                  teamDetails={proposal.team}
                 />
-              ))}
-            </div>
-          ) : (
-            <div>
-              {teamDetailsLoading ? (
-                <Loader size="large" />
-              ) : (
-                currentUser.member_status_id === 1 && (
-                  <p>You don't have any team mates yet!</p>
-                )
-              )}
-            </div>
-          )}
-          {currentUser.member_status_id === 3 &&
-          supervisorTeamDetails.length > 0 ? (
-            supervisorTeamDetails.map((proposal) => (
-              <ProposalCard
-                projectDetails={proposal.project}
-                teamDetails={proposal.team}
-              />
-            ))
-          ) : (
-            <div>
-              {supervisorTeamDetailsLoading ? (
-                <Loader size="large" />
-              ) : (
-                currentUser.member_status_id === 3 && (
-                  <p>You don't have any team mates yet!</p>
-                )
-              )}
-            </div>
-          )}
-        </Tabs.TabPane>
-        {currentUser.member_status_id === 1 && (
-          <Tabs.TabPane tab="Get Teammates" key="2">
-            {totalTeamMmbers < 3 ? (
-              <div className={styles.container}>
-                {/* <div>
+              ))
+            ) : (
+              <div>
+                {supervisorTeamDetailsLoading
+                  ? currentUser.member_status_id === 3 && (
+                      <Loader size="large" />
+                    )
+                  : currentUser.member_status_id === 3 && (
+                      <p>You don't have any team mates yet!</p>
+                    )}
+              </div>
+            )}
+          </Tabs.TabPane>
+          {currentUser.member_status_id === 1 && (
+            <Tabs.TabPane tab="Get Teammates" key="2">
+              {totalTeamMmbers < 3 ? (
+                <div className={styles.container}>
+                  {/* <div>
                   <Search
                     placeholder="Search team member"
                     enterButton="Search"
@@ -175,32 +176,33 @@ export default function Team() {
                     onSearch={(value) => console.log(value)}
                   />
                 </div> */}
-                <div className={styles.studentContainer}>
-                  {students.map((student) => (
-                    <UserCard
-                      name={student.name}
-                      id={student.nub_id}
-                      department={student.department_name}
-                      program={student.program_name}
-                      requestStatus={student.request_status}
-                      requestStatusId={student.request_status_id}
-                      avatar={student.avatar}
-                      showRequestActions
-                    />
-                  ))}
+                  <div className={styles.studentContainer}>
+                    {students.map((student) => (
+                      <UserCard
+                        name={student.name}
+                        id={student.nub_id}
+                        department={student.department_name}
+                        program={student.program_name}
+                        requestStatus={student.request_status}
+                        requestStatusId={student.request_status_id}
+                        avatar={student.avatar}
+                        showRequestActions
+                      />
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ) : (
-              "You can not have anymore team mates"
-            )}
-          </Tabs.TabPane>
-        )}
-        {currentUser.member_status_id === 1 && (
-          <Tabs.TabPane tab="My Requests" key="3">
-            <StudentNotifications />
-          </Tabs.TabPane>
-        )}
-      </Tabs>
+              ) : (
+                "You can not have anymore team mates"
+              )}
+            </Tabs.TabPane>
+          )}
+          {currentUser.member_status_id === 1 && (
+            <Tabs.TabPane tab="My Requests" key="3">
+              <StudentNotifications />
+            </Tabs.TabPane>
+          )}
+        </Tabs>
+      </div>
     </div>
   );
 }

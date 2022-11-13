@@ -16,7 +16,8 @@ export default function StudentNotifications() {
 
   return (
     <div className={styles.container}>
-      {/* <div>
+      <div>
+        {/* <div>
         <Search
           placeholder="Search team member"
           enterButton="Search"
@@ -24,18 +25,19 @@ export default function StudentNotifications() {
           onSearch={(value) => console.log(value)}
         />
       </div> */}
-      <div className={styles.studentContainer}>
-        {memberRequestNotifications.map((notification) => (
-          <UserCard
-            name={notification.name}
-            id={notification.nub_id}
-            department={notification.department_name}
-            program={notification.program_name}
-            showingNotification={true}
-            memberRequestId={notification.id}
-            avatar={notification.avatar}
-          />
-        ))}
+        <div className={styles.studentContainer}>
+          {memberRequestNotifications.map((notification) => (
+            <UserCard
+              name={notification.name}
+              id={notification.nub_id}
+              department={notification.department_name}
+              program={notification.program_name}
+              showingNotification={true}
+              memberRequestId={notification.id}
+              avatar={notification.avatar}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

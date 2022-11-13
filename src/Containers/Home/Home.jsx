@@ -61,32 +61,34 @@ export default function Home() {
   const user = useSelector((state) => state.auth?.user);
   return (
     <div className="flex w-full h-screen">
-      {user.member_status_id === 5 ? (
-        <div className="flex w-full">
-          <div className="flex flex-col justify-start align-middle w-1/2">
-            <span className="mb-2 text-lg">Enrolled Student Details:</span>
-            <span className="mb-2 text-sm text-blue-500">
-              Please upload .xlsx file under 200 kb
-            </span>
+      <div>
+        {user.member_status_id === 5 ? (
+          <div className="flex w-full">
+            <div className="flex flex-col justify-start align-middle w-1/2">
+              <span className="mb-2 text-lg">Enrolled Student Details:</span>
+              <span className="mb-2 text-sm text-blue-500">
+                Please upload .xlsx file under 200 kb
+              </span>
 
-            <Upload beforeUpload={beforeUpload} {...studentUploadProps}>
-              <Button icon={<UploadOutlined />}>Click to Upload</Button>
-            </Upload>
-          </div>
+              <Upload beforeUpload={beforeUpload} {...studentUploadProps}>
+                <Button icon={<UploadOutlined />}>Click to Upload</Button>
+              </Upload>
+            </div>
 
-          <div className="flex flex-col justify-start align-middle  w-1/2">
-            <span className="mb-2 text-lg">Supervisor Details:</span>
-            <span className="mb-2 text-sm text-blue-500">
-              Please upload .xlsx file under 200 kb
-            </span>
-            <Upload beforeUpload={beforeUpload} {...supervisorUploadProps}>
-              <Button icon={<UploadOutlined />}>Click to Upload</Button>
-            </Upload>
+            <div className="flex flex-col justify-start align-middle  w-1/2">
+              <span className="mb-2 text-lg">Supervisor Details:</span>
+              <span className="mb-2 text-sm text-blue-500">
+                Please upload .xlsx file under 200 kb
+              </span>
+              <Upload beforeUpload={beforeUpload} {...supervisorUploadProps}>
+                <Button icon={<UploadOutlined />}>Click to Upload</Button>
+              </Upload>
+            </div>
           </div>
-        </div>
-      ) : (
-        <p>Welcome to NUB Project Thesis Management System</p>
-      )}
+        ) : (
+          <p>Welcome to NUB Project Thesis Management System</p>
+        )}
+      </div>
     </div>
   );
 }

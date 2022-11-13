@@ -128,107 +128,109 @@ export default function Meetups() {
 
   return (
     <div className="h-screen">
-      {teamsUnderSupervisor.length > 0 ? (
-        <Form
-          name="basic"
-          initialValues={{
-            remember: true,
-          }}
-          onFinish={onTeamSelectionFinish}
-          onFinishFailed={onTeamSelectionFinishFailed}
-          autoComplete="off"
-        >
-          <Form.Item
-            name="teamId"
-            label="Team"
-            rules={[
-              {
-                required: true,
-                message: "Please select a team",
-              },
-            ]}
-          >
-            <Select
-              size={"large"}
-              showSearch
-              placeholder="Select a team"
-              optionFilterProp="children"
-              loading={teamsUnderSupervisorLoading}
-              onChange={onChangeTeam}
-              onSearch={onSearch}
-              listHeight={300}
-              filterOption={(input, option) =>
-                (option?.label ?? "")
-                  .toLowerCase()
-                  .includes(input.toLowerCase())
-              }
-              options={teamOptions}
-            />
-          </Form.Item>
-          <Form.Item
-            wrapperCol={{
-              offset: 2,
-              span: 16,
+      <div>
+        {teamsUnderSupervisor.length > 0 ? (
+          <Form
+            name="basic"
+            initialValues={{
+              remember: true,
             }}
+            onFinish={onTeamSelectionFinish}
+            onFinishFailed={onTeamSelectionFinishFailed}
+            autoComplete="off"
           >
-            <Button type="primary" htmlType="submit">
-              Search
-            </Button>
-          </Form.Item>
-        </Form>
-      ) : teamsUnderSupervisorLoading ? (
-        <Loader />
-      ) : (
-        <p>You are not assigned any teams yet</p>
-      )}
-      {Object.keys(meetups).length > 0 && (
-        <Tabs
-          defaultActiveKey={"1"}
-          activeKey={activeKey}
-          onChange={handleTabChange}
-        >
-          <Tabs.TabPane tab="Pending" key="1">
-            <div className="w-full flex flex-wrap justify-start align-top">
-              {Object.keys(meetups).length > 0 &&
-                meetups?.pending.map((meetup) => (
-                  <MeetupCard
-                    id={meetup.meetupId}
-                    date={meetup.meetup_date}
-                    time={meetup.meetup_time}
-                    status={"PENDING"}
-                    team={meetups.team}
-                    getMeetupOfATeam={getMeetupOfATeam}
-                    selectedTeamId={selectedTeamId}
-                    handleTabChange={handleTabChange}
-                  />
-                ))}
-            </div>
-          </Tabs.TabPane>
-          <Tabs.TabPane tab="Completed" key="2">
-            <div className="w-full flex flex-wrap justify-start align-top">
-              {Object.keys(meetups).length > 0 &&
-                meetups?.complete.map((meetup) => (
-                  <MeetupCard
-                    id={meetup.meetupId}
-                    date={meetup.meetup_date}
-                    time={meetup.meetup_time}
-                    remarks={meetup.remarks}
-                    status={"COMPLETE"}
-                    attendance={JSON.parse(meetup?.attendance)}
-                  />
-                ))}
-            </div>
-          </Tabs.TabPane>
-          {currentUser.member_status_id === 3 && (
-            <Tabs.TabPane tab="Create" key="3">
-              <CreateMeetup
-                selectedTeamId={selectedTeamId}
-                handleTabChange={handleTabChange}
+            <Form.Item
+              name="teamId"
+              label="Team"
+              rules={[
+                {
+                  required: true,
+                  message: "Please select a team",
+                },
+              ]}
+            >
+              <Select
+                size={"large"}
+                showSearch
+                placeholder="Select a team"
+                optionFilterProp="children"
+                loading={teamsUnderSupervisorLoading}
+                onChange={onChangeTeam}
+                onSearch={onSearch}
+                listHeight={300}
+                filterOption={(input, option) =>
+                  (option?.label ?? "")
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
+                options={teamOptions}
               />
+            </Form.Item>
+            <Form.Item
+              wrapperCol={{
+                offset: 2,
+                span: 16,
+              }}
+            >
+              <Button type="primary" htmlType="submit">
+                Search
+              </Button>
+            </Form.Item>
+          </Form>
+        ) : teamsUnderSupervisorLoading ? (
+          <Loader />
+        ) : (
+          <p>You are not assigned any teams yet</p>
+        )}
+        {Object.keys(meetups).length > 0 && selectedTeamId && (
+          <Tabs
+            defaultActiveKey={"1"}
+            activeKey={activeKey}
+            onChange={handleTabChange}
+          >
+            <Tabs.TabPane tab="Pending" key="1">
+              <div className="w-full flex flex-wrap justify-start align-top">
+                {Object.keys(meetups).length > 0 &&
+                  meetups?.pending.map((meetup) => (
+                    <MeetupCard
+                      id={meetup.meetupId}
+                      date={meetup.meetup_date}
+                      time={meetup.meetup_time}
+                      status={"PENDING"}
+                      team={meetups.team}
+                      getMeetupOfATeam={getMeetupOfATeam}
+                      selectedTeamId={selectedTeamId}
+                      handleTabChange={handleTabChange}
+                    />
+                  ))}
+              </div>
             </Tabs.TabPane>
-          )}
-        </Tabs>
-      )}
+            <Tabs.TabPane tab="Completed" key="2">
+              <div className="w-full flex flex-wrap justify-start align-top">
+                {Object.keys(meetups).length > 0 &&
+                  meetups?.complete.map((meetup) => (
+                    <MeetupCard
+                      id={meetup.meetupId}
+                      date={meetup.meetup_date}
+                      time={meetup.meetup_time}
+                      remarks={meetup.remarks}
+                      status={"COMPLETE"}
+                      attendance={JSON.parse(meetup?.attendance)}
+                    />
+                  ))}
+              </div>
+            </Tabs.TabPane>
+            {currentUser.member_status_id === 3 && (
+              <Tabs.TabPane tab="Create" key="3">
+                <CreateMeetup
+                  selectedTeamId={selectedTeamId}
+                  handleTabChange={handleTabChange}
+                />
+              </Tabs.TabPane>
+            )}
+          </Tabs>
+        )}
+      </div>
     </div>
   );
 }
