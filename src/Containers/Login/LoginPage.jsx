@@ -88,10 +88,6 @@ export default function LoginPage() {
             <Button loading={loginLoading} type="primary" htmlType="submit">
               Login
             </Button>
-            <p>
-              {" "}
-              Don't have an account? <Link to="/signup">Create Now</Link>
-            </p>
           </Form.Item>
         </Form>
       </div>
