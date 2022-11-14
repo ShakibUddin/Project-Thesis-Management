@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
 import { Form, Input, Button, Checkbox, message, Alert } from "antd";
-import loginRightImage from "../../../src/Assets/loginRIghtImage.svg";
+import loginbg from "../../../src/Assets/loginbg.jpg";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as AuthActions from "../../State/Auth/AuthActions";
 import styles from "./LoginPage.module.css";
+import Loader from "../../Components/Loader/Loader";
+import FormSubmitButton from "../../Components/FormSubmitButton/FormSubmitButton";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -36,7 +38,7 @@ export default function LoginPage() {
       <div
         className={`h-screen flex flex-col justify-center items-center ${styles.leftDiv}`}
       >
-        <p className="text-4xl font-extrabold mb-0 text-blue-500">Login</p>
+        <p className="text-4xl font-extrabold mb-0 ">Login</p>
         <p className="text-xl text-center p-4 mb-4 font-bold">
           Manage your thesis or project progress
         </p>
@@ -89,16 +91,16 @@ export default function LoginPage() {
               span: 16,
             }}
           >
-            <Button loading={loginLoading} type="primary" htmlType="submit">
-              Login
-            </Button>
+            <FormSubmitButton>
+              {loginLoading ? <Loader /> : "Login"}
+            </FormSubmitButton>
           </Form.Item>
         </Form>
       </div>
       <div
-        className={`w-1/2 flex justify-center items-center ${styles.rightDiv}`}
+        className={`w-1/2 h-screen flex justify-center items-center ${styles.rightDiv}`}
       >
-        <img className="w-100" src={loginRightImage}></img>
+        <img className="w-full h-full" src={loginbg}></img>
       </div>
     </div>
   );

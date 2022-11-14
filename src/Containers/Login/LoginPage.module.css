@@ -8,13 +8,14 @@ p {
   overflow-x: hidden;
 }
 
-@media only screen and (max-width: 1200px) {
+@media only screen and (min-width: 600px) {
   .rightDiv,
   .leftDiv {
     min-width: 50%;
+    max-width: 50%;
   }
 }
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 600px) {
   /*Big smartphones [426px -> 600px]*/
   .rightDiv {
     display: none;
@@ -22,18 +23,19 @@ p {
 
   .leftDiv {
     min-width: 100% !important;
+    max-width: 100% !important;
     margin-left: auto;
     margin-right: auto;
   }
 }
-@media only screen and (max-width: 425px) {
-  /*Small smartphones [325px -> 425px]*/
-  .rightDiv {
-    display: none;
-  }
-  .leftDiv {
-    min-width: 100% !important;
-    margin-left: auto;
-    margin-right: auto;
-  }
+
+.actionButton {
+  border-radius: 10px !important;
+  padding: 10px !important;
+  width: 80px !important;
+}
+
+.active {
+  background-color: var(--activeActionButtonColor) !important;
+  color: var(--activeActionButtonTextColor) !important;
 }

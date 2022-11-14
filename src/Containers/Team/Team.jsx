@@ -9,6 +9,8 @@ import Loader from "../../Components/Loader/Loader";
 import StudentNotifications from "../Notifications/StudentNotifications";
 import ProposalCard from "../../Components/ProposalCard/ProposalCard";
 import * as NotificationsActions from "../../State/Notifications/NotificationsActions";
+import noTeamMate from "../../Assets/noTeamMate.png";
+import noRequests from "../../Assets/noRequests.webp";
 import { useState } from "react";
 const { Search } = Input;
 
@@ -103,15 +105,11 @@ export default function Team() {
           onChange={(key) => {
             // setSelectedKey(key);
             console.log("key", key);
-            console.log("totalTeamMmbers", totalTeamMmbers);
             if (key === "1" && totalTeamMmbers > 1) {
-              console.log("calling getTeamDetailsForCurrentMember");
               getTeamDetailsForCurrentMember();
             } else if (key === "2" && totalTeamMmbers < 3) {
-              console.log("calling getAllStudents");
               getAllStudents();
             } else if (key === "3" && totalTeamMmbers < 3) {
-              console.log("calling getAllMemberRequests");
               getAllMemberRequests();
             }
           }}
@@ -142,7 +140,14 @@ export default function Team() {
                       <Loader size="large" />
                     )
                   : currentUser.member_status_id === 1 && (
-                      <p>You don't have any team mates yet!</p>
+                      <>
+                        <p className="text-center text-2xl">
+                          You don't have any team mates yet!
+                        </p>
+                        <div className="w-full p-4 m-4">
+                          <img className="w-full" src={noTeamMate} alt="" />
+                        </div>
+                      </>
                     )}
               </div>
             )}
@@ -161,7 +166,14 @@ export default function Team() {
                       <Loader size="large" />
                     )
                   : currentUser.member_status_id === 3 && (
-                      <p>You don't have any team mates yet!</p>
+                      <>
+                        <p className="text-center text-2xl">
+                          You don't have any team mates yet!
+                        </p>
+                        <div className="w-full p-4 m-4">
+                          <img className="w-full" src={noRequests} alt="" />
+                        </div>
+                      </>
                     )}
               </div>
             )}

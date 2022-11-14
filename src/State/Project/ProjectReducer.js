@@ -50,7 +50,7 @@ export default function ProjectReducer(state = initialState, action) {
       break;
     }
     case actions.CREATE_PROJECT_PROPOSAL.SUCCEEDED: {
-      state.createProjectProposalLoading = true;
+      state.createProjectProposalLoading = false;
       state.createProjectProposal = payload?.data?.createProjectProposal;
       state.createProjectProposalError = payload?.message;
       break;
