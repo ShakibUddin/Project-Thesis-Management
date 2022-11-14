@@ -124,7 +124,7 @@ export default function StudentProjectThesis() {
       className="w-full h-screen overflow-x-hidden"
       style={{ fontSize: "1.5rem" }}
     >
-      {currentUser.total_members > 3 ? (
+      {currentUser.total_members >= 3 ? (
         <div>
           {projectLoading ? (
             <Space size="middle">

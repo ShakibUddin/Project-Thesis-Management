@@ -11,6 +11,7 @@ import ProposalCard from "../../Components/ProposalCard/ProposalCard";
 import * as NotificationsActions from "../../State/Notifications/NotificationsActions";
 import noTeamMate from "../../Assets/noTeamMate.png";
 import noRequests from "../../Assets/noRequests.webp";
+import noMoreTeamMates from "../../Assets/noMoreTeamMates.webp";
 import { useState } from "react";
 const { Search } = Input;
 
@@ -207,7 +208,14 @@ export default function Team() {
                   </div>
                 </div>
               ) : (
-                "You can not have anymore team mates"
+                <>
+                  <p className="text-center text-2xl">
+                    You can not have anymore team mates
+                  </p>
+                  <div className="w-full p-4 m-4">
+                    <img className="w-full" src={noMoreTeamMates} alt="" />
+                  </div>
+                </>
               )}
             </Tabs.TabPane>
           )}

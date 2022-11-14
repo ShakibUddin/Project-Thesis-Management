@@ -50,3 +50,6 @@
     margin-left: 0;
   }
 }
+.keychainify-checked {
+  background-color: red !important;
+}
