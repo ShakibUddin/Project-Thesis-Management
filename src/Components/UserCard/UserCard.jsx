@@ -9,7 +9,7 @@ import * as NotificationsActions from "../../State/Notifications/NotificationsAc
 import Loader from "../Loader/Loader";
 import * as AuthActions from "../../State/Auth/AuthActions.js";
 import { AVATAR_BASE } from "../../Constants/ImageConstants.js";
-import { notification } from "antd";
+import { Button, notification } from "antd";
 export default function UserCard({
   name,
   id,
@@ -188,37 +188,28 @@ export default function UserCard({
         {showingNotification && (
           <div className={styles.memberRequestActionButtonDiv}>
             {!data?.memberRequestRejected && (
-              <button
+              <Button
+                loading={loadingAcceptRequest}
                 onClick={acceptMemberRequest}
                 className={[styles.actionButton, styles.acceptButton].join(" ")}
               >
-                {loadingAcceptRequest ? (
-                  <Loader />
-                ) : data?.memberRequestAccepted ? (
-                  "Accepted"
-                ) : (
-                  "Accept"
-                )}
-              </button>
+                {data?.memberRequestAccepted ? "Accepted" : "Accept"}
+              </Button>
             )}
             {!data?.memberRequestAccepted && (
-              <button
+              <Button
+                loading={loadingRejectRequest}
                 onClick={rejectMemberRequest}
                 className={[styles.actionButton, styles.rejectButton].join(" ")}
               >
-                {loadingRejectRequest ? (
-                  <Loader />
-                ) : data?.memberRequestRejected ? (
-                  "Rejected"
-                ) : (
-                  "Reject"
-                )}
-              </button>
+                {data?.memberRequestRejected ? "Rejected" : "Reject"}
+              </Button>
             )}
           </div>
         )}
         {showRequestActions && (
-          <button
+          <Button
+            loading={loading}
             disabled={disableButton}
             onClick={sendMemberRequest}
             className={[
@@ -226,11 +217,12 @@ export default function UserCard({
               disableButton ? styles.disabled : styles.active,
             ].join(" ")}
           >
-            {loading ? <Loader /> : disableButton ? "Pending" : requestStatus}
-          </button>
+            {disableButton ? "Pending" : requestStatus}
+          </Button>
         )}
         {showDeleteOption && id !== currentUser.nub_id && (
-          <button
+          <Button
+            loading={loadingRemoveTeammate}
             disabled={disableButton}
             onClick={removeTeammate}
             className={[
@@ -238,14 +230,8 @@ export default function UserCard({
               disableButton ? styles.disabled : styles.active,
             ].join(" ")}
           >
-            {loadingRemoveTeammate ? (
-              <Loader />
-            ) : disableButton ? (
-              "Removed"
-            ) : (
-              "Remove"
-            )}
-          </button>
+            {disableButton ? "Removed" : "Remove"}
+          </Button>
         )}
       </div>
     </div>

@@ -17,3 +17,6 @@ code {
 p {
   word-break: break-all;
 }
+.ant-layout {
+  background-color: #fff !important;
+}

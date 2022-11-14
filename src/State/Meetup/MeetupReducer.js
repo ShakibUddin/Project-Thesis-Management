@@ -21,7 +21,7 @@ export default function MeetupReducer(state = initialState, action) {
 
   switch (action.type) {
     case AuthActions.LOGOUT: {
-      state = initialState;
+      state = { ...initialState };
       break;
     }
     case actions.REMOVE_MEETUP: {

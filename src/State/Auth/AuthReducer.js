@@ -97,7 +97,7 @@ export default function AuthReducer(state = initialState, action) {
       break;
     }
     case actions.LOGOUT: {
-      state = initialState;
+      state = { ...initialState };
       break;
     }
     default: {

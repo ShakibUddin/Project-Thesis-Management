@@ -30,7 +30,7 @@ export default function AuthReducer(state = initialState, action) {
 
   switch (action.type) {
     case AuthActions.LOGOUT: {
-      state = initialState;
+      state = { ...initialState };
       break;
     }
     case actions.GET_ALL_STUDENTS.REQUESTED: {

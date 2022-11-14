@@ -32,14 +32,18 @@ export default function LoginPage() {
     }
   }, [user]);
   return (
-    <div className="flex">
-      <div className="w-1/2 flex flex-col justify-center items-center">
-        <p className="text-3xl font-extrabold">Login</p>
-        <p className="text-2xl">Manage your thesis or project progress</p>
+    <div className="w-full flex justify-center align-middle">
+      <div
+        className={`h-screen flex flex-col justify-center items-center ${styles.leftDiv}`}
+      >
+        <p className="text-4xl font-extrabold mb-0 text-blue-500">Login</p>
+        <p className="text-xl text-center p-4 mb-4 font-bold">
+          Manage your thesis or project progress
+        </p>
         <Form
           name="basic"
           labelCol={{
-            span: 8,
+            span: 10,
           }}
           wrapperCol={{
             span: 16,
@@ -81,7 +85,7 @@ export default function LoginPage() {
           )}
           <Form.Item
             wrapperCol={{
-              offset: 8,
+              offset: 10,
               span: 16,
             }}
           >
@@ -91,7 +95,9 @@ export default function LoginPage() {
           </Form.Item>
         </Form>
       </div>
-      <div className="w-1/2 flex justify-center items-center">
+      <div
+        className={`w-1/2 flex justify-center items-center ${styles.rightDiv}`}
+      >
         <img className="w-100" src={loginRightImage}></img>
       </div>
     </div>

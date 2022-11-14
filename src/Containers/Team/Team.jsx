@@ -122,18 +122,17 @@ export default function Team() {
             teamDetails.length ? (
               <div className={styles.studentContainer}>
                 {teamDetails.map((teammate) => {
-                  if (teammate.nub_id !== currentUser.nub_id)
-                    return (
-                      <UserCard
-                        name={teammate.name}
-                        id={teammate.nub_id}
-                        department={teammate.department_name}
-                        program={teammate.program_name}
-                        avatar={teammate.avatar}
-                        leader={teammate.team_leader}
-                        showDeleteOption={currentUser.team_leader === 1}
-                      />
-                    );
+                  return (
+                    <UserCard
+                      name={teammate.name}
+                      id={teammate.nub_id}
+                      department={teammate.department_name}
+                      program={teammate.program_name}
+                      avatar={teammate.avatar}
+                      leader={teammate.team_leader}
+                      showDeleteOption={currentUser.team_leader === 1}
+                    />
+                  );
                 })}
               </div>
             ) : (
