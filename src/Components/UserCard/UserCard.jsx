@@ -9,7 +9,16 @@ import * as NotificationsActions from "../../State/Notifications/NotificationsAc
 import Loader from "../Loader/Loader";
 import * as AuthActions from "../../State/Auth/AuthActions.js";
 import { AVATAR_BASE } from "../../Constants/ImageConstants.js";
-import { Button, notification } from "antd";
+import { Button, notification, Tooltip } from "antd";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faIdBadge,
+  faBuilding,
+  faShieldHalved,
+  faGear,
+} from "@fortawesome/free-solid-svg-icons";
+import CardRow from "./CardRow/CardRow";
+
 export default function UserCard({
   name,
   id,
@@ -161,55 +170,71 @@ export default function UserCard({
   return (
     <div className={styles.container}>
       <div>
-        <div className={styles.leftDiv}>
+        <div className={styles.topDiv}>
           <div className={styles.avatarContainer}>
             <img
               className={styles.avatar}
               src={avatar ? `${AVATAR_BASE}${avatar}` : defaultAvatar}
               alt=""
             />
-            {leader === 1 ? (
-              <p className="font-bold text-green-800 text-center text-lg m-0">
-                Team Leader
-              </p>
-            ) : (
-              <p></p>
+            {leader === 1 && (
+              <Tooltip title="Team Leader" placement="bottom">
+                <icon>
+                  <FontAwesomeIcon
+                    className={styles.leaderIcon}
+                    icon={faShieldHalved}
+                  />
+                </icon>
+              </Tooltip>
             )}
+            <p className="text-lg font-bold text-center text-white">{name}</p>
           </div>
         </div>
-        <div className={styles.rightDiv}>
-          <p className={styles.detailsText}>Name: {name}</p>
-          <p className={styles.detailsText}>Id: {id}</p>
-          <p className={styles.detailsText}>Department: {department}</p>
-          <p className={styles.detailsText}>Program: {program}</p>
+        <div className={styles.bottomDiv}>
+          <CardRow icon={faIdBadge} title={"NUB Id"} details={id} />
+          <CardRow
+            icon={faBuilding}
+            title={"Department"}
+            details={department}
+          />
+          <CardRow icon={faGear} title={"Program"} details={program} />
         </div>
       </div>
       <div className={styles.action}>
         {showingNotification && (
           <div className={styles.memberRequestActionButtonDiv}>
             {!data?.memberRequestRejected && (
-              <Button
-                loading={loadingAcceptRequest}
+              <button
                 onClick={acceptMemberRequest}
                 className={[styles.actionButton, styles.acceptButton].join(" ")}
               >
-                {data?.memberRequestAccepted ? "Accepted" : "Accept"}
-              </Button>
+                {loadingAcceptRequest ? (
+                  <Loader />
+                ) : data?.memberRequestAccepted ? (
+                  "Accepted"
+                ) : (
+                  "Accept"
+                )}
+              </button>
             )}
             {!data?.memberRequestAccepted && (
-              <Button
-                loading={loadingRejectRequest}
+              <button
                 onClick={rejectMemberRequest}
                 className={[styles.actionButton, styles.rejectButton].join(" ")}
               >
-                {data?.memberRequestRejected ? "Rejected" : "Reject"}
-              </Button>
+                {loadingRejectRequest ? (
+                  <Loader />
+                ) : data?.memberRequestRejected ? (
+                  "Rejected"
+                ) : (
+                  "Reject"
+                )}
+              </button>
             )}
           </div>
         )}
         {showRequestActions && (
-          <Button
-            loading={loading}
+          <button
             disabled={disableButton}
             onClick={sendMemberRequest}
             className={[
@@ -217,12 +242,11 @@ export default function UserCard({
               disableButton ? styles.disabled : styles.active,
             ].join(" ")}
           >
-            {disableButton ? "Pending" : requestStatus}
-          </Button>
+            {loading ? <Loader /> : disableButton ? "Pending" : requestStatus}
+          </button>
         )}
         {showDeleteOption && id !== currentUser.nub_id && (
           <Button
-            loading={loadingRemoveTeammate}
             disabled={disableButton}
             onClick={removeTeammate}
             className={[
@@ -230,7 +254,13 @@ export default function UserCard({
               disableButton ? styles.disabled : styles.active,
             ].join(" ")}
           >
-            {disableButton ? "Removed" : "Remove"}
+            {loadingRemoveTeammate ? (
+              <Loader />
+            ) : disableButton ? (
+              "Removed"
+            ) : (
+              "Remove"
+            )}
           </Button>
         )}
       </div>

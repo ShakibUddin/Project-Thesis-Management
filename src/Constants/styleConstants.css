@@ -1,10 +1,10 @@
 :root {
-  --primaryColor: #7044e7;
+  --primaryColor: #001529;
   --cardColor: #ebedff;
-  --activeActionButtonColor: #7044e7;
+  --activeActionButtonColor: #001529;
   --disabledActionButtonColor: #dfdfdf;
   --activeActionButtonTextColor: rgb(207, 207, 207);
-  --disabledActionButtonTextColor: #7044e7;
+  --disabledActionButtonTextColor: #001529;
   --acceptButtonColor: #63d17b;
   --memberRequestActionButtonTextColor: #ffffff;
   --rejectButtonColor: #d16363;
