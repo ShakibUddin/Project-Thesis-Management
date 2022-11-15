@@ -246,7 +246,7 @@ export default function UserCard({
           </button>
         )}
         {showDeleteOption && id !== currentUser.nub_id && (
-          <Button
+          <button
             disabled={disableButton}
             onClick={removeTeammate}
             className={[
@@ -261,7 +261,7 @@ export default function UserCard({
             ) : (
               "Remove"
             )}
-          </Button>
+          </button>
         )}
       </div>
     </div>

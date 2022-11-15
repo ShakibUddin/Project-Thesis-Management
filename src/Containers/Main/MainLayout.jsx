@@ -82,6 +82,16 @@ export default function MainLayout() {
                 <Link to="/meetup">Meetups</Link>
               </Menu.Item>
             ))}
+          {user.member_status_id === 5 && (
+            <Menu.Item key="8" icon={<UploadOutlined />}>
+              <Link to="/manage_students">Manage Students</Link>
+            </Menu.Item>
+          )}
+          {user.member_status_id === 5 && (
+            <Menu.Item key="9" icon={<UploadOutlined />}>
+              <Link to="/manage_supervisors">Manage Supervisors</Link>
+            </Menu.Item>
+          )}
           <Menu.Item key="6" icon={<UserOutlined />}>
             <Link to="/settings">Settings</Link>
           </Menu.Item>
@@ -97,7 +107,6 @@ export default function MainLayout() {
           className="site-layout-sub-header-background"
           style={{
             padding: 0,
-            marginBottom: "1rem",
           }}
         />
         <Content

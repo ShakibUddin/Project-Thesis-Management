@@ -1,0 +1,20 @@
+@import "../../Constants//styleConstants.css";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+  border-radius: 20px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  padding: 1rem;
+  margin: 1rem;
+  background-color: var(--primaryColor);
+  color: white;
+}
+
+.topDiv {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}

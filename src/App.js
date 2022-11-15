@@ -11,6 +11,8 @@ import Team from "./Containers/Team/Team";
 import PrivateRoutes from "./Utils/PrivateRoutes";
 import StudentNotifications from "./Containers/Notifications/StudentNotifications";
 import Proposals from "./Containers/Proposals/Proposals";
+import ManageStudent from "./Containers/ManageStudent/ManageStudent";
+import ManageSupervisor from "./Containers/ManageSupervisor/ManageSupervisor";
 
 function App() {
   return (
@@ -26,6 +28,8 @@ function App() {
               <Route path="project" element={<StudentProjectThesis />} />
               <Route path="meetup" element={<Meetups />} />
               <Route path="settings" element={<Settings />} />
+              <Route path="manage_students" element={<ManageStudent />} />
+              <Route path="manage_supervisors" element={<ManageSupervisor />} />
             </Route>
           </Route>
           <Route path="login" element={<LoginPage />} />
