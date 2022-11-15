@@ -1,14 +1,16 @@
 import { UploadOutlined } from "@ant-design/icons";
-import { Button, message, Upload } from "antd";
+import { Button, Form, Input, message, Upload } from "antd";
 import React, { useState } from "react";
 import ImgCrop from "antd-img-crop";
 import { BASE_URL, PATHS } from "../../Constants/ApiConstants";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import styles from "./settings.module.css";
 const App = () => {
   const currentUser = useSelector((state) => state.auth.user);
   const [fileList, setFileList] = useState([]);
   const [uploading, setUploading] = useState(false);
+  const [uploadable, setUploadable] = useState(false);
   const path = BASE_URL + PATHS.PROFILE_PICTURE_UPLOAD;
 
   const handleUpload = () => {
@@ -66,7 +68,12 @@ const App = () => {
       if (!isLt2M) {
         message.error("Image must smaller than 500kb!");
       }
-      if (isJpgOrPng && isLt2M) setFileList([file]);
+      if (isJpgOrPng && isLt2M) {
+        setUploadable(true);
+        setFileList([file]);
+      } else {
+        setUploadable(false);
+      }
       return false;
     },
     fileList,
@@ -74,24 +81,93 @@ const App = () => {
   const onChange = ({ fileList: newFileList }) => {
     setFileList(newFileList);
   };
+  const onFinish = (values) => {
+    console.log("Success:", values);
+  };
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
   return (
-    <div className="w-full h-screen">
-      <ImgCrop rotate>
-        <Upload onChange={onChange} {...props}>
-          {fileList?.length < 1 && "Upload"}
-        </Upload>
-      </ImgCrop>
-      <Button
-        type="primary"
-        onClick={handleUpload}
-        disabled={fileList?.length === 0}
-        loading={uploading}
-        style={{
-          marginTop: 16,
-        }}
-      >
-        {uploading ? "Uploading" : "Start Upload"}
-      </Button>
+    <div className="w-full h-screen overflow-x-hidden">
+      <div className={styles.container}>
+        <p className="text-xl font-semibold">Upload Profile Picture</p>
+        <ImgCrop rotate>
+          <Upload onChange={onChange} {...props}>
+            {fileList?.length < 1 && "Upload"}
+          </Upload>
+        </ImgCrop>
+        <Button
+          type="primary"
+          onClick={handleUpload}
+          disabled={fileList?.length === 0 || !uploadable}
+          loading={uploading}
+          style={{
+            marginTop: 16,
+          }}
+        >
+          {uploading ? "Uploading" : "Start Upload"}
+        </Button>
+      </div>
+      <div className={styles.container}>
+        <p className="text-xl font-semibold">Reset Password</p>
+        <Form
+          name="basic"
+          labelCol={{
+            span: 4,
+          }}
+          initialValues={{
+            remember: true,
+          }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          autoComplete="off"
+        >
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: "Please input your password!",
+              },
+            ]}
+          >
+            <Input.Password />
+          </Form.Item>
+          <Form.Item
+            label="Confirm Password"
+            name="confirmPassword"
+            rules={[
+              {
+                required: true,
+                message: "Please input your password again!",
+              },
+            ]}
+          >
+            <Input.Password />
+          </Form.Item>
+
+          <Form.Item
+            name="remember"
+            valuePropName="checked"
+            wrapperCol={{
+              offset: 8,
+              span: 16,
+            }}
+          ></Form.Item>
+
+          <Form.Item
+            wrapperCol={{
+              offset: 8,
+              span: 16,
+            }}
+          >
+            <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
     </div>
   );
 };
