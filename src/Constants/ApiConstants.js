@@ -37,4 +37,6 @@ export const PATHS = {
   UPLAOD_ENROLLED_STUDENTS_DATA: "import-excel",
   UPLAOD_SUPERVISORS_DATA: "importAcadExcel",
   PROFILE_PICTURE_UPLOAD: "api/images/profileImage",
+  GET_ALL_STUDENTS_DETAILS: "api/users/getTotalStudents",
+  GET_ALL_SUPERVISORS_DETAILS: "api/users/getTotalSupervisors",
 };

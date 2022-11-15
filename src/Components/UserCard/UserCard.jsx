@@ -178,14 +178,7 @@ export default function UserCard({
               alt=""
             />
             {leader === 1 && (
-              <Tooltip title="Team Leader" placement="bottom">
-                <icon>
-                  <FontAwesomeIcon
-                    className={styles.leaderIcon}
-                    icon={faShieldHalved}
-                  />
-                </icon>
-              </Tooltip>
+              <span className={styles.leaderTitle}>Team Leader</span>
             )}
             <p className="text-lg font-bold text-center text-white">{name}</p>
           </div>

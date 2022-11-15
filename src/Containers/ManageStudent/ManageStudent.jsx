@@ -1,10 +1,28 @@
 import { Button, message, Upload } from "antd";
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { BASE_URL, PATHS } from "../../Constants/ApiConstants.js";
-import "./ManageStudent.module.css";
+import styles from "./ManageStudent.module.css";
 import { UploadOutlined } from "@ant-design/icons";
+import MUIDataTable from "mui-datatables";
+import { useEffect } from "react";
+import * as ACADActions from "../../State/ACAD/ACADActions.js";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUpload } from "@fortawesome/free-solid-svg-icons";
+const columns = ["Name", "ID", "Department", "Program", "Email"];
 
+const options = {
+  filter: "false",
+  sort: "true",
+  selectableRows: false,
+  responsive: "scroll",
+  print: false,
+  pagination: false,
+  downloadOptions: {
+    filename: "students.csv",
+    separator: ",",
+  },
+};
 const studentDetailsUploadPath = BASE_URL + PATHS.UPLAOD_ENROLLED_STUDENTS_DATA;
 const studentUploadProps = {
   name: "excelFile",
@@ -36,10 +54,31 @@ const beforeUpload = (file) => {
 };
 
 export default function ManageStudent() {
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.auth?.user);
+  const token = useSelector((state) => state.auth?.user?.token);
+  const students = useSelector((state) => state.acad?.students);
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    dispatch(ACADActions.getAllStudentsDetails({ token }));
+  }, []);
+
+  useEffect(() => {
+    const studentData = [];
+    students.forEach((student) => {
+      studentData.push([
+        student.name,
+        student.id,
+        student.department_name,
+        student.program_name,
+        student.email,
+      ]);
+    });
+    setData([...studentData]);
+  }, [students]);
   return (
     <div className="flex w-full h-screen">
-      <div>
+      <div className="w-full mt-8">
         <div className="flex flex-col justify-start align-middle w-1/2">
           <span className="mb-2 text-lg">Enrolled Student Details:</span>
           <span className="mb-2 text-sm text-blue-500">
@@ -47,8 +86,21 @@ export default function ManageStudent() {
           </span>
 
           <Upload beforeUpload={beforeUpload} {...studentUploadProps}>
-            <Button icon={<UploadOutlined />}>Click to Upload</Button>
+            <button className={styles.buttonStyle} icon={<UploadOutlined />}>
+              <icon>
+                <FontAwesomeIcon icon={faUpload} />
+              </icon>{" "}
+              Click to Upload
+            </button>
           </Upload>
+        </div>
+        <div className={`w-full mt-10 ${styles.customTable}`}>
+          <MUIDataTable
+            title={"Students List"}
+            data={data}
+            columns={columns}
+            options={options}
+          />
         </div>
       </div>
     </div>
