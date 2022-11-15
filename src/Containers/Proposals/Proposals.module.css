@@ -4,9 +4,10 @@
   height: 100%;
   flex-wrap: wrap;
 }
-.checkbox {
-  width: 100px;
+
+.proposalContainer label {
+  font-size: 1.3rem !important;
 }
-.checkbox > span {
-  width: 100%;
+.checkbox {
+  width: 100px !important;
 }

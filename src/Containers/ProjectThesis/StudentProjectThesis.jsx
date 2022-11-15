@@ -249,7 +249,7 @@ export default function StudentProjectThesis() {
                           "Please describe your project in at least 10 characters",
                       },
                     ]}
-                    label="Technologies"
+                    label="Tools"
                     name="technologies"
                   >
                     <TextArea rows={4} />

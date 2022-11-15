@@ -5,7 +5,7 @@ import styles from "./Proposals.module.css";
 import * as ProposalActions from "../../State/Proposal/ProposalActions.js";
 import { Checkbox, notification } from "antd";
 import Loader from "../../Components/Loader/Loader";
-
+import noMoreProposals from "../../Assets/noMoreProposals.webp";
 export default function Proposals() {
   const dispatch = useDispatch();
   const [autoAssignSupervisor, setAutoAssignSupervisor] = useState(false);
@@ -48,16 +48,16 @@ export default function Proposals() {
   }, [approveProposalError]);
 
   return (
-    <div className="w-full h-screen">
+    <div className="w-full h-screen mt-4">
       <div className={styles.proposalContainer}>
         {proposalsLoading ? (
           <Loader />
         ) : proposals.length ? (
           <div className="w-full flex flex-col justify-start align-top">
-            <div className="w-30 p-2 mr-auto">
-              <Checkbox className={styles.checkbox} onChange={onChange}>
-                Auto assign supervisor
-              </Checkbox>
+            <div className="w-64 p-2 mr-auto  align-middle">
+              <input className="w-5 h-5" type="checkbox" onChange={onChange} />
+              <label> Auto assign supervisor</label>
+              <br></br>
             </div>
             {proposals.map((proposal) => (
               <ProposalCard
@@ -71,7 +71,14 @@ export default function Proposals() {
             ))}
           </div>
         ) : (
-          <p>You don't have any pending proposals at this moment</p>
+          <>
+            <p className="text-center text-2xl mx-auto">
+              You don't have any pending proposals at this moment
+            </p>
+            <div className="w-full p-4 m-4">
+              <img className="w-full" src={noMoreProposals} alt="" />
+            </div>
+          </>
         )}
       </div>
     </div>

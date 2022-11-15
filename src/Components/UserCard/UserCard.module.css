@@ -7,8 +7,7 @@
   min-width: 300px;
   max-width: 300px !important;
   flex-direction: column;
-  background-color: var(--cardColor);
-  border-radius: 10px;
+  background-color: white;
   margin: 1rem;
 }
 
@@ -24,6 +23,8 @@
   flex-direction: column;
   align-items: flex-start;
   padding: 1rem;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
 }
 
 .bottomDiv p {
@@ -71,6 +72,8 @@
   align-items: center;
   background-color: var(--primaryColor);
   position: relative;
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
 }
 
 .avatar {
@@ -107,11 +110,11 @@
 }
 
 .leaderTitle {
-  color: rgb(15, 161, 15);
-  height: 32px;
-  height: 32px;
+  background-color: rgb(15, 161, 15);
+  color: white;
   position: absolute;
   top: 0;
   left: 0;
-  padding: 1rem;
+  padding: 0.4rem 0.3rem;
+  border-radius: 20px;
 }

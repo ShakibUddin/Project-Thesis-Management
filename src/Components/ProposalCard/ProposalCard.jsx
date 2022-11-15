@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import UserCard from "../UserCard/UserCard";
 import styles from "./ProposalCard.module.css";
-import { Collapse, Select } from "antd";
+import { Alert, Collapse, Select } from "antd";
 import { Button, Form, Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import * as ProposalActions from "../../State/Proposal/ProposalActions.js";
 import TextArea from "antd/lib/input/TextArea";
 import { useEffect } from "react";
+import { AVATAR_BASE } from "../../Constants/ImageConstants.js";
+import defaultAvatar from "../../Assets/avatar.jpg";
 
 const { Panel } = Collapse;
 
@@ -147,8 +149,8 @@ export default function ProposalCard({
     <div
       className={`flex flex-col justify-start align-top w-full p-4 mb-3 ${styles.proposalCard}`}
     >
-      <Collapse defaultActiveKey={["1"]} onChange={onChange}>
-        <Panel header="Project" key="1">
+      <div className="flex justify-between w-full">
+        <div className="w-7/12 p-2">
           <span
             className={
               project_status_id === 2
@@ -156,7 +158,7 @@ export default function ProposalCard({
                 : project_status_id === 3 && styles.completeStatus
             }
           ></span>
-          {currentUser.member_status_id === 3 && (
+          {currentUser.member_status_id === 2 && (
             <p>
               <b>Type:</b>{" "}
               {project === 1 ? "Project" : thesis === 1 && "Thesis"}
@@ -169,34 +171,50 @@ export default function ProposalCard({
             <b>Description:</b> {description}
           </p>
           <p>
-            <b>Technologies:</b> {technologies}
+            <b>Tools:</b> {technologies}
           </p>
           {currentUser.member_status_id === 3 && (
             <p>
               <b>Total Completed Meetups:</b> {total_meetup}
             </p>
           )}
-        </Panel>
-        <Panel header="Team" key="2">
-          <div className={styles.studentContainer}>
-            {teamDetails.map((member) => (
-              <UserCard
-                name={member.name}
-                id={member.nub_id}
-                department={member.department_name}
-                program={member.program_name}
-                leader={member.team_leader}
-                avatar={member.avatar}
-              />
-            ))}
-          </div>
-        </Panel>
-        {projectDetails?.feedback?.length > 0 && (
-          <Panel header="Previous Feedback" key="3">
-            <p>{projectDetails.feedback}</p>
-          </Panel>
-        )}
-      </Collapse>
+        </div>
+
+        <div className="flex flex-col w-4/12 ml-auto p-2">
+          <p className="text-2xl font-extrabold">Team:</p>
+          {teamDetails.map((member) => (
+            <div className="flex mb-4">
+              <div className="w-1/6 mr-2">
+                <img
+                  className={styles.avatar}
+                  src={
+                    member.avatar
+                      ? `${AVATAR_BASE}${member.avatar}`
+                      : defaultAvatar
+                  }
+                  alt=""
+                />
+              </div>
+              <div className="flex flex-col">
+                <p className="m-0 font-bold">
+                  {member.name}
+                  {member.team_leader === 1 && "(Team Leader)"}
+                </p>
+                <p className="m-0">{member.nub_id}</p>
+                <p className="m-0">
+                  {member.department_name}({member.program_name})
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      {projectDetails?.feedback?.length > 0 && (
+        <div>
+          <p className="font-bold text-2xl">Previous Feedback:</p>
+          <Alert message={projectDetails.feedback} type="info" />
+        </div>
+      )}
 
       {currentUser.member_status_id === 2 && (
         <div className="flex justify-center align-middle flex-wrap">

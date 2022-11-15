@@ -18,5 +18,5 @@ p {
   word-break: break-all;
 }
 .ant-layout {
-  background-color: #fff !important;
+  background-color: rgb(255, 255, 255) !important;
 }

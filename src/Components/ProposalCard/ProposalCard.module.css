@@ -2,6 +2,7 @@
   display: flex;
   width: 100%;
   flex-wrap: wrap;
+  word-break: break-all;
 }
 .actionButton {
   border-radius: 10px;
@@ -23,8 +24,11 @@
   background-color: var(--rejectButtonColor);
 }
 .proposalCard {
-  background-color: var(--cardColor);
+  background-color: #fff;
   border-radius: 15px;
+}
+.proposalCard p {
+  font-size: 1.2rem;
 }
 .ongoingStatus {
   color: var(--ongoingStatus);
@@ -32,4 +36,10 @@
 
 .completeStatus {
   color: var(--completeStatus);
+}
+.avatar {
+  width: 55px;
+  height: 55px;
+  margin-top: 6px;
+  border-radius: 60px;
 }
