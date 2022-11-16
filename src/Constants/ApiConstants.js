@@ -39,4 +39,5 @@ export const PATHS = {
   PROFILE_PICTURE_UPLOAD: "api/images/profileImage",
   GET_ALL_STUDENTS_DETAILS: "api/users/getTotalStudents",
   GET_ALL_SUPERVISORS_DETAILS: "api/users/getTotalSupervisors",
+  RESET_PASSWORD: "api/users/updatePassword",
 };

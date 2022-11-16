@@ -9,6 +9,7 @@ import ProjectCard from "../../Components/ProjectCard/ProjectCard";
 import Loader from "../../Components/Loader/Loader";
 import FormSubmitButton from "../../Components/FormSubmitButton/FormSubmitButton";
 import formTeam from "../../Assets/formTeam.jpg";
+import cantFillUpForm from "../../Assets/cantFillUpForm.webp";
 
 const { TextArea } = Input;
 
@@ -121,7 +122,7 @@ export default function StudentProjectThesis() {
 
   return (
     <div
-      className="w-full h-screen overflow-x-hidden"
+      className="w-full overflow-x-hidden mt-4"
       style={{ fontSize: "1.5rem" }}
     >
       {currentUser.total_members >= 3 ? (
@@ -140,7 +141,7 @@ export default function StudentProjectThesis() {
               feedback={projectDetails.feedback}
               handleEdit={handleEdit}
             />
-          ) : (
+          ) : currentUser?.team_leader === 1 ? (
             <div>
               <p className="text-center font-bold">
                 Fill up your project details
@@ -277,6 +278,19 @@ export default function StudentProjectThesis() {
                 </Form>
               )}
             </div>
+          ) : (
+            <>
+              <p className="text-center">
+                Only team leader can fill up project proposal form
+              </p>
+              <div className="w-full p-4 m-4">
+                <img
+                  className="lg:w-3/5 md:w-4/5 sm:w-full mx-auto"
+                  src={cantFillUpForm}
+                  alt=""
+                />
+              </div>
+            </>
           )}
           {projectDetails.project_status === 3 && (
             <Form
@@ -324,7 +338,11 @@ export default function StudentProjectThesis() {
             Please form a team before sending project proposal
           </p>
           <div className="w-full p-4 m-4">
-            <img className="w-full" src={formTeam} alt="" />
+            <img
+              className="lg:w-3/5 md:w-4/5 sm:w-full mx-auto"
+              src={formTeam}
+              alt=""
+            />
           </div>
         </>
       )}

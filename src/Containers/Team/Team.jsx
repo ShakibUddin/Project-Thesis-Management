@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as TeamActions from "../../State/Team/TeamActions";
 import UserCard from "../../Components/UserCard/UserCard";
 import { Tabs } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 import Loader from "../../Components/Loader/Loader";
 import StudentNotifications from "../Notifications/StudentNotifications";
 import ProposalCard from "../../Components/ProposalCard/ProposalCard";
@@ -12,6 +13,7 @@ import * as NotificationsActions from "../../State/Notifications/NotificationsAc
 import noTeamMate from "../../Assets/noTeamMate.png";
 import noRequests from "../../Assets/noRequests.webp";
 import noMoreTeamMates from "../../Assets/noMoreTeamMates.webp";
+
 import { useState } from "react";
 const { Search } = Input;
 
@@ -26,7 +28,7 @@ const openNotification = (message) => {
 export default function Team() {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.auth?.user);
-  const totalTeamMmbers = useSelector(
+  const totalTeamMembers = useSelector(
     (state) => state.auth?.user?.total_members
   );
   const students = useSelector((state) => state.team?.students);
@@ -45,6 +47,13 @@ export default function Team() {
   );
   const supervisorTeamDetailsLoading = useSelector(
     (state) => state.team?.supervisorTeamDetailsLoading
+  );
+  const memberRequestNotifications = useSelector(
+    (state) => state.notifications?.memberRequestNotifications
+  );
+
+  const memberRequestNotificationsLoading = useSelector(
+    (state) => state.notifications?.memberRequestNotificationsLoading
   );
 
   const token = useSelector((state) => state.auth?.user?.token);
@@ -106,18 +115,18 @@ export default function Team() {
           onChange={(key) => {
             // setSelectedKey(key);
             console.log("key", key);
-            if (key === "1" && totalTeamMmbers > 1) {
+            if (key === "1") {
               getTeamDetailsForCurrentMember();
-            } else if (key === "2" && totalTeamMmbers < 3) {
+            } else if (key === "2" && totalTeamMembers < 3) {
               getAllStudents();
-            } else if (key === "3" && totalTeamMmbers < 3) {
+            } else if (key === "3" && totalTeamMembers < 3) {
               getAllMemberRequests();
             }
           }}
         >
           <Tabs.TabPane tab="My Team" key="1">
             {currentUser.member_status_id === 1 &&
-            totalTeamMmbers > 1 &&
+            totalTeamMembers > 1 &&
             teamDetails.length ? (
               <div className={styles.studentContainer}>
                 {teamDetails.map((teammate) => {
@@ -142,11 +151,15 @@ export default function Team() {
                     )
                   : currentUser.member_status_id === 1 && (
                       <>
-                        <p className="text-center text-2xl">
+                        <p className="text-center lg:text-2xl md:text-xl sm:text-lg">
                           You don't have any team mates yet!
                         </p>
                         <div className="w-full p-4 m-4">
-                          <img className="w-full" src={noTeamMate} alt="" />
+                          <img
+                            className="lg:w-3/5 md:w-4/5 sm:w-full mx-auto"
+                            src={noTeamMate}
+                            alt=""
+                          />
                         </div>
                       </>
                     )}
@@ -168,11 +181,15 @@ export default function Team() {
                     )
                   : currentUser.member_status_id === 3 && (
                       <>
-                        <p className="text-center text-2xl">
+                        <p className="text-center lg:text-2xl md:text-xl sm:text-lg">
                           You don't have any team mates yet!
                         </p>
                         <div className="w-full p-4 m-4">
-                          <img className="w-full" src={noRequests} alt="" />
+                          <img
+                            className="lg:w-3/5 md:w-4/5 sm:w-full mx-auto"
+                            src={noRequests}
+                            alt=""
+                          />
                         </div>
                       </>
                     )}
@@ -181,7 +198,7 @@ export default function Team() {
           </Tabs.TabPane>
           {currentUser.member_status_id === 1 && (
             <Tabs.TabPane tab="Get Teammates" key="2">
-              {totalTeamMmbers < 3 ? (
+              {totalTeamMembers < 3 ? (
                 <div className={styles.container}>
                   {/* <div>
                   <Search
@@ -192,35 +209,55 @@ export default function Team() {
                   />
                 </div> */}
                   <div className={styles.studentContainer}>
-                    {students.map((student) => (
-                      <UserCard
-                        name={student.name}
-                        id={student.nub_id}
-                        department={student.department_name}
-                        program={student.program_name}
-                        requestStatus={student.request_status}
-                        requestStatusId={student.request_status_id}
-                        avatar={student.avatar}
-                        leader={student.team_leader}
-                        showRequestActions
-                      />
-                    ))}
+                    {students
+                      .sort((a, b) => a.name.localeCompare(b.name))
+                      .map((student) => (
+                        <UserCard
+                          name={student.name}
+                          id={student.nub_id}
+                          department={student.department_name}
+                          program={student.program_name}
+                          requestStatus={student.request_status}
+                          requestStatusId={student.request_status_id}
+                          avatar={student.avatar}
+                          leader={student.team_leader}
+                          showRequestActions
+                        />
+                      ))}
                   </div>
                 </div>
               ) : (
                 <>
-                  <p className="text-center text-2xl">
+                  <p className="text-center lg:text-2xl md:text-xl sm:text-lg">
                     You can not have anymore team mates
                   </p>
-                  <div className="w-full p-4 m-4">
-                    <img className="w-full" src={noMoreTeamMates} alt="" />
+                  <div className="w-full p-4 m-4 h-64">
+                    <img
+                      className="lg:w-3/5 md:w-4/5 sm:w-full mx-auto"
+                      src={noMoreTeamMates}
+                      alt=""
+                    />
                   </div>
                 </>
               )}
             </Tabs.TabPane>
           )}
           {currentUser.member_status_id === 1 && (
-            <Tabs.TabPane tab="My Requests" key="3">
+            <Tabs.TabPane
+              tab={
+                <span>
+                  My Requests
+                  {memberRequestNotifications?.length > 0 && (
+                    <span className="text-white px-2 ml-2 text-lg bg-red-500 rounded-full">
+                      {memberRequestNotificationsLoading
+                        ? 0
+                        : memberRequestNotifications?.length}
+                    </span>
+                  )}
+                </span>
+              }
+              key="3"
+            >
               <StudentNotifications />
             </Tabs.TabPane>
           )}

@@ -22,7 +22,6 @@ const initialState = {
   supervisorTeamDetailsLoading: false,
   supervisorTeamDetails: [],
   supervisorTeamDetailsError: null,
-  acceptedRequest: 0,
 };
 
 export default function AuthReducer(state = initialState, action) {

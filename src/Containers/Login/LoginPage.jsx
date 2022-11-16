@@ -36,7 +36,7 @@ export default function LoginPage() {
   return (
     <div className="w-full flex justify-center align-middle">
       <div
-        className={`h-screen flex flex-col justify-center items-center ${styles.leftDiv}`}
+        className={`flex flex-col justify-center items-center ${styles.leftDiv}`}
       >
         <p className="text-4xl font-extrabold mb-0 ">Login</p>
         <p className="text-xl text-center p-4 mb-4 font-bold">
@@ -98,9 +98,9 @@ export default function LoginPage() {
         </Form>
       </div>
       <div
-        className={`w-1/2 h-screen flex justify-center items-center ${styles.rightDiv}`}
+        className={`w-1/2 flex justify-center items-center ${styles.rightDiv}`}
       >
-        <img className="w-full h-full" src={loginbg}></img>
+        <img className="w-full h-screen" src={loginbg}></img>
       </div>
     </div>
   );

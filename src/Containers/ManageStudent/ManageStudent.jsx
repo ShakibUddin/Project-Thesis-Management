@@ -78,7 +78,7 @@ export default function ManageStudent() {
     setData([...studentData]);
   }, [students]);
   return (
-    <div className="flex w-full h-screen">
+    <div className="flex w-full">
       <div className="w-full mt-8">
         <div className="flex flex-col justify-start align-middle w-1/2">
           <span className="mb-2 text-lg">Enrolled Student Details:</span>

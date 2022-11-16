@@ -44,11 +44,12 @@ export default function Proposals() {
   useEffect(() => {
     if (approveProposalError) {
       openNotification(approveProposalError);
+      dispatch(ProposalActions.removeProposalError());
     }
   }, [approveProposalError]);
 
   return (
-    <div className="w-full h-screen m-4">
+    <div className="w-full m-4">
       <div className="w-full">
         <div className={styles.proposalContainer}>
           {proposalsLoading ? (
@@ -77,11 +78,15 @@ export default function Proposals() {
             </div>
           ) : (
             <>
-              <p className="text-center text-2xl mx-auto">
+              <p className="text-center lg:text-2xl md:text-xl sm:text-lg mx-auto">
                 You don't have any pending proposals at this moment
               </p>
               <div className="w-full p-4 m-4">
-                <img className="w-full" src={noMoreProposals} alt="" />
+                <img
+                  className="lg:w-3/5 md:w-4/5 sm:w-full mx-auto"
+                  src={noMoreProposals}
+                  alt=""
+                />
               </div>
             </>
           )}

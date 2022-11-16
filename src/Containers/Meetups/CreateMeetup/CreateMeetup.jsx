@@ -55,7 +55,7 @@ export default function CreateMeetup({ selectedTeamId, handleTabChange }) {
     }
   }, [createMeetup]);
   return (
-    <div className="w-full h-screen">
+    <div className="w-full">
       <div className="w-full h-auto ">
         <Form
           name="basic"

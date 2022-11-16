@@ -23,7 +23,6 @@ export default function StudentMeetups() {
       const getMeetupsBody = {
         team_id: currentUser.team_id,
       };
-      console.log("getMeetupsBody", getMeetupsBody);
       dispatch(
         MeetupsActions.getMeetups({
           body: getMeetupsBody,
@@ -39,7 +38,7 @@ export default function StudentMeetups() {
   };
 
   return (
-    <div className="h-screen">
+    <div>
       <div className="w-full">
         {Object.keys(meetups).length > 0 && (
           <Tabs
@@ -62,11 +61,15 @@ export default function StudentMeetups() {
                   ))
                 ) : (
                   <>
-                    <p className="text-center text-2xl mx-auto">
+                    <p className="text-center lg:text-2xl md:text-xl sm:text-lg mx-auto">
                       You don't have any pending meetups
                     </p>
                     <div className="w-full p-4 m-4">
-                      <img className="w-full" src={noPendingMeetups} alt="" />
+                      <img
+                        className="lg:w-3/5 md:w-4/5 sm:w-full mx-auto"
+                        src={noPendingMeetups}
+                        alt=""
+                      />
                     </div>
                   </>
                 )}
@@ -87,11 +90,15 @@ export default function StudentMeetups() {
                   ))
                 ) : (
                   <>
-                    <p className="text-center text-2xl mx-auto">
+                    <p className="text-center lg:text-2xl md:text-xl sm:text-lg mx-auto">
                       You don't have any meetups yet
                     </p>
                     <div className="w-full p-4 m-4">
-                      <img className="w-full" src={noCompletedMeetups} alt="" />
+                      <img
+                        className="lg:w-3/5 md:w-4/5 sm:w-full mx-auto"
+                        src={noCompletedMeetups}
+                        alt=""
+                      />
                     </div>
                   </>
                 )}

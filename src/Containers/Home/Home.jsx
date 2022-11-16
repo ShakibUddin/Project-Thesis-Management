@@ -33,6 +33,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import BarChartCard from "../../Components/BarChartCard/BarChartCard";
 import { data } from "autoprefixer";
+import * as NotificationsActions from "../../State/Notifications/NotificationsActions.js";
 
 ChartJS.register(
   CategoryScale,
@@ -57,13 +58,28 @@ export const options = {
 };
 
 export default function Home() {
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.auth?.user);
+  const token = useSelector((state) => state.auth?.user?.token);
   const upcomingMeetups = useSelector(
     (state) => state.auth?.user?.upcoming_meetup_date
   );
 
+  useEffect(() => {
+    if (user.member_status_id === 1) {
+      const body = {
+        receiver_nub_id: user?.nub_id,
+      };
+      dispatch(
+        NotificationsActions.getAllMemberRequestNotifications({
+          body,
+          token,
+        })
+      );
+    }
+  }, [user]);
   return (
-    <div className="flex w-full h-screen">
+    <div className="flex w-full">
       <div className="w-full">
         {(user?.member_status_id === 1 || user?.member_status_id === 3) && (
           <div className="w-full flex flex-wrap mb-10">

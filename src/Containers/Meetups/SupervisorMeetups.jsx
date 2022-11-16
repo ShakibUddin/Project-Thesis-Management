@@ -122,12 +122,11 @@ export default function SupervisorMeetups() {
   const onSearch = (value) => {};
 
   const handleTabChange = (key) => {
-    console.log("change tab to ", key);
     setActiveKey(key);
   };
 
   return (
-    <div className="h-screen">
+    <div className="w-full">
       <div>
         {teamsUnderSupervisor.length > 0 ? (
           <Form
@@ -181,11 +180,15 @@ export default function SupervisorMeetups() {
           <Loader />
         ) : (
           <>
-            <p className="text-center text-2xl">
+            <p className="text-center lg:text-2xl md:text-xl sm:text-lg">
               You are not assigned any teams yet
             </p>
             <div className="w-full p-4 m-4">
-              <img className="w-full" src={noTeamMate} alt="" />
+              <img
+                className="lg:w-3/5 md:w-4/5 sm:w-full mx-auto"
+                src={noTeamMate}
+                alt=""
+              />
             </div>
           </>
         )}

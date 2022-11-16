@@ -24,6 +24,10 @@ export default function ProposalReducer(state = initialState, action) {
       state = { ...initialState };
       break;
     }
+    case actions.REMOVE_PROPOSALS_ERROR: {
+      state.approveProposalError = null;
+      break;
+    }
     case actions.UPDATE_PROPOSALS: {
       state.proposals = state.proposals.filter(
         (proposal) => proposal.project.projectId !== payload

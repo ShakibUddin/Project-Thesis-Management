@@ -33,10 +33,14 @@ export default function UserCard({
   showRequestActions = false,
   memberRequestId = null,
   showDeleteOption = false,
+  getAllMemberNotifications = null,
 }) {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth?.user?.token);
   const currentUser = useSelector((state) => state.auth?.user);
+  const totalTeamMembers = useSelector(
+    (state) => state.auth?.user?.total_members
+  );
   const [loading, setLoading] = useState(false);
   const [loadingAcceptRequest, setLoadingAcceptRequest] = useState(false);
   const [loadingRejectRequest, setLoadingRejectRequest] = useState(false);
@@ -49,19 +53,6 @@ export default function UserCard({
   const disableButton =
     requestStatusId === 1 || data?.requestSent || data?.memberDeleted;
   const acceptedRequest = useSelector((state) => state?.team?.acceptedRequest);
-  useEffect(() => {
-    if (acceptedRequest === 2) {
-      const body = {
-        receiver_nub_id: currentUser?.nub_id,
-      };
-      dispatch(
-        NotificationsActions.getAllMemberRequestNotifications({
-          body,
-          token,
-        })
-      );
-    }
-  }, [acceptedRequest]);
 
   const acceptMemberRequest = () => {
     setLoadingAcceptRequest(true);
@@ -87,7 +78,9 @@ export default function UserCard({
       setMessage(message);
       setError(error);
       setLoadingAcceptRequest(false);
-      dispatch(TeamActions.setAcceptedRequest(acceptedRequest + 1));
+      getAllMemberNotifications();
+      console.log("total_members", totalTeamMembers);
+      dispatch(AuthActions.updateTotalTeamMembers(totalTeamMembers + 1));
     });
   };
 
@@ -133,7 +126,7 @@ export default function UserCard({
       const { data, message, error } = response;
       console.log("error", error);
       if (data.memberDeleted) {
-        dispatch(AuthActions.decreaseTotalTeamMembers());
+        dispatch(AuthActions.updateTotalTeamMembers(totalTeamMembers - 1));
       } else {
         notification.open({
           message,

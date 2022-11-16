@@ -86,9 +86,15 @@ export default function MeetupCard(props) {
   const onChange = (checkedValues) => {};
   return (
     <div
-      onClick={openUpdateMeetupForm}
+      onClick={() => {
+        if (currentUser.member_status_id === 3 && status === Meetup.PENDING) {
+          openUpdateMeetupForm();
+        }
+      }}
       className={`flex flex-col m-2 justify-betwee py-2 px-4 rounded-md shadow-lg w-50 ${
-        currentUser.member_status_id === 3 && "cursor-pointer"
+        currentUser.member_status_id === 3 &&
+        status === Meetup.PENDING &&
+        "cursor-pointer"
       } ${styles.meetupCard}`}
     >
       <p

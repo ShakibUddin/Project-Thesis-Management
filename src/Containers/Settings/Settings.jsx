@@ -1,17 +1,28 @@
 import { UploadOutlined } from "@ant-design/icons";
-import { Button, Form, Input, message, Upload } from "antd";
-import React, { useState } from "react";
+import { Button, Form, Input, message, notification, Upload } from "antd";
+import React, { useEffect, useState } from "react";
 import ImgCrop from "antd-img-crop";
 import { BASE_URL, PATHS } from "../../Constants/ApiConstants";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import styles from "./settings.module.css";
+import * as SettingsAction from "../../State/Setings/SettingsActions.js";
+import * as AuthActions from "../../State/Auth/AuthActions.js";
+import { useNavigate } from "react-router-dom";
+
 const App = () => {
   const currentUser = useSelector((state) => state.auth.user);
+  const resetPassword = useSelector((state) => state.settings.resetPassword);
+  const resetPasswordError = useSelector(
+    (state) => state.settings.resetPasswordError
+  );
+  const token = useSelector((state) => state.auth.user.token);
   const [fileList, setFileList] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [uploadable, setUploadable] = useState(false);
   const path = BASE_URL + PATHS.PROFILE_PICTURE_UPLOAD;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleUpload = () => {
     const formData = new FormData();
@@ -83,12 +94,45 @@ const App = () => {
   };
   const onFinish = (values) => {
     console.log("Success:", values);
+    console.log(values);
+    dispatch(
+      SettingsAction.resetPassword({
+        body: {
+          new_password: values.new_password,
+          old_password: values.old_password,
+          nub_id: currentUser.nub_id,
+        },
+        token,
+      })
+    );
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+  const cleanAuthData = () => {
+    dispatch(AuthActions.logout());
+  };
+
+  useEffect(() => {
+    if (resetPassword) {
+      cleanAuthData();
+      notification.open({
+        message: `${resetPasswordError}, Please Login Again`,
+        placement: "bottomLeft",
+        onClick: () => {},
+      });
+      navigate("/login", { replace: true });
+    } else if (resetPassword === false) {
+      notification.open({
+        message: `${resetPasswordError}`,
+        placement: "bottomLeft",
+        onClick: () => {},
+      });
+    }
+  }, [resetPassword, resetPasswordError]);
+
   return (
-    <div className="w-full h-screen overflow-x-hidden">
+    <div className="w-full overflow-x-hidden">
       <div className={styles.container}>
         <p className="text-xl font-semibold">Upload Profile Picture</p>
         <ImgCrop rotate>
@@ -112,23 +156,46 @@ const App = () => {
         <p className="text-xl font-semibold">Reset Password</p>
         <Form
           name="basic"
-          labelCol={{
-            span: 4,
-          }}
-          initialValues={{
-            remember: true,
-          }}
+          layout="vertical"
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
           <Form.Item
-            label="Password"
-            name="password"
+            label="Current Password"
+            name="old_password"
+            rules={[
+              {
+                required: true,
+                message: "Please input your current password!",
+              },
+              {
+                max: 20,
+                message: "You can not enter more than 20 characters",
+              },
+              {
+                min: 7,
+                message: "Minimum 7 characters is reqired",
+              },
+            ]}
+          >
+            <Input.Password />
+          </Form.Item>
+          <Form.Item
+            label="New Password"
+            name="new_password"
             rules={[
               {
                 required: true,
                 message: "Please input your password!",
+              },
+              {
+                max: 20,
+                message: "You can not enter more than 20 characters",
+              },
+              {
+                min: 8,
+                message: "Minimum 8 characters is reqired",
               },
             ]}
           >
@@ -142,26 +209,33 @@ const App = () => {
                 required: true,
                 message: "Please input your password again!",
               },
+              {
+                max: 20,
+                message: "You can not enter more than 20 characters",
+              },
+              {
+                min: 8,
+                message: "Minimum 8 characters is reqired",
+              },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue("new_password") === value) {
+                    return Promise.resolve();
+                  }
+
+                  return Promise.reject(
+                    new Error(
+                      "The two passwords that you entered do not match!"
+                    )
+                  );
+                },
+              }),
             ]}
           >
             <Input.Password />
           </Form.Item>
 
-          <Form.Item
-            name="remember"
-            valuePropName="checked"
-            wrapperCol={{
-              offset: 8,
-              span: 16,
-            }}
-          ></Form.Item>
-
-          <Form.Item
-            wrapperCol={{
-              offset: 8,
-              span: 16,
-            }}
-          >
+          <Form.Item>
             <Button type="primary" htmlType="submit">
               Submit
             </Button>
