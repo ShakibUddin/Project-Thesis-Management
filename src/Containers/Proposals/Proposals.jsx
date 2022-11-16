@@ -48,38 +48,44 @@ export default function Proposals() {
   }, [approveProposalError]);
 
   return (
-    <div className="w-full h-screen mt-4">
-      <div className={styles.proposalContainer}>
-        {proposalsLoading ? (
-          <Loader />
-        ) : proposals.length ? (
-          <div className="w-full flex flex-col justify-start align-top">
-            <div className="w-64 p-2 mr-auto  align-middle">
-              <input className="w-5 h-5" type="checkbox" onChange={onChange} />
-              <label> Auto assign supervisor</label>
-              <br></br>
+    <div className="w-full h-screen m-4">
+      <div className="w-full">
+        <div className={styles.proposalContainer}>
+          {proposalsLoading ? (
+            <Loader />
+          ) : proposals.length ? (
+            <div className="w-full flex flex-col justify-start align-top">
+              <div className="w-64 p-2 mr-auto  align-middle">
+                <input
+                  className="w-5 h-5"
+                  type="checkbox"
+                  onChange={onChange}
+                />
+                <label> Auto assign supervisor</label>
+                <br></br>
+              </div>
+              {proposals.map((proposal) => (
+                <ProposalCard
+                  projectDetails={proposal.project}
+                  teamDetails={proposal.team}
+                  handleRejectOrApproveProjectProposal={
+                    handleRejectOrApproveProjectProposal
+                  }
+                  autoAssignSupervisor={autoAssignSupervisor}
+                />
+              ))}
             </div>
-            {proposals.map((proposal) => (
-              <ProposalCard
-                projectDetails={proposal.project}
-                teamDetails={proposal.team}
-                handleRejectOrApproveProjectProposal={
-                  handleRejectOrApproveProjectProposal
-                }
-                autoAssignSupervisor={autoAssignSupervisor}
-              />
-            ))}
-          </div>
-        ) : (
-          <>
-            <p className="text-center text-2xl mx-auto">
-              You don't have any pending proposals at this moment
-            </p>
-            <div className="w-full p-4 m-4">
-              <img className="w-full" src={noMoreProposals} alt="" />
-            </div>
-          </>
-        )}
+          ) : (
+            <>
+              <p className="text-center text-2xl mx-auto">
+                You don't have any pending proposals at this moment
+              </p>
+              <div className="w-full p-4 m-4">
+                <img className="w-full" src={noMoreProposals} alt="" />
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

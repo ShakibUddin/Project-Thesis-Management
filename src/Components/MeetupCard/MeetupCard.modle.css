@@ -4,6 +4,10 @@
   flex-wrap: wrap;
 }
 .ant-checkbox-group-item {
+  display: flex;
+  margin-right: 0;
+}
+.ant-checkbox-group-item {
   margin-right: 2rem;
 }
 .meetupCard:hover {
