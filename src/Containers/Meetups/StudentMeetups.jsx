@@ -49,7 +49,7 @@ export default function StudentMeetups() {
           >
             <Tabs.TabPane tab="Pending" key="1">
               <div className="w-full flex flex-wrap justify-start align-top">
-                {Object.keys(meetups).length > 0 ? (
+                {meetups.pending.length > 0 ? (
                   meetups?.pending.map((meetup) => (
                     <MeetupCard
                       id={meetup.meetupId}
@@ -62,7 +62,7 @@ export default function StudentMeetups() {
                   ))
                 ) : (
                   <>
-                    <p className="text-center text-2xl">
+                    <p className="text-center text-2xl mx-auto">
                       You don't have any pending meetups
                     </p>
                     <div className="w-full p-4 m-4">
@@ -74,7 +74,7 @@ export default function StudentMeetups() {
             </Tabs.TabPane>
             <Tabs.TabPane tab="Completed" key="2">
               <div className="w-full flex flex-wrap justify-start align-top">
-                {Object.keys(meetups).length > 0 ? (
+                {meetups.complete.length > 0 ? (
                   meetups?.complete.map((meetup) => (
                     <MeetupCard
                       id={meetup.meetupId}
@@ -87,8 +87,8 @@ export default function StudentMeetups() {
                   ))
                 ) : (
                   <>
-                    <p className="text-center text-2xl">
-                      You don't have any completed meetups
+                    <p className="text-center text-2xl mx-auto">
+                      You don't have any meetups yet
                     </p>
                     <div className="w-full p-4 m-4">
                       <img className="w-full" src={noCompletedMeetups} alt="" />

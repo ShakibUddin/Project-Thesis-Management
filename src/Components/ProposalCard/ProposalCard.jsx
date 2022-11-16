@@ -150,7 +150,7 @@ export default function ProposalCard({
       className={`flex flex-col justify-start align-top w-11/12 p-4 mb-3 ${styles.proposalCard}`}
     >
       <div className="flex justify-between w-full flex-wrap">
-        <div className="w-7/12 p-2">
+        <div className={styles.leftDiv}>
           <span
             className={
               project_status_id === 2
@@ -167,7 +167,7 @@ export default function ProposalCard({
           <p>
             <b>Title:</b> {title}
           </p>
-          <p>
+          <p className="text-justify w-full">
             <b>Description:</b> {description}
           </p>
           <p>
@@ -180,7 +180,7 @@ export default function ProposalCard({
           )}
         </div>
 
-        <div className="flex flex-col w-4/12 ml-auto p-2">
+        <div className={styles.rightDiv}>
           <p className="text-2xl font-extrabold">Team:</p>
           {teamDetails.map((member) => (
             <div className="flex mb-4">
