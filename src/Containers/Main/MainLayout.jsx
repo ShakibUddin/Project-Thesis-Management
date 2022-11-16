@@ -76,12 +76,16 @@ export default function MainLayout() {
               <Link to="/project">Project/Thesis</Link>
             </Menu.Item>
           )}
-          {user.member_status_id === 1 ||
-            (user.member_status_id === 3 && (
-              <Menu.Item key="5" icon={<UserOutlined />}>
-                <Link to="/meetup">Meetups</Link>
-              </Menu.Item>
-            ))}
+          {user.member_status_id === 3 && (
+            <Menu.Item key="5" icon={<UserOutlined />}>
+              <Link to="/supervisor_meetup">Meetups</Link>
+            </Menu.Item>
+          )}
+          {user.member_status_id === 1 && (
+            <Menu.Item key="10" icon={<UserOutlined />}>
+              <Link to="/student_meetup">Meetups</Link>
+            </Menu.Item>
+          )}
           {user.member_status_id === 5 && (
             <Menu.Item key="8" icon={<UploadOutlined />}>
               <Link to="/manage_students">Manage Students</Link>

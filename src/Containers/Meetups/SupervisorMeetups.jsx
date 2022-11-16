@@ -7,9 +7,9 @@ import MeetupCard from "../../Components/MeetupCard/MeetupCard";
 import { LoadingOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import Loader from "../../Components/Loader/Loader";
-const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+import noTeamMate from "../../Assets/noTeamMate.png";
 
-export default function Meetups() {
+export default function SupervisorMeetups() {
   const token = useSelector((state) => state.auth?.user?.token);
   const currentUser = useSelector((state) => state.auth?.user);
   const meetups = useSelector((state) => state.meetup?.meetups);
@@ -180,7 +180,14 @@ export default function Meetups() {
         ) : teamsUnderSupervisorLoading ? (
           <Loader />
         ) : (
-          <p>You are not assigned any teams yet</p>
+          <>
+            <p className="text-center text-2xl">
+              You are not assigned any teams yet
+            </p>
+            <div className="w-full p-4 m-4">
+              <img className="w-full" src={noTeamMate} alt="" />
+            </div>
+          </>
         )}
         {Object.keys(meetups).length > 0 && selectedTeamId && (
           <Tabs

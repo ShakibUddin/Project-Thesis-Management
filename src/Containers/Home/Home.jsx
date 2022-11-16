@@ -30,6 +30,9 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { useEffect } from "react";
+import { useState } from "react";
+import BarChartCard from "../../Components/BarChartCard/BarChartCard";
+import { data } from "autoprefixer";
 
 ChartJS.register(
   CategoryScale,
@@ -53,34 +56,12 @@ export const options = {
   },
 };
 
-const labels = ["January", "February", "March", "April", "May", "June", "July"];
-
-export const meetupsData = {
-  labels,
-  datasets: [
-    {
-      label: "Pending Meetups",
-      data: [10, 20, 10, 15, 16, 20, 30],
-      backgroundColor: "rgb(255, 68, 51)",
-    },
-  ],
-};
-
 export default function Home() {
   const user = useSelector((state) => state.auth?.user);
   const upcomingMeetups = useSelector(
     (state) => state.auth?.user?.upcoming_meetup_date
   );
-  useEffect(() => {
-    if (upcomingMeetups?.length > 0) {
-      const labels = [];
-      const data = [];
-      upcomingMeetups.forEach((meetup) => {
-        labels.push(meetup.meetup_date);
-        data.push(meetup.total);
-      });
-    }
-  }, [upcomingMeetups]);
+
   return (
     <div className="flex w-full h-screen">
       <div className="w-full">
@@ -117,15 +98,13 @@ export default function Home() {
             <DataCard title={"Total Teams"} icon={faPeopleGroup} value={5} />
           </div>
         )}
-        {/* {(user?.member_status_id === 3 || user?.member_status_id === 1) && (
+        {user?.member_status_id === 3 && (
           <div>
             <p className="text-center font-bold text-2xl m-0">Meetups</p>
 
-            <div className="h-96 w-full">
-              <Bar options={options} data={meetupsData} />;
-            </div>
+            <BarChartCard options={options} data={upcomingMeetups} />
           </div>
-        )} */}
+        )}
       </div>
     </div>
   );

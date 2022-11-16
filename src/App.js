@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./Containers/Home/Home";
 import LoginPage from "./Containers/Login/LoginPage";
 import MainLayout from "./Containers/Main/MainLayout";
-import Meetups from "./Containers/Meetups/Meetups";
+import SupervisorMeetups from "./Containers/Meetups/SupervisorMeetups.jsx";
 import StudentProjectThesis from "./Containers/ProjectThesis/StudentProjectThesis";
 import Settings from "./Containers/Settings/Settings";
 import SignupPage from "./Containers/Signup/SignupPage";
@@ -13,6 +13,7 @@ import StudentNotifications from "./Containers/Notifications/StudentNotification
 import Proposals from "./Containers/Proposals/Proposals";
 import ManageStudent from "./Containers/ManageStudent/ManageStudent";
 import ManageSupervisor from "./Containers/ManageSupervisor/ManageSupervisor";
+import StudentMeetups from "./Containers/Meetups/StudentMeetups";
 
 function App() {
   return (
@@ -26,7 +27,8 @@ function App() {
               <Route path="team" element={<Team />} />
               <Route path="proposals" element={<Proposals />} />
               <Route path="project" element={<StudentProjectThesis />} />
-              <Route path="meetup" element={<Meetups />} />
+              <Route path="supervisor_meetup" element={<SupervisorMeetups />} />
+              <Route path="student_meetup" element={<StudentMeetups />} />
               <Route path="settings" element={<Settings />} />
               <Route path="manage_students" element={<ManageStudent />} />
               <Route path="manage_supervisors" element={<ManageSupervisor />} />

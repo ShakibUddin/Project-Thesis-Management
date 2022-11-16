@@ -47,7 +47,7 @@ export default function MeetupCard(props) {
   }, [updateMeetup]);
 
   const openUpdateMeetupForm = () => {
-    showModal();
+    if (currentUser.member_status_id === 3) showModal();
   };
   const studentIds = team.length > 0 && team.map((student) => student.nub_id);
   const convertTo12Hour = (time) => {
@@ -87,7 +87,9 @@ export default function MeetupCard(props) {
   return (
     <div
       onClick={openUpdateMeetupForm}
-      className={`flex flex-col m-2 justify-betwee py-2 px-4 rounded-md shadow-lg w-50 cursor-pointer ${styles.meetupCard}`}
+      className={`flex flex-col m-2 justify-betwee py-2 px-4 rounded-md shadow-lg w-50 ${
+        currentUser.member_status_id === 3 && "cursor-pointer"
+      } ${styles.meetupCard}`}
     >
       <p
         className={`text-center ${
