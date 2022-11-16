@@ -1,6 +1,5 @@
 import React from "react";
 import { Bar } from "react-chartjs-2";
-import { Chart as ChartJS } from "chart.js";
 
 export default function BarChartCard({ options, data }) {
   return (
@@ -17,14 +16,12 @@ export default function BarChartCard({ options, data }) {
               scales: {
                 xAxes: [
                   {
-                    barThickness: 1,
-                    maxBarThickness: 2,
+                    barPercentage: 0.1,
                   },
                 ],
                 yAxes: [
                   {
-                    barThickness: 1,
-                    maxBarThickness: 2,
+                    barPercentage: 0.1,
                   },
                 ],
               },

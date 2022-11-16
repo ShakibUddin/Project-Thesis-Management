@@ -93,12 +93,24 @@ export default function Home() {
         )}
         {(user?.member_status_id === 2 || user?.member_status_id === 5) && (
           <div className="w-full flex flex-wrap mb-10">
-            <DataCard title={"Total Students"} icon={faUserGroup} value={15} />
-            <DataCard title={"Total Supervisors"} icon={faUser} value={5} />
-            <DataCard title={"Total Teams"} icon={faPeopleGroup} value={5} />
+            <DataCard
+              title={"Total Students"}
+              icon={faUserGroup}
+              value={user?.total_students}
+            />
+            <DataCard
+              title={"Total Supervisors"}
+              icon={faUser}
+              value={user?.total_supervisors}
+            />
+            <DataCard
+              title={"Total Teams"}
+              icon={faPeopleGroup}
+              value={user?.total_teams}
+            />
           </div>
         )}
-        {user?.member_status_id === 3 && (
+        {user?.member_status_id === 3 && upcomingMeetups.length > 0 && (
           <div>
             <p className="text-center font-bold text-2xl m-0">Meetups</p>
 
