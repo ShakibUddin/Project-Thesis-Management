@@ -3,14 +3,18 @@ import { Button, Form, Input, Radio, Space, Upload, Modal } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { InboxOutlined } from "@ant-design/icons";
-import "./StudentProjectThesis.module.css";
+import styles from "./StudentProjectThesis.module.css";
 import * as ProjectActions from "../../State/Project/ProjectActions.js";
 import ProjectCard from "../../Components/ProjectCard/ProjectCard";
 import Loader from "../../Components/Loader/Loader";
 import FormSubmitButton from "../../Components/FormSubmitButton/FormSubmitButton";
 import formTeam from "../../Assets/formTeam.jpg";
 import cantFillUpForm from "../../Assets/cantFillUpForm.webp";
-
+import { message } from "antd/lib";
+import { BASE_URL, PATHS } from "../../Constants/ApiConstants";
+import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faFilePdf } from "@fortawesome/free-solid-svg-icons";
 const { TextArea } = Input;
 
 export default function StudentProjectThesis() {
@@ -33,6 +37,10 @@ export default function StudentProjectThesis() {
   const updatedProjectProposalLoading = useSelector(
     (state) => state.project?.updateProjectProposalLoading
   );
+  const paperUploadPath = BASE_URL + PATHS.UPLOAD_PAPER;
+  const [uploading, setUploading] = useState(false);
+  const [fileUploaded, setFileUploaded] = useState(false);
+
   useEffect(() => {
     if (updateProjectProposal) {
       setEditing(false);
@@ -113,6 +121,48 @@ export default function StudentProjectThesis() {
     setEditing(true);
   };
 
+  const beforeUpload = (file) => {
+    const isExcelFile = file.name.split(".").at(-1) === "pdf";
+    if (!isExcelFile) {
+      message.error("You can only upload pdf file!");
+    }
+    const isLt2M = file.size / 1024 < 10240;
+    if (!isLt2M) {
+      message.error("File must smaller than 10mb!");
+    }
+    return isExcelFile && isLt2M;
+  };
+  const paperUploadProps = {
+    customRequest: (options) => {
+      console.log("options", options);
+      const formData = new FormData();
+      formData.append("project_file", options.file);
+      formData.append("project_id", projectDetails?.projectId);
+      setUploading(true);
+      // You can use any AJAX library you like
+      axios({
+        method: "put",
+        url: paperUploadPath,
+        data: formData,
+        headers: {
+          "Content-Type": "multipart/form-data",
+          authorization: `Bearer ${token}`,
+        },
+      })
+        .then(function (response) {
+          console.log(response.data.data.file_path);
+          setFileUploaded(true);
+          message.success("File uploaded successfully.");
+        })
+        .catch(function (response) {
+          message.error("Avatar upload failed.");
+        })
+        .finally(() => {
+          setUploading(false);
+        });
+    },
+    showUploadList: false,
+  };
   return (
     <div
       className="w-full overflow-x-hidden mt-4"
@@ -285,44 +335,69 @@ export default function StudentProjectThesis() {
               </div>
             </>
           )}
-          {projectDetails.project_status === 3 && (
-            <Form
-              name="paper"
-              initialValues={{
-                remember: true,
-              }}
-              onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
-              autoComplete="off"
-            >
-              <Form.Item label="Paper">
-                <Form.Item
-                  name="dragger"
-                  valuePropName="fileList"
-                  getValueFromEvent={normFile}
-                  noStyle
+          {projectDetails.project_status_id === 3 && (
+            <>
+              <div className="m-6">
+                <Form
+                  name="paper"
+                  layout="vertical"
+                  initialValues={{
+                    remember: true,
+                  }}
+                  onFinish={onFinish}
+                  onFinishFailed={onFinishFailed}
+                  autoComplete="off"
                 >
-                  <Upload.Dragger name="files" action="/upload.do">
-                    <p className="ant-upload-drag-icon">
-                      <InboxOutlined />
-                    </p>
-                    <p className="ant-upload-text">
-                      Click or drag file to this area to upload
-                    </p>
-                  </Upload.Dragger>
-                </Form.Item>
-              </Form.Item>
-              <Form.Item
-                wrapperCol={{
-                  offset: 4,
-                }}
-                labelCol={{
-                  span: 1,
-                }}
-              >
-                <FormSubmitButton>Submit</FormSubmitButton>
-              </Form.Item>
-            </Form>
+                  <p className="text-xl font-extrabold">
+                    {projectDetails.project === 1
+                      ? "Upload Project Book:"
+                      : "Upload Thesis Paper:"}
+                  </p>
+                  <Form.Item
+                    name="dragger"
+                    valuePropName="fileList"
+                    getValueFromEvent={normFile}
+                    noStyle
+                  >
+                    <Upload.Dragger
+                      beforeUpload={beforeUpload}
+                      {...paperUploadProps}
+                    >
+                      <p className="ant-upload-drag-icon">
+                        <InboxOutlined />
+                      </p>
+                      <p className="ant-upload-text">
+                        Click or drag file to this area to upload
+                      </p>
+                    </Upload.Dragger>
+                  </Form.Item>
+                  <br />
+                  <Form.Item>
+                    <FormSubmitButton>
+                      {uploading ? <Loader /> : "Upload"}
+                    </FormSubmitButton>
+                  </Form.Item>
+                </Form>
+              </div>
+
+              {fileUploaded ||
+                (projectDetails.paper && (
+                  <div className="m-6">
+                    <span className="text-xl font-extrabold mr-4">
+                      {projectDetails.project === 1
+                        ? "Project Book:"
+                        : "Thesis Paper:"}
+                    </span>
+                    <icon>
+                      <FontAwesomeIcon
+                        className="w-9 h-9 mr-4 cursor-pointer"
+                        icon={faFilePdf}
+                        onClick={handleEdit}
+                      />
+                    </icon>
+                  </div>
+                ))}
+            </>
           )}
         </div>
       ) : (
