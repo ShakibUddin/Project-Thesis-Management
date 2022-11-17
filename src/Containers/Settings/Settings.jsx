@@ -38,10 +38,10 @@ const App = () => {
     })
       .then(function (response) {
         setFileList([]);
-        message.success("upload successfully.");
+        message.success("Avatar uploaded successfully.");
       })
       .catch(function (response) {
-        message.error("upload failed.");
+        message.error("Avatar upload failed.");
       })
       .finally(() => {
         setUploading(false);

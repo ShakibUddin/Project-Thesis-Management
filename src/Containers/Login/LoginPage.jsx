@@ -34,7 +34,7 @@ export default function LoginPage() {
     }
   }, [user]);
   return (
-    <div className="w-full flex justify-center align-middle">
+    <div className="w-full flex justify-center align-middle h-screen">
       <div
         className={`flex flex-col justify-center items-center ${styles.leftDiv}`}
       >

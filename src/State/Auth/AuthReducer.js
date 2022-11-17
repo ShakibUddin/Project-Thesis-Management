@@ -20,7 +20,6 @@ export default function AuthReducer(state = initialState, action) {
 
   switch (action.type) {
     case actions.UPDATE_TOTAL_TEAM_MEMBERS: {
-      console.log("payload", payload);
       state.user.total_members = payload;
       state.user = { ...state.user };
       break;
