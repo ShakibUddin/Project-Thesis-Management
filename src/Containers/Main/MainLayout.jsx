@@ -77,7 +77,7 @@ export default function MainLayout() {
           >
             <Link to="/home">Home</Link>
           </Menu.Item>
-          {(user.member_status_id === 1 || user.member_status_id === 3) && (
+          {user.member_status_id === 1 && (
             <Menu.Item
               key="2"
               icon={<FontAwesomeIcon className="h-3 w-3" icon={faUsers} />}
@@ -85,7 +85,15 @@ export default function MainLayout() {
               <Link to="/team">My Team</Link>
             </Menu.Item>
           )}
-          {user.member_status_id === 2 && (
+          {user.member_status_id === 3 && (
+            <Menu.Item
+              key="2"
+              icon={<FontAwesomeIcon className="h-3 w-3" icon={faUsers} />}
+            >
+              <Link to="/team">Manage Teams</Link>
+            </Menu.Item>
+          )}
+          {user.member_status_id === 4 && (
             <Menu.Item
               key="2"
               icon={

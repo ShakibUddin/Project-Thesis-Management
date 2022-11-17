@@ -6,9 +6,12 @@ import * as ProposalActions from "../../State/Proposal/ProposalActions.js";
 import { Checkbox, notification } from "antd";
 import Loader from "../../Components/Loader/Loader";
 import noMoreProposals from "../../Assets/noMoreProposals.webp";
+import * as TeamActions from "../../State/Team/TeamActions.js";
+
 export default function Proposals() {
   const dispatch = useDispatch();
   const [autoAssignSupervisor, setAutoAssignSupervisor] = useState(false);
+  const currentUser = useSelector((state) => state?.auth?.user);
   const proposals = useSelector((state) => state?.proposal?.proposals);
   const proposalsLoading = useSelector(
     (state) => state?.proposal?.proposalsLoading
@@ -24,6 +27,7 @@ export default function Proposals() {
   const handleRejectOrApproveProjectProposal = (projectId) => {
     dispatch(ProposalActions.updateProposal(projectId));
   };
+
   useEffect(() => {
     dispatch(
       ProposalActions.getProposals({

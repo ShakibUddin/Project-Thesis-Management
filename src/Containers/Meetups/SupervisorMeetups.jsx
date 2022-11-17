@@ -8,6 +8,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import Loader from "../../Components/Loader/Loader";
 import noTeamMate from "../../Assets/noTeamMate.png";
+import styles from "./Meetup.module.css";
 
 export default function SupervisorMeetups() {
   const token = useSelector((state) => state.auth?.user?.token);
@@ -87,7 +88,7 @@ export default function SupervisorMeetups() {
         teamsUnderSupervisor.map((item) => ({
           value: item.project.teamId,
           label: (
-            <div className="bg-indigo-300 shadow-lg px-2 pb-2">
+            <div className={styles.dropDownItemStyle}>
               <p className="m-0 font-bold">Project: {item.project.title}</p>
               <p className="m-0 font-bold">
                 Total Meetup: {item.project.total_meetup}

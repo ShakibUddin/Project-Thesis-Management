@@ -102,12 +102,12 @@ export default function Home() {
               <DataCard
                 title={"Attendance"}
                 icon={faClipboardUser}
-                value={user?.percentage === 0 ? "100%" : `${user?.percentage}%`}
+                value={`${user?.percentage}%`}
               />
             )}
           </div>
         )}
-        {(user?.member_status_id === 2 || user?.member_status_id === 5) && (
+        {(user?.member_status_id === 4 || user?.member_status_id === 5) && (
           <div className="w-full flex flex-wrap mb-10">
             <DataCard
               title={"Total Students"}

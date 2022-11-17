@@ -56,6 +56,24 @@ export default function Team() {
     (state) => state.notifications?.memberRequestNotificationsLoading
   );
 
+  const [ongoingProjects, setOngoingProjects] = useState([]);
+  const [completeProjects, setCompleteProjects] = useState([]);
+
+  useEffect(() => {
+    if (supervisorTeamDetails.length > 0) {
+      const ongoing = [];
+      const complete = [];
+      supervisorTeamDetails.forEach((item) => {
+        if (item.project.project_status_id === 2) {
+          ongoing.push(item);
+        } else if (item.project.project_status_id === 3) {
+          complete.push(item);
+        }
+      });
+      setOngoingProjects([...ongoing]);
+      setCompleteProjects([...complete]);
+    }
+  }, [supervisorTeamDetails]);
   const token = useSelector((state) => state.auth?.user?.token);
   const getTeamDetailsForCurrentMember = () => {
     if (currentUser.member_status_id === 1) {
@@ -115,7 +133,7 @@ export default function Team() {
           onChange={(key) => {
             // setSelectedKey(key);
             console.log("key", key);
-            if (key === "1") {
+            if (key === "1" || key === "4" || key === "5") {
               getTeamDetailsForCurrentMember();
             } else if (key === "2" && totalTeamMembers < 3) {
               getAllStudents();
@@ -124,78 +142,51 @@ export default function Team() {
             }
           }}
         >
-          <Tabs.TabPane tab="My Team" key="1">
-            {currentUser.member_status_id === 1 &&
-            totalTeamMembers > 1 &&
-            teamDetails.length ? (
-              <div className={styles.studentContainer}>
-                {teamDetails.map((teammate) => {
-                  return (
-                    <UserCard
-                      name={teammate.name}
-                      id={teammate.nub_id}
-                      department={teammate.department_name}
-                      program={teammate.program_name}
-                      avatar={teammate.avatar}
-                      leader={teammate.team_leader}
-                      showDeleteOption={currentUser.team_leader === 1}
-                    />
-                  );
-                })}
-              </div>
-            ) : (
-              <div>
-                {teamDetailsLoading
-                  ? currentUser.member_status_id === 1 && (
-                      <Loader size="large" />
-                    )
-                  : currentUser.member_status_id === 1 && (
-                      <>
-                        <p className="text-center lg:text-2xl md:text-xl sm:text-lg">
-                          You don't have any team mates yet!
-                        </p>
-                        <div className="w-full p-4 m-4">
-                          <img
-                            className="lg:w-3/5 md:w-4/5 sm:w-full mx-auto"
-                            src={noTeamMate}
-                            alt=""
-                          />
-                        </div>
-                      </>
-                    )}
-              </div>
-            )}
-            {currentUser.member_status_id === 3 &&
-            supervisorTeamDetails.length > 0 ? (
-              supervisorTeamDetails.map((proposal) => (
-                <ProposalCard
-                  projectDetails={proposal.project}
-                  teamDetails={proposal.team}
-                />
-              ))
-            ) : (
-              <div>
-                {supervisorTeamDetailsLoading
-                  ? currentUser.member_status_id === 3 && (
-                      <Loader size="large" />
-                    )
-                  : currentUser.member_status_id === 3 && (
-                      <>
-                        <p className="text-center lg:text-2xl md:text-xl sm:text-lg">
-                          You don't have any team mates yet!
-                        </p>
-                        <div className="w-full p-4 m-4">
-                          <img
-                            className="lg:w-3/5 md:w-4/5 sm:w-full mx-auto"
-                            src={noRequests}
-                            alt=""
-                          />
-                        </div>
-                      </>
-                    )}
-              </div>
-            )}
-          </Tabs.TabPane>
+          {/* for students */}
+          {currentUser.member_status_id === 1 && (
+            <Tabs.TabPane tab="My Team" key="1">
+              {currentUser.member_status_id === 1 &&
+              totalTeamMembers > 1 &&
+              teamDetails.length ? (
+                <div className={styles.studentContainer}>
+                  {teamDetails.map((teammate) => {
+                    return (
+                      <UserCard
+                        name={teammate.name}
+                        id={teammate.nub_id}
+                        department={teammate.department_name}
+                        program={teammate.program_name}
+                        avatar={teammate.avatar}
+                        leader={teammate.team_leader}
+                        showDeleteOption={currentUser.team_leader === 1}
+                      />
+                    );
+                  })}
+                </div>
+              ) : (
+                <div>
+                  {teamDetailsLoading
+                    ? currentUser.member_status_id === 1 && (
+                        <Loader size="large" />
+                      )
+                    : currentUser.member_status_id === 1 && (
+                        <>
+                          <p className="text-center lg:text-2xl md:text-xl sm:text-lg">
+                            You don't have any team mates yet!
+                          </p>
+                          <div className="w-full p-4 m-4">
+                            <img
+                              className="lg:w-3/5 md:w-4/5 sm:w-full mx-auto"
+                              src={noTeamMate}
+                              alt=""
+                            />
+                          </div>
+                        </>
+                      )}
+                </div>
+              )}
+            </Tabs.TabPane>
+          )}
           {currentUser.member_status_id === 1 && (
             <Tabs.TabPane tab="Get Teammates" key="2">
               {totalTeamMembers < 3 ? (
@@ -259,6 +250,84 @@ export default function Team() {
               key="3"
             >
               <StudentNotifications />
+            </Tabs.TabPane>
+          )}
+          {/* for supervisor */}
+          {currentUser.member_status_id === 3 && (
+            <Tabs.TabPane tab="Ongoing" key="4">
+              {currentUser.member_status_id === 3 &&
+              ongoingProjects.length > 0 ? (
+                ongoingProjects.map((proposal) => {
+                  if (proposal.project.project_status_id === 2) {
+                    return (
+                      <ProposalCard
+                        projectDetails={proposal.project}
+                        teamDetails={proposal.team}
+                      />
+                    );
+                  }
+                })
+              ) : (
+                <div>
+                  {supervisorTeamDetailsLoading
+                    ? currentUser.member_status_id === 3 && (
+                        <Loader size="large" />
+                      )
+                    : currentUser.member_status_id === 3 && (
+                        <>
+                          <p className="text-center lg:text-2xl md:text-xl sm:text-lg">
+                            You don't have any team mates yet!
+                          </p>
+                          <div className="w-full p-4 m-4">
+                            <img
+                              className="lg:w-3/5 md:w-4/5 sm:w-full mx-auto"
+                              src={noRequests}
+                              alt=""
+                            />
+                          </div>
+                        </>
+                      )}
+                </div>
+              )}
+            </Tabs.TabPane>
+          )}
+          {currentUser.member_status_id === 3 && (
+            <Tabs.TabPane tab="Complete" key="5">
+              {currentUser.member_status_id === 3 &&
+              completeProjects.length > 0 ? (
+                completeProjects.map((proposal) => {
+                  if (proposal.project.project_status_id === 3) {
+                    return (
+                      <ProposalCard
+                        projectDetails={proposal.project}
+                        teamDetails={proposal.team}
+                      />
+                    );
+                  }
+                })
+              ) : (
+                <div>
+                  {supervisorTeamDetailsLoading
+                    ? currentUser.member_status_id === 3 && (
+                        <Loader size="large" />
+                      )
+                    : currentUser.member_status_id === 3 && (
+                        <>
+                          <p className="text-center lg:text-2xl md:text-xl sm:text-lg">
+                            None of your teams have completed their project or
+                            thesis
+                          </p>
+                          <div className="w-full p-4 m-4">
+                            <img
+                              className="lg:w-3/5 md:w-4/5 sm:w-full mx-auto"
+                              src={noRequests}
+                              alt=""
+                            />
+                          </div>
+                        </>
+                      )}
+                </div>
+              )}
             </Tabs.TabPane>
           )}
         </Tabs>

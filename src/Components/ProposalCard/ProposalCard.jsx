@@ -9,13 +9,19 @@ import TextArea from "antd/lib/input/TextArea";
 import { useEffect } from "react";
 import { AVATAR_BASE } from "../../Constants/ImageConstants.js";
 import defaultAvatar from "../../Assets/avatar.jpg";
-
+import * as TeamActions from "../../State/Team/TeamActions.js";
+import Loader from "../Loader/Loader";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { makeApiCall } from "../../client";
+import { METHODS, PATHS } from "../../Constants/ApiConstants";
 const { Panel } = Collapse;
+const { confirm } = Modal;
 
 export default function ProposalCard({
   projectDetails,
   teamDetails,
   handleRejectOrApproveProjectProposal = null,
+  handleProjectComplete = null,
   autoAssignSupervisor = false,
 }) {
   const dispatch = useDispatch();
@@ -29,7 +35,12 @@ export default function ProposalCard({
     description,
     technologies,
   } = projectDetails;
+  const type = project === 1 ? "Project" : "Thesis";
   const onChange = (key) => {};
+  const [data, setData] = useState();
+  const [message, setMessage] = useState();
+  const [loading, setLoading] = useState();
+  const [error, setError] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [supervisorOptions, setSupervisorOptions] = useState([]);
   const [supervisorId, setSupervisorId] = useState();
@@ -38,6 +49,7 @@ export default function ProposalCard({
   const token = useSelector((state) => state.auth?.user?.token);
   const currentUser = useSelector((state) => state.auth?.user);
   const rejectProposal = useSelector((state) => state.proposal?.rejectProposal);
+
   const approveProposal = useSelector(
     (state) => state.proposal?.approveProposal
   );
@@ -65,6 +77,35 @@ export default function ProposalCard({
     } else {
       showSupervisorModal();
     }
+  };
+  const handleComplete = () => {
+    confirm({
+      title: `Do you want to complete this teams's ${type}?`,
+      icon: <ExclamationCircleOutlined />,
+      content: "This can not be reverted",
+      onOk() {
+        setLoading(true);
+        const body = {
+          project_id: projectDetails.projectId,
+        };
+
+        makeApiCall({
+          method: METHODS.PUT,
+          path: PATHS.COMPLETE_PROJECT,
+          body,
+          token,
+        }).then((response) => {
+          const { data, message, error } = response;
+          setData(data);
+          setMessage(message);
+          setError(error);
+          setLoading(false);
+        });
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
   };
   const showSupervisorModal = () => {
     dispatch(
@@ -108,6 +149,14 @@ export default function ProposalCard({
       handleRejectOrApproveProjectProposal(projectDetails.projectId);
     }
   }, [rejectProposal, approveProposal]);
+  useEffect(() => {
+    if (data?.completeProject) {
+      console.log("handling Project Complete for", projectDetails.projectId);
+      dispatch(
+        TeamActions.updateSupervisorTeamDetails(projectDetails.projectId)
+      );
+    }
+  }, [data]);
 
   const onFinishFailed = (errorInfo) => {
     //   message.error(errorInfo);
@@ -134,7 +183,7 @@ export default function ProposalCard({
         supervisors.map((supervisor) => ({
           value: supervisor.nub_id,
           label: (
-            <div className="bg-indigo-300 shadow-lg px-2 pb-2">
+            <div className={styles.dropDownItemStyle}>
               <p className="m-0 font-bold">Name: {supervisor.name}</p>
               <p className="m-0 font-bold">
                 Teams: {supervisor.total_assign_team}
@@ -158,12 +207,8 @@ export default function ProposalCard({
                 : project_status_id === 3 && styles.completeStatus
             }
           ></span>
-          {currentUser.member_status_id === 2 && (
-            <p>
-              <b>Type:</b>{" "}
-              {project === 1 ? "Project" : thesis === 1 && "Thesis"}
-            </p>
-          )}
+
+          <p className="text-2xl font-extrabold">{type}:</p>
           <p>
             <b>Title:</b> {title}
           </p>
@@ -184,7 +229,7 @@ export default function ProposalCard({
           <p className="text-2xl font-extrabold">Team:</p>
           {teamDetails.map((member) => (
             <div className="flex mb-4">
-              <div className="w-1/6 mr-2">
+              <div className={styles.avatarContainer}>
                 <img
                   className={styles.avatar}
                   src={
@@ -195,7 +240,7 @@ export default function ProposalCard({
                   alt=""
                 />
               </div>
-              <div className="flex flex-col">
+              <div className="flex flex-col w-5/6">
                 <p className="m-0 font-bold">
                   {member.name}
                   {member.team_leader === 1 && "(Team Leader)"}
@@ -216,7 +261,7 @@ export default function ProposalCard({
         </div>
       )}
 
-      {currentUser.member_status_id === 2 && (
+      {currentUser.member_status_id === 4 && (
         <div className="flex justify-center align-middle flex-wrap">
           <button
             className={[styles.actionButton, styles.acceptButton].join(" ")}
@@ -233,6 +278,18 @@ export default function ProposalCard({
         </div>
       )}
 
+      {currentUser.member_status_id === 3 && project_status_id === 2 && (
+        <div className="flex justify-center align-middle flex-wrap">
+          <button
+            style={{ minWidth: "200px" }}
+            className={[styles.actionButton, styles.acceptButton].join(" ")}
+            onClick={handleComplete}
+          >
+            {loading ? <Loader /> : "Complete Project"}
+          </button>
+        </div>
+      )}
+
       <Modal
         title="Reject Proposal"
         visible={isModalOpen}
@@ -241,6 +298,7 @@ export default function ProposalCard({
       >
         <Form
           name="basic"
+          layout="vertical"
           initialValues={{
             remember: true,
           }}
@@ -268,12 +326,7 @@ export default function ProposalCard({
           >
             <TextArea rows={4} />
           </Form.Item>
-          <Form.Item
-            wrapperCol={{
-              offset: 8,
-              span: 16,
-            }}
-          >
+          <Form.Item>
             <Button type="primary" htmlType="submit">
               Submit
             </Button>
@@ -288,6 +341,7 @@ export default function ProposalCard({
       >
         <Form
           name="basic"
+          layout="vertical"
           initialValues={{
             remember: true,
           }}
@@ -320,12 +374,7 @@ export default function ProposalCard({
               options={supervisorOptions}
             />
           </Form.Item>
-          <Form.Item
-            wrapperCol={{
-              offset: 8,
-              span: 16,
-            }}
-          >
+          <Form.Item>
             <Button type="primary" htmlType="submit">
               Submit
             </Button>

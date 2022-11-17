@@ -33,6 +33,7 @@ p {
   border-radius: 10px !important;
   padding: 10px !important;
   width: 80px !important;
+  font-size: 1.2rem;
 }
 
 .active {

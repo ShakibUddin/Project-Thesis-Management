@@ -46,7 +46,7 @@ function App() {
               <Route
                 path="proposals"
                 element={
-                  user?.member_status_id === 2 ? (
+                  user?.member_status_id === 4 ? (
                     <Proposals />
                   ) : (
                     <AccessDenied />

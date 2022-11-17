@@ -40,4 +40,5 @@ export const PATHS = {
   GET_ALL_STUDENTS_DETAILS: "api/users/getTotalStudents",
   GET_ALL_SUPERVISORS_DETAILS: "api/users/getTotalSupervisors",
   RESET_PASSWORD: "api/users/updatePassword",
+  COMPLETE_PROJECT: "api/users/completeProject",
 };

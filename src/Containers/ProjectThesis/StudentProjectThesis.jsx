@@ -14,8 +14,10 @@ import cantFillUpForm from "../../Assets/cantFillUpForm.webp";
 const { TextArea } = Input;
 
 export default function StudentProjectThesis() {
+  const [selectedType, setSelectedType] = useState();
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.auth?.user);
+  const teamDetails = useSelector((state) => state.team?.teamDetails);
   const token = useSelector((state) => state.auth?.user?.token);
   const createProjectProposalLoading = useSelector(
     (state) => state.project?.createProjectProposalLoading
@@ -44,15 +46,6 @@ export default function StudentProjectThesis() {
 
   const onFinish = (values) => {
     const { type, title, description, technologies } = values;
-    const body = {
-      nub_id: currentUser?.nub_id,
-      project: type === "project" ? 1 : 0,
-      thesis: type === "thesis" ? 1 : 0,
-      title,
-      description,
-      technologies,
-      token,
-    };
     if (editing) {
       const body = {
         projectId: projectDetails?.projectId,
@@ -88,7 +81,7 @@ export default function StudentProjectThesis() {
   };
   const success = () => {
     Modal.success({
-      title: "Successfully Created Project/Thesis Proposal",
+      title: `Successfully Created ${setSelectedType} Proposal`,
       content:
         "The Co-Ordinator will review your proposal and get back to you soon",
       onOk() {
@@ -125,7 +118,7 @@ export default function StudentProjectThesis() {
       className="w-full overflow-x-hidden mt-4"
       style={{ fontSize: "1.5rem" }}
     >
-      {currentUser.total_members >= 3 ? (
+      {currentUser.total_members >= 3 || teamDetails.length >= 3 ? (
         <div>
           {projectLoading ? (
             <Space size="middle">
