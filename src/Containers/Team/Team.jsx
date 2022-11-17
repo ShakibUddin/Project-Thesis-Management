@@ -159,6 +159,7 @@ export default function Team() {
                         avatar={teammate.avatar}
                         leader={teammate.team_leader}
                         showDeleteOption={currentUser.team_leader === 1}
+                        memberStatusId={teammate.member_status_id}
                       />
                     );
                   })}
@@ -212,6 +213,7 @@ export default function Team() {
                           requestStatusId={student.request_status_id}
                           avatar={student.avatar}
                           leader={student.team_leader}
+                          memberStatusId={student.member_status_id}
                           showRequestActions
                         />
                       ))}

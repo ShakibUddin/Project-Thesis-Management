@@ -55,7 +55,7 @@
 .actionButton {
   border-radius: 10px !important;
   padding: 10px !important;
-  width: 80px !important;
+  width: 90px !important;
   font-size: 1.2rem;
 }
 
@@ -112,12 +112,18 @@
   height: 100%;
 }
 
-.leaderTitle {
-  background-color: rgb(15, 161, 15);
+.leaderTitle,
+.supervisorTitle {
   color: white;
   position: absolute;
   top: 0;
   left: 0;
   padding: 0.4rem 0.3rem;
   border-radius: 20px;
+}
+.leaderTitle {
+  background-color: rgb(15, 161, 15);
+}
+.supervisorTitle {
+  background-color: rgb(231, 118, 12);
 }

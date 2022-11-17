@@ -392,7 +392,6 @@ export default function StudentProjectThesis() {
                       <FontAwesomeIcon
                         className="w-9 h-9 mr-4 cursor-pointer"
                         icon={faFilePdf}
-                        onClick={handleEdit}
                       />
                     </icon>
                   </div>

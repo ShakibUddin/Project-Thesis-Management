@@ -24,6 +24,7 @@ export default function UserCard({
   id,
   department,
   program,
+  memberStatusId,
   leader = null,
   avatar = null,
   requestStatus = null,
@@ -170,8 +171,11 @@ export default function UserCard({
               src={avatar ? `${AVATAR_BASE}${avatar}` : defaultAvatar}
               alt=""
             />
-            {leader === 1 && (
+            {leader === 1 && memberStatusId === 1 && (
               <span className={styles.leaderTitle}>Team Leader</span>
+            )}
+            {memberStatusId === 3 && (
+              <span className={styles.supervisorTitle}>Supervisor</span>
             )}
             <p className="text-lg font-bold text-center text-white">{name}</p>
           </div>
@@ -231,7 +235,7 @@ export default function UserCard({
             {loading ? <Loader /> : disableButton ? "Pending" : requestStatus}
           </button>
         )}
-        {showDeleteOption && id !== currentUser.nub_id && (
+        {showDeleteOption && id !== currentUser.nub_id && memberStatusId !== 3 && (
           <button
             disabled={disableButton}
             onClick={removeTeammate}
