@@ -6,7 +6,7 @@ import {
   UsergroupDeleteOutlined,
   VideoCameraOutlined,
 } from "@ant-design/icons";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import useWindowDimensions from "../../Hooks/useWindowDimensions";
 import { useDispatch, useSelector } from "react-redux";
 import { makeApiCall } from "../../client";
@@ -27,15 +27,19 @@ import {
   faUsers,
   faUserTie,
 } from "@fortawesome/free-solid-svg-icons";
+import { history } from "react-router-dom";
 
 const { Header, Content, Footer, Sider } = Layout;
 
 export default function MainLayout() {
+  const navigate = useNavigate();
+
   const user = useSelector((state) => state.auth?.user);
   const dispatch = useDispatch();
   const { width, height } = useWindowDimensions();
   const cleanAuthData = () => {
     dispatch(AuthActions.logout());
+    navigate("/login", { replace: true });
   };
   return (
     <Layout>
@@ -146,9 +150,7 @@ export default function MainLayout() {
               <FontAwesomeIcon className="h-3 w-3" icon={faRightFromBracket} />
             }
           >
-            <Link to="/login" onClick={cleanAuthData}>
-              Logout
-            </Link>
+            <p onClick={cleanAuthData}>Logout</p>
           </Menu.Item>
         </Menu>
       </Sider>

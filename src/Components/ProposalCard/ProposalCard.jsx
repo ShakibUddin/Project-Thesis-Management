@@ -147,7 +147,7 @@ export default function ProposalCard({
   }, [supervisors]);
   return (
     <div
-      className={`flex flex-col justify-start align-top w-11/12 p-4 mb-3 ${styles.proposalCard}`}
+      className={`flex flex-col justify-start align-top w-11/12 p-2 mb-3 ${styles.proposalCard}`}
     >
       <div className="flex justify-between w-full flex-wrap">
         <div className={styles.leftDiv}>
