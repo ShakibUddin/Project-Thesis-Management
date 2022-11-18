@@ -56,24 +56,6 @@ export default function Team() {
     (state) => state.notifications?.memberRequestNotificationsLoading
   );
 
-  const [ongoingProjects, setOngoingProjects] = useState([]);
-  const [completeProjects, setCompleteProjects] = useState([]);
-
-  useEffect(() => {
-    if (supervisorTeamDetails.length > 0) {
-      const ongoing = [];
-      const complete = [];
-      supervisorTeamDetails.forEach((item) => {
-        if (item.project.project_status_id === 2) {
-          ongoing.push(item);
-        } else if (item.project.project_status_id === 3) {
-          complete.push(item);
-        }
-      });
-      setOngoingProjects([...ongoing]);
-      setCompleteProjects([...complete]);
-    }
-  }, [supervisorTeamDetails]);
   const token = useSelector((state) => state.auth?.user?.token);
   const getTeamDetailsForCurrentMember = () => {
     if (currentUser.member_status_id === 1) {
@@ -258,13 +240,13 @@ export default function Team() {
           {currentUser.member_status_id === 3 && (
             <Tabs.TabPane tab="Ongoing" key="4">
               {currentUser.member_status_id === 3 &&
-              ongoingProjects.length > 0 ? (
-                ongoingProjects.map((proposal) => {
-                  if (proposal.project.project_status_id === 2) {
+              supervisorTeamDetails?.ongoing?.length > 0 ? (
+                supervisorTeamDetails.ongoing.map((item) => {
+                  if (item.project.project_status_id === 2) {
                     return (
                       <ProposalCard
-                        projectDetails={proposal.project}
-                        teamDetails={proposal.team}
+                        projectDetails={item.project}
+                        teamDetails={item.team}
                       />
                     );
                   }
@@ -278,7 +260,7 @@ export default function Team() {
                     : currentUser.member_status_id === 3 && (
                         <>
                           <p className="text-center lg:text-2xl md:text-xl sm:text-lg">
-                            You don't have any team mates yet!
+                            You don't have any teams!
                           </p>
                           <div className="w-full p-4 m-4">
                             <img
@@ -296,13 +278,13 @@ export default function Team() {
           {currentUser.member_status_id === 3 && (
             <Tabs.TabPane tab="Complete" key="5">
               {currentUser.member_status_id === 3 &&
-              completeProjects.length > 0 ? (
-                completeProjects.map((proposal) => {
-                  if (proposal.project.project_status_id === 3) {
+              supervisorTeamDetails?.complete?.length > 0 ? (
+                supervisorTeamDetails.complete.map((item) => {
+                  if (item.project.project_status_id === 3) {
                     return (
                       <ProposalCard
-                        projectDetails={proposal.project}
-                        teamDetails={proposal.team}
+                        projectDetails={item.project}
+                        teamDetails={item.team}
                       />
                     );
                   }

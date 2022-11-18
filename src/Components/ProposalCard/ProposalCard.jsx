@@ -104,6 +104,15 @@ export default function ProposalCard({
           setMessage(message);
           setError(error);
           setLoading(false);
+          const body = {
+            supervisor_nub_id: currentUser?.nub_id,
+          };
+          dispatch(
+            TeamActions.getSupervisorTeamDetails({
+              body,
+              token,
+            })
+          );
         });
       },
       onCancel() {
@@ -153,14 +162,14 @@ export default function ProposalCard({
       handleRejectOrApproveProjectProposal(projectDetails.projectId);
     }
   }, [rejectProposal, approveProposal]);
-  useEffect(() => {
-    if (data?.completeProject) {
-      console.log("handling Project Complete for", projectDetails.projectId);
-      dispatch(
-        TeamActions.updateSupervisorTeamDetails(projectDetails.projectId)
-      );
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (data?.completeProject) {
+  //     console.log("handling Project Complete for", projectDetails.projectId);
+  //     dispatch(
+  //       TeamActions.updateSupervisorTeamDetails(projectDetails.projectId)
+  //     );
+  //   }
+  // }, [data]);
 
   const onFinishFailed = (errorInfo) => {
     //   message.error(errorInfo);
@@ -259,8 +268,8 @@ export default function ProposalCard({
         </div>
       </div>
       {paper && (
-        <div className="m-6">
-          <span className="text-xl font-extrabold mr-4">
+        <div className="m-2">
+          <span className="text-xl font-bold mr-4">
             {project === 1 ? "Project Book:" : "Thesis Paper:"}
           </span>
 
