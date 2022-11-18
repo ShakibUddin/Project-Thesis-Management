@@ -24,6 +24,11 @@ export default function AuthReducer(state = initialState, action) {
       state.user = { ...state.user };
       break;
     }
+    case actions.SET_AVATAR: {
+      state.user.avatar = payload;
+      state.user = { ...state.user };
+      break;
+    }
     case actions.GET_DEPARTMENTS.REQUESTED: {
       state.departmentsLoading = true;
       state.departments = [];

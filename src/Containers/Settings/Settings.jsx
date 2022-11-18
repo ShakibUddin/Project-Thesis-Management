@@ -38,6 +38,7 @@ const App = () => {
     })
       .then(function (response) {
         setFileList([]);
+        dispatch(AuthActions.setAvatar(response.data.data.iamge_path));
         message.success("Avatar uploaded successfully.");
       })
       .catch(function (response) {

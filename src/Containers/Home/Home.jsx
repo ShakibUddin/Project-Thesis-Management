@@ -126,13 +126,13 @@ export default function Home() {
             />
           </div>
         )}
-        {user?.member_status_id === 3 && upcomingMeetups.length > 0 && (
+        {/* {user?.member_status_id === 3 && upcomingMeetups.length > 0 && (
           <div>
             <p className="text-center font-bold text-2xl m-0">Meetups</p>
 
             <BarChartCard options={options} data={upcomingMeetups} />
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

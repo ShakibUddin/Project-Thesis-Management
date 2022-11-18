@@ -9,6 +9,7 @@ export const CREATE_USER = requestActions(MODULE_NAME, "CREATE_USER");
 export const LOGIN = requestActions(MODULE_NAME, "LOGIN");
 export const LOGOUT = "LOGOUT";
 export const UPDATE_TOTAL_TEAM_MEMBERS = "UPDATE_TOTAL_TEAM_MEMBERS";
+export const SET_AVATAR = "SET_AVATAR";
 
 export const getDepartments = () =>
   requestApiCall({
@@ -41,5 +42,10 @@ export const logout = () => ({
 });
 export const updateTotalTeamMembers = (data) => ({
   type: UPDATE_TOTAL_TEAM_MEMBERS,
+  payload: data,
+});
+
+export const setAvatar = (data) => ({
+  type: SET_AVATAR,
   payload: data,
 });
