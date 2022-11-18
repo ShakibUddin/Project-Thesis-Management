@@ -18,6 +18,7 @@ import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom/dist";
 import NotFound from "./Containers/NotFound/NotFound";
 import AccessDenied from "./Containers/AccessDenied/AccessDenied";
+import AllProjects from "./Containers/AllProjects/AllProjects";
 
 function App() {
   let user = useSelector((state) => state.auth?.user);
@@ -48,6 +49,17 @@ function App() {
                 element={
                   user?.member_status_id === 4 ? (
                     <Proposals />
+                  ) : (
+                    <AccessDenied />
+                  )
+                }
+              />
+
+              <Route
+                path="all_projects"
+                element={
+                  user?.member_status_id === 4 ? (
+                    <AllProjects />
                   ) : (
                     <AccessDenied />
                   )

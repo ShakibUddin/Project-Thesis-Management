@@ -25,6 +25,7 @@ export default function ProposalCard({
   handleRejectOrApproveProjectProposal = null,
   handleProjectComplete = null,
   autoAssignSupervisor = false,
+  showActions = true,
 }) {
   const dispatch = useDispatch();
   const {
@@ -257,6 +258,7 @@ export default function ProposalCard({
                 <p className="m-0 font-bold">
                   {member.name}
                   {member.team_leader === 1 && "(Team Leader)"}
+                  {member.member_status_id === 3 && "(Supervisor)"}
                 </p>
                 <p className="m-0">{member.nub_id}</p>
                 <p className="m-0">
@@ -291,33 +293,37 @@ export default function ProposalCard({
         </div>
       )}
 
-      {currentUser.member_status_id === 4 && (
-        <div className="flex justify-center align-middle flex-wrap">
-          <button
-            className={[styles.actionButton, styles.acceptButton].join(" ")}
-            onClick={handleApprove}
-          >
-            Approve
-          </button>
-          <button
-            className={[styles.actionButton, styles.rejectButton].join(" ")}
-            onClick={showModal}
-          >
-            Reject
-          </button>
-        </div>
-      )}
+      {showActions && (
+        <>
+          {currentUser.member_status_id === 4 && (
+            <div className="flex justify-center align-middle flex-wrap">
+              <button
+                className={[styles.actionButton, styles.acceptButton].join(" ")}
+                onClick={handleApprove}
+              >
+                Approve
+              </button>
+              <button
+                className={[styles.actionButton, styles.rejectButton].join(" ")}
+                onClick={showModal}
+              >
+                Reject
+              </button>
+            </div>
+          )}
 
-      {currentUser.member_status_id === 3 && project_status_id === 2 && (
-        <div className="flex justify-center align-middle flex-wrap">
-          <button
-            style={{ minWidth: "200px" }}
-            className={[styles.actionButton, styles.acceptButton].join(" ")}
-            onClick={handleComplete}
-          >
-            {loading ? <Loader /> : "Complete Project"}
-          </button>
-        </div>
+          {currentUser.member_status_id === 3 && project_status_id === 2 && (
+            <div className="flex justify-center align-middle flex-wrap">
+              <button
+                style={{ minWidth: "200px" }}
+                className={[styles.actionButton, styles.acceptButton].join(" ")}
+                onClick={handleComplete}
+              >
+                {loading ? <Loader /> : "Complete Project"}
+              </button>
+            </div>
+          )}
+        </>
       )}
 
       <Modal

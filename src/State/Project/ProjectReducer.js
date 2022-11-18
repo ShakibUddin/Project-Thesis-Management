@@ -11,6 +11,9 @@ const initialState = {
   updateProjectProposal: false,
   updateProjectProposalLoading: false,
   updateProjectProposalError: null,
+  allProjectsDetails: [],
+  allProjectsDetailsLoading: false,
+  allProjectsDetailsError: null,
 };
 
 export default function ProjectReducer(state = initialState, action) {
@@ -79,7 +82,24 @@ export default function ProjectReducer(state = initialState, action) {
       state.updateProjectProposalError = payload?.message;
       break;
     }
-
+    case actions.GET_ALL_PROJECTS_DETAILS.REQUESTED: {
+      state.allProjectsDetailsLoading = true;
+      state.allProjectsDetails = [];
+      state.allProjectsDetailsError = null;
+      break;
+    }
+    case actions.GET_ALL_PROJECTS_DETAILS.SUCCEEDED: {
+      state.allProjectsDetailsLoading = false;
+      state.allProjectsDetails = payload?.data;
+      state.allProjectsDetailsError = payload?.message;
+      break;
+    }
+    case actions.GET_ALL_PROJECTS_DETAILS.FAILED: {
+      state.allProjectsDetailsLoading = false;
+      state.allProjectsDetails = [];
+      state.allProjectsDetailsError = payload?.message;
+      break;
+    }
     default: {
       return state;
     }

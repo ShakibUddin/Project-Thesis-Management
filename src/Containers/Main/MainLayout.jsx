@@ -87,7 +87,7 @@ export default function MainLayout() {
           )}
           {user.member_status_id === 3 && (
             <Menu.Item
-              key="2"
+              key="3"
               icon={<FontAwesomeIcon className="h-3 w-3" icon={faUsers} />}
             >
               <Link to="/team">Manage Teams</Link>
@@ -95,7 +95,7 @@ export default function MainLayout() {
           )}
           {user.member_status_id === 4 && (
             <Menu.Item
-              key="2"
+              key="4"
               icon={
                 <FontAwesomeIcon
                   className="h-3 w-3"
@@ -106,9 +106,17 @@ export default function MainLayout() {
               <Link to="/proposals">Proposals</Link>
             </Menu.Item>
           )}
+          {user.member_status_id === 4 && (
+            <Menu.Item
+              key="5"
+              icon={<FontAwesomeIcon className="h-3 w-3" icon={faUsers} />}
+            >
+              <Link to="/all_projects">Projects</Link>
+            </Menu.Item>
+          )}
           {user.member_status_id === 1 && (
             <Menu.Item
-              key="3"
+              key="6"
               icon={<FontAwesomeIcon className="h-3 w-3" icon={faComputer} />}
             >
               <Link to="/project">Project/Thesis</Link>
@@ -116,7 +124,7 @@ export default function MainLayout() {
           )}
           {user.member_status_id === 3 && (
             <Menu.Item
-              key="5"
+              key="7"
               icon={<FontAwesomeIcon className="h-3 w-3" icon={faHandshake} />}
             >
               <Link to="/supervisor_meetup">Meetups</Link>
@@ -124,7 +132,7 @@ export default function MainLayout() {
           )}
           {user.member_status_id === 1 && (
             <Menu.Item
-              key="10"
+              key="8"
               icon={<FontAwesomeIcon className="h-3 w-3" icon={faHandshake} />}
             >
               <Link to="/student_meetup">Meetups</Link>
@@ -132,7 +140,7 @@ export default function MainLayout() {
           )}
           {user.member_status_id === 5 && (
             <Menu.Item
-              key="8"
+              key="9"
               icon={<FontAwesomeIcon className="h-3 w-3" icon={faUser} />}
             >
               <Link to="/manage_students">Manage Students</Link>
@@ -140,20 +148,20 @@ export default function MainLayout() {
           )}
           {user.member_status_id === 5 && (
             <Menu.Item
-              key="9"
+              key="10"
               icon={<FontAwesomeIcon className="h-3 w-3" icon={faUserTie} />}
             >
               <Link to="/manage_supervisors">Manage Supervisors</Link>
             </Menu.Item>
           )}
           <Menu.Item
-            key="6"
+            key="11"
             icon={<FontAwesomeIcon className="h-3 w-3" icon={faGear} />}
           >
             <Link to="/settings">Settings</Link>
           </Menu.Item>
           <Menu.Item
-            key="7"
+            key="12"
             icon={
               <FontAwesomeIcon className="h-3 w-3" icon={faRightFromBracket} />
             }

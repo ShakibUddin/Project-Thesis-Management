@@ -42,4 +42,5 @@ export const PATHS = {
   RESET_PASSWORD: "api/users/updatePassword",
   COMPLETE_PROJECT: "api/users/completeProject",
   UPLOAD_PAPER: "api/files/projectFile",
+  GET_ALL_PROJECTS_DETAILS: "api/users/getAllProjectDetails",
 };
