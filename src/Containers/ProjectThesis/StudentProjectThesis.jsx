@@ -11,13 +11,14 @@ import FormSubmitButton from "../../Components/FormSubmitButton/FormSubmitButton
 import formTeam from "../../Assets/formTeam.jpg";
 import cantFillUpForm from "../../Assets/cantFillUpForm.webp";
 import { message } from "antd/lib";
-import { BASE_URL, PATHS } from "../../Constants/ApiConstants";
+import { PATHS } from "../../Constants/ApiConstants";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faFilePdf } from "@fortawesome/free-solid-svg-icons";
 const { TextArea } = Input;
 
 export default function StudentProjectThesis() {
+  const BASE_URL = "https://smtprojectbackend.arifmannan.com";
   const [selectedType, setSelectedType] = useState();
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.auth?.user);
@@ -40,7 +41,19 @@ export default function StudentProjectThesis() {
   const paperUploadPath = BASE_URL + PATHS.UPLOAD_PAPER;
   const [uploading, setUploading] = useState(false);
   const [fileUploaded, setFileUploaded] = useState(false);
+  const [filePath, setFilePath] = useState();
+  const [paperDownloadPath, setPaperDownloadPath] = useState();
+  useEffect(() => {
+    if (filePath) {
+      setPaperDownloadPath(BASE_URL + filePath);
+    } else if (projectDetails.paper) {
+      setPaperDownloadPath(BASE_URL + projectDetails.paper);
+    }
+  }, [filePath, projectDetails.paper]);
 
+  useEffect(() => {
+    console.log("paperDownloadPath", paperDownloadPath);
+  }, [paperDownloadPath]);
   useEffect(() => {
     if (updateProjectProposal) {
       setEditing(false);
@@ -151,6 +164,7 @@ export default function StudentProjectThesis() {
       })
         .then(function (response) {
           console.log(response.data.data.file_path);
+          setFilePath(response.data.data.file_path);
           setFileUploaded(true);
           message.success("File uploaded successfully.");
         })
@@ -380,22 +394,30 @@ export default function StudentProjectThesis() {
                 </Form>
               </div>
 
-              {fileUploaded ||
-                (projectDetails.paper && (
-                  <div className="m-6">
-                    <span className="text-xl font-extrabold mr-4">
-                      {projectDetails.project === 1
-                        ? "Project Book:"
-                        : "Thesis Paper:"}
-                    </span>
+              {(fileUploaded || projectDetails.paper) && (
+                <div className="m-6">
+                  <span className="text-xl font-extrabold mr-4">
+                    {projectDetails.project === 1
+                      ? "Project Book:"
+                      : "Thesis Paper:"}
+                  </span>
+
+                  <a
+                    href={paperDownloadPath}
+                    download
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {" "}
                     <icon>
                       <FontAwesomeIcon
                         className="w-9 h-9 mr-4 cursor-pointer"
                         icon={faFilePdf}
                       />
-                    </icon>
-                  </div>
-                ))}
+                    </icon>{" "}
+                  </a>
+                </div>
+              )}
             </>
           )}
         </div>

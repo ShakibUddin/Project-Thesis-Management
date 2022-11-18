@@ -14,6 +14,8 @@ import Loader from "../Loader/Loader";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { makeApiCall } from "../../client";
 import { METHODS, PATHS } from "../../Constants/ApiConstants";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
 const { Panel } = Collapse;
 const { confirm } = Modal;
 
@@ -35,6 +37,8 @@ export default function ProposalCard({
     description,
     technologies,
   } = projectDetails;
+  const BASE_URL = "https://smtprojectbackend.arifmannan.com";
+  const paperDownloadPath = BASE_URL + paper;
   const type = project === 1 ? "Project" : "Thesis";
   const onChange = (key) => {};
   const [data, setData] = useState();
@@ -254,6 +258,23 @@ export default function ProposalCard({
           ))}
         </div>
       </div>
+      {paper && (
+        <div className="m-6">
+          <span className="text-xl font-extrabold mr-4">
+            {project === 1 ? "Project Book:" : "Thesis Paper:"}
+          </span>
+
+          <a href={paperDownloadPath} download target="_blank" rel="noreferrer">
+            {" "}
+            <icon>
+              <FontAwesomeIcon
+                className="w-9 h-9 mr-4 cursor-pointer"
+                icon={faFilePdf}
+              />
+            </icon>{" "}
+          </a>
+        </div>
+      )}
       {projectDetails?.feedback?.length > 0 && (
         <div>
           <p className="font-bold text-2xl">Previous Feedback:</p>
