@@ -205,6 +205,7 @@ export default function StudentProjectThesis() {
               </p>
               {(!createProjectProposal || editing) && (
                 <Form
+                  layout="vertical"
                   name="project"
                   initialValues={{
                     remember: true,
@@ -212,12 +213,6 @@ export default function StudentProjectThesis() {
                     title: projectDetails?.title,
                     description: projectDetails?.description,
                     technologies: projectDetails?.technologies,
-                  }}
-                  labelCol={{
-                    span: 4,
-                  }}
-                  wrapperCol={{
-                    span: 14,
                   }}
                   onFinish={onFinish}
                   onFinishFailed={onFinishFailed}
@@ -312,11 +307,7 @@ export default function StudentProjectThesis() {
                   >
                     <TextArea rows={4} />
                   </Form.Item>
-                  <Form.Item
-                    wrapperCol={{
-                      offset: 4,
-                    }}
-                  >
+                  <Form.Item>
                     {!editing && (
                       <FormSubmitButton>
                         {createProjectProposalLoading ? <Loader /> : "Submit"}

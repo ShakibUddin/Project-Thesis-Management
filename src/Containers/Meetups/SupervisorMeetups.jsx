@@ -127,10 +127,11 @@ export default function SupervisorMeetups() {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full mt-4">
       <div>
         {teamsUnderSupervisor.length > 0 ? (
           <Form
+            layout="vertical"
             name="basic"
             initialValues={{
               remember: true,
@@ -166,12 +167,7 @@ export default function SupervisorMeetups() {
                 options={teamOptions}
               />
             </Form.Item>
-            <Form.Item
-              wrapperCol={{
-                offset: 2,
-                span: 16,
-              }}
-            >
+            <Form.Item>
               <Button type="primary" htmlType="submit">
                 Search
               </Button>
@@ -212,6 +208,7 @@ export default function SupervisorMeetups() {
                       getMeetupOfATeam={getMeetupOfATeam}
                       selectedTeamId={selectedTeamId}
                       handleTabChange={handleTabChange}
+                      meetup_link={meetup.meetup_link}
                     />
                   ))}
               </div>
@@ -227,6 +224,7 @@ export default function SupervisorMeetups() {
                       remarks={meetup.remarks}
                       status={"COMPLETE"}
                       attendance={JSON.parse(meetup?.attendance)}
+                      meetup_link={meetup.meetup_link}
                     />
                   ))}
               </div>

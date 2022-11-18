@@ -44,12 +44,7 @@ export default function LoginPage() {
         </p>
         <Form
           name="basic"
-          labelCol={{
-            span: 10,
-          }}
-          wrapperCol={{
-            span: 16,
-          }}
+          layout="vertical"
           initialValues={{
             remember: true,
           }}
@@ -85,12 +80,7 @@ export default function LoginPage() {
           {loginError && (
             <Alert className={styles.alert} message={loginError} type="error" />
           )}
-          <Form.Item
-            wrapperCol={{
-              offset: 10,
-              span: 16,
-            }}
-          >
+          <Form.Item>
             <FormSubmitButton>
               {loginLoading ? <Loader /> : "Login"}
             </FormSubmitButton>

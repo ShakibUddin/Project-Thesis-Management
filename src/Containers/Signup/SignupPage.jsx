@@ -79,6 +79,7 @@ export default function SignupPage() {
         <p className="text-3xl font-extrabold">Signup</p>
         <p className="text-2xl">Manage your thesis or project progress</p>
         <Form
+          layout="vertical"
           name="basic"
           initialValues={{
             remember: true,

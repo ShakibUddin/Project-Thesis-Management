@@ -5,6 +5,7 @@ import {
   DatePicker,
   Form,
   Input,
+  Radio,
   Select,
   TimePicker,
 } from "antd";
@@ -16,6 +17,7 @@ export default function CreateMeetup({ selectedTeamId, handleTabChange }) {
   const token = useSelector((state) => state.auth?.user?.token);
   const currentUser = useSelector((state) => state.auth?.user);
   const createMeetup = useSelector((state) => state.meetup?.createMeetup);
+  const [selectedMeetupType, setSelectedMeetupType] = useState("Onsite");
   const convertTo24Hour = (time) => {
     var hours = parseInt(time.substr(0, 2));
     if (time.indexOf("AM") != -1 && hours == 12) {
@@ -38,6 +40,7 @@ export default function CreateMeetup({ selectedTeamId, handleTabChange }) {
       supervisor_nub_id: currentUser.nub_id,
       meetup_date: values.meetupDate,
       meetup_time: convertTo24Hour(values.meetupTime),
+      meetup_link: values.meetup_link,
     };
     dispatch(
       MeetupsActions.createMeetup({
@@ -59,6 +62,7 @@ export default function CreateMeetup({ selectedTeamId, handleTabChange }) {
       <div className="w-full h-auto ">
         <Form
           name="basic"
+          layout="vertical"
           initialValues={{
             remember: true,
           }}
@@ -97,11 +101,38 @@ export default function CreateMeetup({ selectedTeamId, handleTabChange }) {
             <TimePicker use12Hours format="h:mm A" />
           </Form.Item>
           <Form.Item
-            wrapperCol={{
-              offset: 8,
-              span: 16,
+            name="meetupType"
+            label="Radio.Group"
+            onChange={(e) => {
+              console.log("radio checked", e.target.value);
+              setSelectedMeetupType(e.target.value);
             }}
           >
+            <Radio.Group layout="vertical" defaultValue={"Onsite"}>
+              <div className="flex">
+                <div className="mr-10">
+                  <Radio value="Onsite">Onsite</Radio>
+                </div>
+                <div className="mr-10">
+                  <Radio value="Virtual">Virtual</Radio>
+                </div>
+              </div>
+            </Radio.Group>
+          </Form.Item>
+          <Form.Item
+            label="Link"
+            name="meetup_link"
+            hidden={selectedMeetupType === "Onsite"}
+            rules={[
+              {
+                required: selectedMeetupType === "Virtual",
+                message: "Please enter meetup link for virtual meetups!",
+              },
+            ]}
+          >
+            <Input placeholder="https://meet.google.com....." />
+          </Form.Item>
+          <Form.Item>
             <Button type="primary" htmlType="submit">
               Create
             </Button>

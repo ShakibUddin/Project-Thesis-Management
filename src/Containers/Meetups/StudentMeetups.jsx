@@ -39,7 +39,7 @@ export default function StudentMeetups() {
 
   return (
     <div>
-      <div className="w-full">
+      <div className="w-full mt-4">
         {Object.keys(meetups).length > 0 && (
           <Tabs
             defaultActiveKey={"1"}
@@ -57,6 +57,7 @@ export default function StudentMeetups() {
                       status={"PENDING"}
                       team={meetups.team}
                       handleTabChange={handleTabChange}
+                      meetup_link={meetup.meetup_link}
                     />
                   ))
                 ) : (
@@ -86,6 +87,7 @@ export default function StudentMeetups() {
                       remarks={meetup.remarks}
                       status={"COMPLETE"}
                       attendance={JSON.parse(meetup?.attendance)}
+                      meetup_link={meetup.meetup_link}
                     />
                   ))
                 ) : (
