@@ -1,3 +1,5 @@
+import { faLink } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Button,
   Checkbox,
@@ -28,6 +30,7 @@ export default function MeetupCard(props) {
     id,
     date,
     time,
+    meetup_link,
     status,
     attendance,
     team = [],
@@ -47,7 +50,7 @@ export default function MeetupCard(props) {
   }, [updateMeetup]);
 
   const openUpdateMeetupForm = () => {
-    showModal();
+    if (currentUser.member_status_id === 3) showModal();
   };
   const studentIds = team.length > 0 && team.map((student) => student.nub_id);
   const convertTo12Hour = (time) => {
@@ -86,8 +89,16 @@ export default function MeetupCard(props) {
   const onChange = (checkedValues) => {};
   return (
     <div
-      onClick={openUpdateMeetupForm}
-      className={`flex flex-col m-2 justify-betwee py-2 px-4 rounded-md shadow-lg w-50 cursor-pointer ${styles.meetupCard}`}
+      onClick={() => {
+        if (currentUser.member_status_id === 3 && status === Meetup.PENDING) {
+          openUpdateMeetupForm();
+        }
+      }}
+      className={`flex flex-col m-2 justify-betwee py-2 px-4 rounded-md shadow-lg w-50 ${
+        currentUser.member_status_id === 3 &&
+        status === Meetup.PENDING &&
+        "cursor-pointer"
+      } ${styles.meetupCard}`}
     >
       <p
         className={`text-center ${
@@ -97,11 +108,28 @@ export default function MeetupCard(props) {
         <b>{status}</b>
       </p>
       <p>
+        <b>Type:</b> {meetup_link ? "Virtual" : "Onsite"}
+      </p>
+      <p>
         <b>Date:</b> {date.split("T")[0]}
       </p>
       <p>
-        <b>TIme:</b> {convertTo12Hour(time.split(".")[0].substr(0, 5))}
+        <b>Time:</b> {convertTo12Hour(time.split(".")[0].substr(0, 5))}
       </p>
+      {meetup_link && (
+        <Button
+          type="primary"
+          shape="round"
+          size={"small"}
+          onClick={(e) => {
+            window.open(meetup_link, "_blank");
+            e.preventDefault();
+            e.stopPropagation();
+          }}
+        >
+          <FontAwesomeIcon icon={faLink}></FontAwesomeIcon> Link
+        </Button>
+      )}
       {status === Meetup.COMPLETE && (
         <p>
           <b>Remarks:</b> {remarks}
@@ -129,6 +157,7 @@ export default function MeetupCard(props) {
         onCancel={handleCancel}
       >
         <Form
+          layout="vertical"
           name="basic"
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}

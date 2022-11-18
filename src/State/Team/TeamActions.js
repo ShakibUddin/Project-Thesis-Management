@@ -17,6 +17,7 @@ export const REJECT_MEMBER_REQUEST = requestActions(
   "REJECT_MEMBER_REQUEST"
 );
 export const SET_ACCEPTED_REQUEST = "SET_ACCEPTED_REQUEST";
+export const UPDATE_SUPERVISOR_TEAM_DETAILS = "UPDATE_SUPERVISOR_TEAM_DETAILS";
 export const GET_TEAM_DETAILS = requestActions(MODULE_NAME, "GET_TEAM_DETAILS");
 
 export const getAllStudents = ({ body, token }) =>
@@ -62,5 +63,10 @@ export const getSupervisorTeamDetails = ({ body, token }) =>
 
 export const setAcceptedRequest = (data) => ({
   type: SET_ACCEPTED_REQUEST,
+  payload: data,
+});
+
+export const updateSupervisorTeamDetails = (data) => ({
+  type: UPDATE_SUPERVISOR_TEAM_DETAILS,
   payload: data,
 });

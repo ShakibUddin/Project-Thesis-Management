@@ -1,3 +1,42 @@
-.alert{
-    margin: 1rem 0 !important;
+.alert {
+  margin: 1rem 0 !important;
+}
+p {
+  word-break: keep-all;
+}
+.leftDiv {
+  overflow-x: hidden;
+}
+
+@media only screen and (min-width: 600px) {
+  .rightDiv,
+  .leftDiv {
+    min-width: 50%;
+    max-width: 50%;
+  }
+}
+@media only screen and (max-width: 600px) {
+  /*Big smartphones [426px -> 600px]*/
+  .rightDiv {
+    display: none;
+  }
+
+  .leftDiv {
+    min-width: 100% !important;
+    max-width: 100% !important;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.actionButton {
+  border-radius: 10px !important;
+  padding: 10px !important;
+  width: 80px !important;
+  font-size: 1.2rem;
+}
+
+.active {
+  background-color: var(--activeActionButtonColor) !important;
+  color: var(--activeActionButtonTextColor) !important;
 }

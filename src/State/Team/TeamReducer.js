@@ -22,7 +22,6 @@ const initialState = {
   supervisorTeamDetailsLoading: false,
   supervisorTeamDetails: [],
   supervisorTeamDetailsError: null,
-  acceptedRequest: 0,
 };
 
 export default function AuthReducer(state = initialState, action) {
@@ -30,9 +29,23 @@ export default function AuthReducer(state = initialState, action) {
 
   switch (action.type) {
     case AuthActions.LOGOUT: {
-      state = initialState;
+      state = { ...initialState };
       break;
     }
+    // case actions.UPDATE_SUPERVISOR_TEAM_DETAILS: {
+    //   console.log("payload", payload);
+    //   const newTeamDetails = state.supervisorTeamDetails.ongoing.map((item) => {
+    //     console.log("item.project.projectId", item.project.projectId);
+    //     if (item.project.projectId === payload) {
+    //       item.project.project_status_id = 3;
+    //       console.log("updated item", item);
+    //     }
+    //     return item;
+    //   });
+    //   console.log("newTeamDetails", newTeamDetails);
+    //   state.supervisorTeamDetails = [...newTeamDetails];
+    //   break;
+    // }
     case actions.GET_ALL_STUDENTS.REQUESTED: {
       state.studentsLoading = true;
       state.students = [];

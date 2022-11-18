@@ -1,14 +1,14 @@
 :root {
-  --primaryColor: #6369d1;
-  --cardColor: #ebedff;
-  --activeActionButtonColor: #6369d1;
+  --primaryColor: #001529;
+  --cardColor: #001529;
+  --activeActionButtonColor: #001529;
   --disabledActionButtonColor: #dfdfdf;
   --activeActionButtonTextColor: rgb(207, 207, 207);
-  --disabledActionButtonTextColor: #6369d1;
+  --disabledActionButtonTextColor: #001529;
   --acceptButtonColor: #63d17b;
   --memberRequestActionButtonTextColor: #ffffff;
   --rejectButtonColor: #d16363;
-  --pendingStatus: #63d17b;
+  --pendingStatus: #24bd45;
   --completeStatus: #63d17b;
   --rejectedStatus: #d16363;
   --ongoingStatus: #f17500;

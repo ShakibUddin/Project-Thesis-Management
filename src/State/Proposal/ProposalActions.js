@@ -20,6 +20,7 @@ export const APPROVE_PROJECT_PROPOSAL = requestActions(
   "APPROVE_PROJECT_PROPOSAL"
 );
 export const UPDATE_PROPOSALS = "UPDATE_PROPOSALS";
+export const REMOVE_PROPOSALS_ERROR = "REMOVE_PROPOSALS_ERROR";
 
 export const getProposals = ({ token, body }) =>
   requestApiCall({
@@ -56,4 +57,8 @@ export const approveProposal = ({ token, body }) =>
 export const updateProposal = (projectId) => ({
   type: UPDATE_PROPOSALS,
   payload: projectId,
+});
+
+export const removeProposalError = () => ({
+  type: REMOVE_PROPOSALS_ERROR,
 });

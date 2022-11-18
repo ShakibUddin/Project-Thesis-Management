@@ -9,12 +9,22 @@ import * as NotificationsActions from "../../State/Notifications/NotificationsAc
 import Loader from "../Loader/Loader";
 import * as AuthActions from "../../State/Auth/AuthActions.js";
 import { AVATAR_BASE } from "../../Constants/ImageConstants.js";
-import { notification } from "antd";
+import { Button, notification, Tooltip } from "antd";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faIdBadge,
+  faBuilding,
+  faShieldHalved,
+  faGear,
+} from "@fortawesome/free-solid-svg-icons";
+import CardRow from "./CardRow/CardRow";
+
 export default function UserCard({
   name,
   id,
   department,
   program,
+  memberStatusId,
   leader = null,
   avatar = null,
   requestStatus = null,
@@ -24,10 +34,14 @@ export default function UserCard({
   showRequestActions = false,
   memberRequestId = null,
   showDeleteOption = false,
+  getAllMemberNotifications = null,
 }) {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth?.user?.token);
   const currentUser = useSelector((state) => state.auth?.user);
+  const totalTeamMembers = useSelector(
+    (state) => state.auth?.user?.total_members
+  );
   const [loading, setLoading] = useState(false);
   const [loadingAcceptRequest, setLoadingAcceptRequest] = useState(false);
   const [loadingRejectRequest, setLoadingRejectRequest] = useState(false);
@@ -40,19 +54,6 @@ export default function UserCard({
   const disableButton =
     requestStatusId === 1 || data?.requestSent || data?.memberDeleted;
   const acceptedRequest = useSelector((state) => state?.team?.acceptedRequest);
-  useEffect(() => {
-    if (acceptedRequest === 2) {
-      const body = {
-        receiver_nub_id: currentUser?.nub_id,
-      };
-      dispatch(
-        NotificationsActions.getAllMemberRequestNotifications({
-          body,
-          token,
-        })
-      );
-    }
-  }, [acceptedRequest]);
 
   const acceptMemberRequest = () => {
     setLoadingAcceptRequest(true);
@@ -78,7 +79,9 @@ export default function UserCard({
       setMessage(message);
       setError(error);
       setLoadingAcceptRequest(false);
-      dispatch(TeamActions.setAcceptedRequest(acceptedRequest + 1));
+      getAllMemberNotifications();
+      console.log("total_members", totalTeamMembers);
+      dispatch(AuthActions.updateTotalTeamMembers(totalTeamMembers + 1));
     });
   };
 
@@ -124,7 +127,7 @@ export default function UserCard({
       const { data, message, error } = response;
       console.log("error", error);
       if (data.memberDeleted) {
-        dispatch(AuthActions.decreaseTotalTeamMembers());
+        dispatch(AuthActions.updateTotalTeamMembers(totalTeamMembers - 1));
       } else {
         notification.open({
           message,
@@ -161,27 +164,30 @@ export default function UserCard({
   return (
     <div className={styles.container}>
       <div>
-        <div className={styles.leftDiv}>
+        <div className={styles.topDiv}>
           <div className={styles.avatarContainer}>
             <img
               className={styles.avatar}
               src={avatar ? `${AVATAR_BASE}${avatar}` : defaultAvatar}
               alt=""
             />
-            {leader === 1 ? (
-              <p className="font-bold text-green-800 text-center text-lg m-0">
-                Team Leader
-              </p>
-            ) : (
-              <p></p>
+            {leader === 1 && memberStatusId === 1 && (
+              <span className={styles.leaderTitle}>Team Leader</span>
             )}
+            {memberStatusId === 3 && (
+              <span className={styles.supervisorTitle}>Supervisor</span>
+            )}
+            <p className="text-lg font-bold text-center text-white">{name}</p>
           </div>
         </div>
-        <div className={styles.rightDiv}>
-          <p className={styles.detailsText}>Name: {name}</p>
-          <p className={styles.detailsText}>Id: {id}</p>
-          <p className={styles.detailsText}>Department: {department}</p>
-          <p className={styles.detailsText}>Program: {program}</p>
+        <div className={styles.bottomDiv}>
+          <CardRow icon={faIdBadge} title={"NUB Id"} details={id} />
+          <CardRow
+            icon={faBuilding}
+            title={"Department"}
+            details={department}
+          />
+          <CardRow icon={faGear} title={"Program"} details={program} />
         </div>
       </div>
       <div className={styles.action}>
@@ -229,7 +235,7 @@ export default function UserCard({
             {loading ? <Loader /> : disableButton ? "Pending" : requestStatus}
           </button>
         )}
-        {showDeleteOption && id !== currentUser.nub_id && (
+        {showDeleteOption && id !== currentUser.nub_id && memberStatusId !== 3 && (
           <button
             disabled={disableButton}
             onClick={removeTeammate}

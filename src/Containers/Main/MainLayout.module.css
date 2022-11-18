@@ -10,9 +10,6 @@
   background: #fff;
 }
 
-.site_layout_background {
-  background: #fff;
-}
 .layout {
   height: 100vh;
 }
@@ -20,9 +17,39 @@
 .menu {
   background-color: var(--primaryColor) !important;
 }
+
 .avatar {
   width: 70px;
   height: 70px;
   object-fit: cover;
   border-radius: 100px;
+}
+#components-layout-demo-responsive .logo {
+  height: 32px;
+  margin: 16px;
+  background: #fff;
+}
+
+.site-layout-sub-header-background {
+  background: #fff;
+}
+
+.site-layout-background {
+  background: #fff;
+}
+
+@media only screen and (min-width: 991px) {
+  /*Tablets [900px -> 1200px]*/
+  .layoutStyle {
+    margin-left: 200px;
+  }
+}
+@media only screen and (max-width: 990px) {
+  /*Big smartphones [426px -> 600px]*/
+  .layoutStyle {
+    margin-left: 0;
+  }
+}
+.keychainify-checked {
+  background-color: red !important;
 }

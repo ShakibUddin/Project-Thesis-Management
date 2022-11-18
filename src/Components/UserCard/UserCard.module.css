@@ -7,56 +7,65 @@
   min-width: 300px;
   max-width: 300px !important;
   flex-direction: column;
-  background-color: var(--cardColor);
-  border-radius: 10px;
+  background-color: white;
   margin: 1rem;
-  padding: 1rem;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
-.leftDiv {
+.topDiv {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.rightDiv {
+.bottomDiv {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  padding: 1rem;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
 }
 
-.rightDiv p {
+.bottomDiv p {
   margin: 0;
 }
 
+.title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--primaryColor);
+}
 .detailsText {
   font-size: 1rem;
-  color: black;
-  padding: 0.2rem;
+  color: var(--primaryColor);
 }
 
 .action {
-  flex-grow: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  height: auto;
+  padding: 1rem;
 }
 
 .actionButton {
-  border-radius: 10px;
-  padding: 10px;
-  width: 80px;
+  border-radius: 10px !important;
+  padding: 10px !important;
+  width: 90px !important;
+  font-size: 1.2rem;
 }
 
 .active {
-  background-color: var(--activeActionButtonColor);
-  color: var(--activeActionButtonTextColor);
+  background-color: var(--activeActionButtonColor) !important;
+  color: var(--activeActionButtonTextColor) !important;
 }
 .disabled {
-  background-color: var(--disabledActionButtonColor);
-  color: var(--disabledActionButtonTextColor);
+  background-color: var(--disabledActionButtonColor) !important;
+  color: var(--disabledActionButtonTextColor) !important;
 }
 .avatarContainer {
   width: 100%;
@@ -64,12 +73,18 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: var(--primaryColor);
+  position: relative;
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
 }
 
 .avatar {
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
+  border-radius: 150px;
   object-fit: cover;
+  margin: 1rem 0;
 }
 
 .memberRequestActionButtonDiv {
@@ -91,4 +106,24 @@
 
 .rejectButton {
   background-color: var(--rejectButtonColor);
+}
+.icon {
+  width: 100%;
+  height: 100%;
+}
+
+.leaderTitle,
+.supervisorTitle {
+  color: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0.4rem 0.3rem;
+  border-radius: 20px;
+}
+.leaderTitle {
+  background-color: rgb(15, 161, 15);
+}
+.supervisorTitle {
+  background-color: rgb(231, 118, 12);
 }

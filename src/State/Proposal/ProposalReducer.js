@@ -21,7 +21,11 @@ export default function ProposalReducer(state = initialState, action) {
 
   switch (action.type) {
     case AuthActions.LOGOUT: {
-      state = initialState;
+      state = { ...initialState };
+      break;
+    }
+    case actions.REMOVE_PROPOSALS_ERROR: {
+      state.approveProposalError = null;
       break;
     }
     case actions.UPDATE_PROPOSALS: {

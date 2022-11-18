@@ -1,20 +1,31 @@
 import React, { useState } from "react";
 import UserCard from "../UserCard/UserCard";
 import styles from "./ProposalCard.module.css";
-import { Collapse, Select } from "antd";
+import { Alert, Collapse, Select } from "antd";
 import { Button, Form, Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import * as ProposalActions from "../../State/Proposal/ProposalActions.js";
 import TextArea from "antd/lib/input/TextArea";
 import { useEffect } from "react";
-
+import { AVATAR_BASE } from "../../Constants/ImageConstants.js";
+import defaultAvatar from "../../Assets/avatar.jpg";
+import * as TeamActions from "../../State/Team/TeamActions.js";
+import Loader from "../Loader/Loader";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { makeApiCall } from "../../client";
+import { METHODS, PATHS } from "../../Constants/ApiConstants";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
 const { Panel } = Collapse;
+const { confirm } = Modal;
 
 export default function ProposalCard({
   projectDetails,
   teamDetails,
   handleRejectOrApproveProjectProposal = null,
+  handleProjectComplete = null,
   autoAssignSupervisor = false,
+  showActions = true,
 }) {
   const dispatch = useDispatch();
   const {
@@ -27,7 +38,14 @@ export default function ProposalCard({
     description,
     technologies,
   } = projectDetails;
+  const BASE_URL = "https://smtprojectbackend.arifmannan.com";
+  const paperDownloadPath = BASE_URL + paper;
+  const type = project === 1 ? "Project" : "Thesis";
   const onChange = (key) => {};
+  const [data, setData] = useState();
+  const [message, setMessage] = useState();
+  const [loading, setLoading] = useState();
+  const [error, setError] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [supervisorOptions, setSupervisorOptions] = useState([]);
   const [supervisorId, setSupervisorId] = useState();
@@ -36,6 +54,7 @@ export default function ProposalCard({
   const token = useSelector((state) => state.auth?.user?.token);
   const currentUser = useSelector((state) => state.auth?.user);
   const rejectProposal = useSelector((state) => state.proposal?.rejectProposal);
+
   const approveProposal = useSelector(
     (state) => state.proposal?.approveProposal
   );
@@ -63,6 +82,44 @@ export default function ProposalCard({
     } else {
       showSupervisorModal();
     }
+  };
+  const handleComplete = () => {
+    confirm({
+      title: `Do you want to complete this teams's ${type}?`,
+      icon: <ExclamationCircleOutlined />,
+      content: "This can not be reverted",
+      onOk() {
+        setLoading(true);
+        const body = {
+          project_id: projectDetails.projectId,
+        };
+
+        makeApiCall({
+          method: METHODS.PUT,
+          path: PATHS.COMPLETE_PROJECT,
+          body,
+          token,
+        }).then((response) => {
+          const { data, message, error } = response;
+          setData(data);
+          setMessage(message);
+          setError(error);
+          setLoading(false);
+          const body = {
+            supervisor_nub_id: currentUser?.nub_id,
+          };
+          dispatch(
+            TeamActions.getSupervisorTeamDetails({
+              body,
+              token,
+            })
+          );
+        });
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
   };
   const showSupervisorModal = () => {
     dispatch(
@@ -106,6 +163,14 @@ export default function ProposalCard({
       handleRejectOrApproveProjectProposal(projectDetails.projectId);
     }
   }, [rejectProposal, approveProposal]);
+  // useEffect(() => {
+  //   if (data?.completeProject) {
+  //     console.log("handling Project Complete for", projectDetails.projectId);
+  //     dispatch(
+  //       TeamActions.updateSupervisorTeamDetails(projectDetails.projectId)
+  //     );
+  //   }
+  // }, [data]);
 
   const onFinishFailed = (errorInfo) => {
     //   message.error(errorInfo);
@@ -132,7 +197,7 @@ export default function ProposalCard({
         supervisors.map((supervisor) => ({
           value: supervisor.nub_id,
           label: (
-            <div className="bg-indigo-300 shadow-lg px-2 pb-2">
+            <div className={styles.dropDownItemStyle}>
               <p className="m-0 font-bold">Name: {supervisor.name}</p>
               <p className="m-0 font-bold">
                 Teams: {supervisor.total_assign_team}
@@ -145,10 +210,10 @@ export default function ProposalCard({
   }, [supervisors]);
   return (
     <div
-      className={`flex flex-col justify-start align-top w-full p-4 mb-3 ${styles.proposalCard}`}
+      className={`flex flex-col justify-start align-top w-11/12 p-2 mb-3 ${styles.proposalCard}`}
     >
-      <Collapse defaultActiveKey={["1"]} onChange={onChange}>
-        <Panel header="Project" key="1">
+      <div className="flex justify-between w-full flex-wrap">
+        <div className={styles.leftDiv}>
           <span
             className={
               project_status_id === 2
@@ -156,63 +221,109 @@ export default function ProposalCard({
                 : project_status_id === 3 && styles.completeStatus
             }
           ></span>
-          {currentUser.member_status_id === 3 && (
-            <p>
-              <b>Type:</b>{" "}
-              {project === 1 ? "Project" : thesis === 1 && "Thesis"}
-            </p>
-          )}
+
+          <p className="text-2xl font-extrabold">{type}:</p>
           <p>
             <b>Title:</b> {title}
           </p>
-          <p>
+          <p className="text-justify w-full">
             <b>Description:</b> {description}
           </p>
           <p>
-            <b>Technologies:</b> {technologies}
+            <b>Tools:</b> {technologies}
           </p>
           {currentUser.member_status_id === 3 && (
             <p>
               <b>Total Completed Meetups:</b> {total_meetup}
             </p>
           )}
-        </Panel>
-        <Panel header="Team" key="2">
-          <div className={styles.studentContainer}>
-            {teamDetails.map((member) => (
-              <UserCard
-                name={member.name}
-                id={member.nub_id}
-                department={member.department_name}
-                program={member.program_name}
-                leader={member.team_leader}
-                avatar={member.avatar}
-              />
-            ))}
-          </div>
-        </Panel>
-        {projectDetails?.feedback?.length > 0 && (
-          <Panel header="Previous Feedback" key="3">
-            <p>{projectDetails.feedback}</p>
-          </Panel>
-        )}
-      </Collapse>
-
-      {currentUser.member_status_id === 2 && (
-        <div className="flex justify-center align-middle flex-wrap">
-          <button
-            className={[styles.actionButton, styles.acceptButton].join(" ")}
-            onClick={handleApprove}
-          >
-            Approve
-          </button>
-          <button
-            className={[styles.actionButton, styles.rejectButton].join(" ")}
-            onClick={showModal}
-          >
-            Reject
-          </button>
         </div>
+
+        <div className={styles.rightDiv}>
+          <p className="text-2xl font-extrabold">Team:</p>
+          {teamDetails.map((member) => (
+            <div className="flex mb-4">
+              <div className={styles.avatarContainer}>
+                <img
+                  className={styles.avatar}
+                  src={
+                    member.avatar
+                      ? `${AVATAR_BASE}${member.avatar}`
+                      : defaultAvatar
+                  }
+                  alt=""
+                />
+              </div>
+              <div className="flex flex-col w-5/6">
+                <p className="m-0 font-bold">
+                  {member.name}
+                  {member.team_leader === 1 && "(Team Leader)"}
+                  {member.member_status_id === 3 && "(Supervisor)"}
+                </p>
+                <p className="m-0">{member.nub_id}</p>
+                <p className="m-0">
+                  {member.department_name}({member.program_name})
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      {paper && (
+        <div className="m-2">
+          <span className="text-xl font-bold mr-4">
+            {project === 1 ? "Project Book:" : "Thesis Paper:"}
+          </span>
+
+          <a href={paperDownloadPath} download target="_blank" rel="noreferrer">
+            {" "}
+            <icon>
+              <FontAwesomeIcon
+                className="w-9 h-9 mr-4 cursor-pointer"
+                icon={faFilePdf}
+              />
+            </icon>{" "}
+          </a>
+        </div>
+      )}
+      {projectDetails?.feedback?.length > 0 && (
+        <div>
+          <p className="font-bold text-2xl">Previous Feedback:</p>
+          <Alert message={projectDetails.feedback} type="info" />
+        </div>
+      )}
+
+      {showActions && (
+        <>
+          {currentUser.member_status_id === 4 && (
+            <div className="flex justify-center align-middle flex-wrap">
+              <button
+                className={[styles.actionButton, styles.acceptButton].join(" ")}
+                onClick={handleApprove}
+              >
+                Approve
+              </button>
+              <button
+                className={[styles.actionButton, styles.rejectButton].join(" ")}
+                onClick={showModal}
+              >
+                Reject
+              </button>
+            </div>
+          )}
+
+          {currentUser.member_status_id === 3 && project_status_id === 2 && (
+            <div className="flex justify-center align-middle flex-wrap">
+              <button
+                style={{ minWidth: "200px" }}
+                className={[styles.actionButton, styles.acceptButton].join(" ")}
+                onClick={handleComplete}
+              >
+                {loading ? <Loader /> : "Complete Project"}
+              </button>
+            </div>
+          )}
+        </>
       )}
 
       <Modal
@@ -223,6 +334,7 @@ export default function ProposalCard({
       >
         <Form
           name="basic"
+          layout="vertical"
           initialValues={{
             remember: true,
           }}
@@ -250,12 +362,7 @@ export default function ProposalCard({
           >
             <TextArea rows={4} />
           </Form.Item>
-          <Form.Item
-            wrapperCol={{
-              offset: 8,
-              span: 16,
-            }}
-          >
+          <Form.Item>
             <Button type="primary" htmlType="submit">
               Submit
             </Button>
@@ -270,6 +377,7 @@ export default function ProposalCard({
       >
         <Form
           name="basic"
+          layout="vertical"
           initialValues={{
             remember: true,
           }}
@@ -302,12 +410,7 @@ export default function ProposalCard({
               options={supervisorOptions}
             />
           </Form.Item>
-          <Form.Item
-            wrapperCol={{
-              offset: 8,
-              span: 16,
-            }}
-          >
+          <Form.Item>
             <Button type="primary" htmlType="submit">
               Submit
             </Button>

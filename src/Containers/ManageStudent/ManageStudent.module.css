@@ -1,0 +1,10 @@
+.customTable button {
+  padding: 0 !important;
+}
+.buttonStyle {
+  border-radius: 10px !important;
+  padding: 10px !important;
+  width: auto !important;
+  background-color: var(--activeActionButtonColor) !important;
+  color: var(--activeActionButtonTextColor) !important;
+}
