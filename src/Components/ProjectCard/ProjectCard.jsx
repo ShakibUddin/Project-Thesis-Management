@@ -30,7 +30,7 @@ export default function ProjectCard({
         <div className="w-full mt-4 flex flex-row justify-between align-middle ">
           <div className="flex">
             <span className="mr-2 font-bold">{title}</span>
-            {statusId === 4 && (
+            {(statusId === 4 || statusId === 1) && (
               <icon>
                 <FontAwesomeIcon
                   className="mr-4 cursor-pointer"

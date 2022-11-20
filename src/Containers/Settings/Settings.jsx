@@ -107,6 +107,23 @@ const App = () => {
       })
     );
   };
+  const onFinishCreatingAcad = (values) => {
+    console.log("Success:", values);
+    console.log(values);
+    console.log({
+      password: values.password,
+      nub_id: values.nub_id,
+    });
+    // dispatch(
+    //   SettingsAction.createAcad({
+    //     body: {
+    //       new_password: values.password,
+    //       nub_id: values.nub_id,
+    //     },
+    //     token,
+    //   })
+    // );
+  };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
@@ -239,6 +256,96 @@ const App = () => {
           <Form.Item>
             <Button type="primary" htmlType="submit">
               Submit
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
+      <div className={styles.container}>
+        <p className="text-xl font-semibold">Create ACAD User</p>
+        <Form
+          name="basic"
+          layout="vertical"
+          onFinish={onFinishCreatingAcad}
+          onFinishFailed={onFinishFailed}
+          autoComplete="off"
+        >
+          <Form.Item
+            label="ID"
+            name="nub_id"
+            rules={[
+              {
+                required: true,
+                message: "Please input id!",
+              },
+              {
+                max: 12,
+                message: "You can not enter more than 12 characters",
+              },
+              {
+                min: 12,
+                message: "Minimum 12 characters is reqired",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: "Please input your password!",
+              },
+              {
+                max: 20,
+                message: "You can not enter more than 20 characters",
+              },
+              {
+                min: 8,
+                message: "Minimum 8 characters is reqired",
+              },
+            ]}
+          >
+            <Input.Password />
+          </Form.Item>
+          <Form.Item
+            label="Confirm Password"
+            name="confirmPassword"
+            rules={[
+              {
+                required: true,
+                message: "Please input your password again!",
+              },
+              {
+                max: 20,
+                message: "You can not enter more than 20 characters",
+              },
+              {
+                min: 8,
+                message: "Minimum 8 characters is reqired",
+              },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue("password") === value) {
+                    return Promise.resolve();
+                  }
+
+                  return Promise.reject(
+                    new Error(
+                      "The two passwords that you entered do not match!"
+                    )
+                  );
+                },
+              }),
+            ]}
+          >
+            <Input.Password />
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              Create
             </Button>
           </Form.Item>
         </Form>

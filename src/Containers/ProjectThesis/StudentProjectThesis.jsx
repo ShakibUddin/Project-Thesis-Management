@@ -52,9 +52,6 @@ export default function StudentProjectThesis() {
   }, [filePath, projectDetails.paper]);
 
   useEffect(() => {
-    console.log("paperDownloadPath", paperDownloadPath);
-  }, [paperDownloadPath]);
-  useEffect(() => {
     if (updateProjectProposal) {
       setEditing(false);
       const body = {
@@ -67,6 +64,7 @@ export default function StudentProjectThesis() {
 
   const onFinish = (values) => {
     const { type, title, description, technologies } = values;
+    setSelectedType(type);
     if (editing) {
       const body = {
         projectId: projectDetails?.projectId,
