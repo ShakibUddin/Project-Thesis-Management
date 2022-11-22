@@ -41,6 +41,7 @@ export default function MainLayout() {
     dispatch(AuthActions.logout());
     navigate("/login", { replace: true });
   };
+
   return (
     <Layout>
       <Sider
@@ -154,14 +155,22 @@ export default function MainLayout() {
               <Link to="/manage_supervisors">Manage Supervisors</Link>
             </Menu.Item>
           )}
+          {user.member_status_id === 4 && (
+            <Menu.Item
+              key="11"
+              icon={<FontAwesomeIcon className="h-3 w-3" icon={faUsers} />}
+            >
+              <Link to="/manage_users">Manage Users</Link>
+            </Menu.Item>
+          )}
           <Menu.Item
-            key="11"
+            key="12"
             icon={<FontAwesomeIcon className="h-3 w-3" icon={faGear} />}
           >
             <Link to="/settings">Settings</Link>
           </Menu.Item>
           <Menu.Item
-            key="12"
+            key="13"
             icon={
               <FontAwesomeIcon className="h-3 w-3" icon={faRightFromBracket} />
             }

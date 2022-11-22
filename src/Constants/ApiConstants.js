@@ -13,9 +13,10 @@ export const PATHS = {
   DEPARTMENTS: "api/users/getDep",
   CREATE_USER: "api/users/createUser",
   PROGRAMS: "api/users/getPrograms",
+  GET_USER_TYPES: "api/users/getUserStatus",
   LOGIN: "api/users/login",
   ALL_STUDENTS_FOR_REQUEST: "api/users/getAllStudents",
-  ALL_USERS: "api/users/getUsers",
+  GET_ALL_USERS: "api/users/getAllUsers",
   SEND_REQUEST: "api/users/createMemberRequest",
   GET_MEMBER_REQUEST_NOTIFICATIONS: "api/users/getMemberRequestNotification",
   ACCEPT_REQUEST: "api/users/memberRequestAccept",
@@ -43,4 +44,5 @@ export const PATHS = {
   COMPLETE_PROJECT: "api/users/completeProject",
   UPLOAD_PAPER: "api/files/projectFile",
   GET_ALL_PROJECTS_DETAILS: "api/users/getAllProjectDetails",
+  UPDATE_ACTIVE_STATUS: "api/users/updateActiveStatus",
 };

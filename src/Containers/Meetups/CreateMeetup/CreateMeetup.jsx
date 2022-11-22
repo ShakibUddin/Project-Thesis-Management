@@ -104,7 +104,6 @@ export default function CreateMeetup({ selectedTeamId, handleTabChange }) {
             name="meetupType"
             label="Radio.Group"
             onChange={(e) => {
-              console.log("radio checked", e.target.value);
               setSelectedMeetupType(e.target.value);
             }}
           >

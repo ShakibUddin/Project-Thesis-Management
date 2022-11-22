@@ -3,13 +3,18 @@ import { Form, Input, Button, Checkbox, Select, message } from "antd";
 import signupRightImage from "../../../src/Assets/signupRightImage.svg";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import styles from "./SignupPage.module.css";
 import * as AuthActions from "../../State/Auth/AuthActions";
+import FormSubmitButton from "../../Components/FormSubmitButton/FormSubmitButton";
+import loginbg from "../../../src/Assets/loginbg.jpg";
+import Loader from "../../Components/Loader/Loader";
 
 export default function SignupPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const departments = useSelector((state) => state.auth?.departments);
   const programs = useSelector((state) => state.auth?.programs);
+  const userTypes = useSelector((state) => state.auth?.userTypes);
   const departmentsLoading = useSelector(
     (state) => state.auth?.departmentsLoading
   );
@@ -20,6 +25,7 @@ export default function SignupPage() {
   const user = useSelector((state) => state.auth?.user);
   const [departmentOptions, setDepartmentOptions] = useState([]);
   const [programOptions, setProgramOptions] = useState([]);
+  const [userTypesOptions, setUserTypesOptions] = useState([]);
   const onFinish = (values) => {
     for (let department of departments) {
       if (department.name === values.department) {
@@ -33,7 +39,15 @@ export default function SignupPage() {
         delete values.program;
       }
     }
+    for (let type of userTypes) {
+      if (type.name === values.memberStatus) {
+        values.member_status_id = type.status_id;
+        delete values.memberStatus;
+      }
+    }
+    delete values.confirmPassword;
     values.avatar = null;
+    console.log(values);
     dispatch(AuthActions.createUser(values));
   };
 
@@ -44,10 +58,11 @@ export default function SignupPage() {
   useEffect(() => {
     dispatch(AuthActions.getDepartments());
     dispatch(AuthActions.getPrograms());
+    dispatch(AuthActions.getUserTypes());
   }, []);
 
   useEffect(() => {
-    if (departments.length > 0 && departmentOptions.length === 0) {
+    if (departments?.length > 0 && departmentOptions.length === 0) {
       setDepartmentOptions(
         departments.map((department) => ({
           key: department.department_id,
@@ -58,7 +73,7 @@ export default function SignupPage() {
   }, [departmentOptions, departments]);
 
   useEffect(() => {
-    if (programs.length > 0 && programOptions.length === 0) {
+    if (programs?.length > 0 && programOptions.length === 0) {
       setProgramOptions(
         programs.map((program) => ({
           key: program.program_id,
@@ -69,15 +84,35 @@ export default function SignupPage() {
   }, [programs, programOptions]);
 
   useEffect(() => {
+    if (userTypes?.length > 0 && userTypesOptions.length === 0) {
+      const filterdUserTypes = [];
+      userTypes.forEach((userType) => {
+        if (userType.status_id !== 2 && userType.status_id !== 4) {
+          filterdUserTypes.push({
+            key: userType.status_id,
+            value: userType.name,
+          });
+        }
+      });
+      setUserTypesOptions([...filterdUserTypes]);
+    }
+  }, [userTypes, userTypesOptions]);
+
+  console.log(userTypesOptions);
+  console.log(userTypes);
+  useEffect(() => {
     if (user) {
       navigate("/login", { replace: true });
     }
   }, [user]);
+
   return (
-    <div className="flex">
-      <div className="w-1/2 flex flex-col justify-center items-center">
-        <p className="text-3xl font-extrabold">Signup</p>
-        <p className="text-2xl">Manage your thesis or project progress</p>
+    <div className="w-full flex justify-center align-middle h-screen">
+      <div
+        className={`flex flex-col justify-center items-center ${styles.leftDiv}`}
+      >
+        <p className="text-4xl font-extrabold mb-0 ">Create an account</p>
+
         <Form
           layout="vertical"
           name="basic"
@@ -88,6 +123,23 @@ export default function SignupPage() {
           onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
+          <Form.Item
+            label="User Type"
+            name="memberStatus"
+            rules={[
+              {
+                required: true,
+                message: "Please select a user type!",
+              },
+            ]}
+          >
+            <Select
+              options={userTypesOptions}
+              placeholder="Please select user type"
+            >
+              <Select.Option value="demo">Demo</Select.Option>
+            </Select>
+          </Form.Item>
           <Form.Item
             label="Name"
             name="name"
@@ -208,22 +260,21 @@ export default function SignupPage() {
           </Form.Item>
 
           <Form.Item>
-            <Button
-              loading={createUserLoading}
-              type="primary"
-              htmlType="submit"
-            >
-              Signup
-            </Button>
-            <p>
+            <FormSubmitButton>
+              {createUserLoading ? <Loader /> : "Signup"}
+            </FormSubmitButton>
+
+            <p className="mt-4">
               {" "}
               Already have an account? <Link to="/login">Login</Link>
             </p>
           </Form.Item>
         </Form>
       </div>
-      <div className="w-1/2 flex justify-center items-center">
-        <img className="w-100" src={signupRightImage}></img>
+      <div
+        className={`w-1/2 flex justify-center items-center ${styles.rightDiv}`}
+      >
+        <img className="w-full h-screen" src={loginbg}></img>
       </div>
     </div>
   );

@@ -63,7 +63,6 @@ export default function ManageSupervisor() {
     return isExcelFile && isLt2M;
   };
   useEffect(() => {
-    console.log("caling");
     dispatch(ACADActions.getAllSupervisorsDetails({ token }));
   }, []);
 

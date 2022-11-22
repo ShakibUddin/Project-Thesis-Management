@@ -8,6 +8,9 @@ const initialState = {
   programs: [],
   programsLoading: false,
   programsError: null,
+  userTypes: [],
+  userTypesLoading: false,
+  userTypesError: null,
   user: null,
   createUserLoading: false,
   createUserError: null,
@@ -65,6 +68,24 @@ export default function AuthReducer(state = initialState, action) {
       state.programsError = payload?.message;
       break;
     }
+    case actions.GET_USER_TYPES.REQUESTED: {
+      state.userTypesLoading = true;
+      state.userTypes = [];
+      state.userTypesError = null;
+      break;
+    }
+    case actions.GET_USER_TYPES.SUCCEEDED: {
+      state.userTypesLoading = false;
+      state.userTypes = payload?.data;
+      state.userTypesError = payload?.message;
+      break;
+    }
+    case actions.GET_USER_TYPES.FAILED: {
+      state.userTypesLoading = false;
+      state.userTypes = [];
+      state.userTypesError = payload?.message;
+      break;
+    }
     case actions.CREATE_USER.REQUESTED: {
       state.createUserLoading = true;
       state.user = null;
@@ -101,8 +122,24 @@ export default function AuthReducer(state = initialState, action) {
       state.loginError = payload?.message;
       break;
     }
+
     case actions.LOGOUT: {
-      state = { ...initialState };
+      state = {
+        departments: [],
+        departmentsLoading: false,
+        departmentsError: null,
+        programs: [],
+        programsLoading: false,
+        programsError: null,
+        user: null,
+        createUserLoading: false,
+        createUserError: null,
+        loginLoading: false,
+        loginError: null,
+        allUsersLoading: false,
+        allUsers: [],
+        allUsersError: null,
+      };
       break;
     }
     default: {

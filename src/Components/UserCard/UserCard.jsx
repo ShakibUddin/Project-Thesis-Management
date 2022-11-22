@@ -80,7 +80,6 @@ export default function UserCard({
       setError(error);
       setLoadingAcceptRequest(false);
       getAllMemberNotifications();
-      console.log("total_members", totalTeamMembers);
       dispatch(AuthActions.updateTotalTeamMembers(totalTeamMembers + 1));
     });
   };

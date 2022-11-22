@@ -116,9 +116,7 @@ export default function ProposalCard({
           );
         });
       },
-      onCancel() {
-        console.log("Cancel");
-      },
+      onCancel() {},
     });
   };
   const showSupervisorModal = () => {

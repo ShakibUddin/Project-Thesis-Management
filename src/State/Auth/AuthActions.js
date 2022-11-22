@@ -5,6 +5,7 @@ import { requestApiCall } from "../Connectivity/ConnectivityActions";
 const MODULE_NAME = "AUTHENTICATION";
 export const GET_DEPARTMENTS = requestActions(MODULE_NAME, "GET_DEPARTMENTS");
 export const GET_PROGRAMS = requestActions(MODULE_NAME, "GET_PROGRAMS");
+export const GET_USER_TYPES = requestActions(MODULE_NAME, "GET_USER_TYPES");
 export const CREATE_USER = requestActions(MODULE_NAME, "CREATE_USER");
 export const LOGIN = requestActions(MODULE_NAME, "LOGIN");
 export const LOGOUT = "LOGOUT";
@@ -17,11 +18,18 @@ export const getDepartments = () =>
     method: METHODS.GET,
     path: PATHS.DEPARTMENTS,
   });
+
 export const getPrograms = () =>
   requestApiCall({
     actions: GET_PROGRAMS,
     method: METHODS.GET,
     path: PATHS.PROGRAMS,
+  });
+export const getUserTypes = () =>
+  requestApiCall({
+    actions: GET_USER_TYPES,
+    method: METHODS.GET,
+    path: PATHS.GET_USER_TYPES,
   });
 export const createUser = (body) =>
   requestApiCall({

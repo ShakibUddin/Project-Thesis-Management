@@ -84,6 +84,11 @@ export default function LoginPage() {
             <FormSubmitButton>
               {loginLoading ? <Loader /> : "Login"}
             </FormSubmitButton>
+            <p className="mt-4">
+              {" "}
+              Need to create an account?{" "}
+              <Link to="/signup">Create Account</Link>
+            </p>
           </Form.Item>
         </Form>
       </div>

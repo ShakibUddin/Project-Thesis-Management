@@ -20,11 +20,9 @@ export default function AllProjects() {
   );
 
   useEffect(() => {
-    console.log("calling getAllProjectsDetails");
     dispatch(ProjectActions.getAllProjectsDetails({ token }));
   }, []);
 
-  console.log(allProjectsDetails);
   return (
     <div className={styles.container}>
       <div>

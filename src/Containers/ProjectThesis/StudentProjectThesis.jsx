@@ -111,7 +111,6 @@ export default function StudentProjectThesis() {
   };
 
   const normFile = (e) => {
-    console.log("Upload event:", e);
     if (Array.isArray(e)) {
       return e;
     }
@@ -145,7 +144,6 @@ export default function StudentProjectThesis() {
   };
   const paperUploadProps = {
     customRequest: (options) => {
-      console.log("options", options);
       const formData = new FormData();
       formData.append("project_file", options.file);
       formData.append("project_id", projectDetails?.projectId);
@@ -161,7 +159,6 @@ export default function StudentProjectThesis() {
         },
       })
         .then(function (response) {
-          console.log(response.data.data.file_path);
           setFilePath(response.data.data.file_path);
           setFileUploaded(true);
           message.success("File uploaded successfully.");

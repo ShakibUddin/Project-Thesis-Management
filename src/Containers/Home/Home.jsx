@@ -78,6 +78,7 @@ export default function Home() {
       );
     }
   }, [user]);
+
   return (
     <div className="flex w-full">
       <div className="w-full">

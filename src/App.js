@@ -9,20 +9,18 @@ import Settings from "./Containers/Settings/Settings";
 import SignupPage from "./Containers/Signup/SignupPage";
 import Team from "./Containers/Team/Team";
 import PrivateRoutes from "./Utils/PrivateRoutes";
-import StudentNotifications from "./Containers/Notifications/StudentNotifications";
 import Proposals from "./Containers/Proposals/Proposals";
 import ManageStudent from "./Containers/ManageStudent/ManageStudent";
 import ManageSupervisor from "./Containers/ManageSupervisor/ManageSupervisor";
 import StudentMeetups from "./Containers/Meetups/StudentMeetups";
 import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom/dist";
 import NotFound from "./Containers/NotFound/NotFound";
 import AccessDenied from "./Containers/AccessDenied/AccessDenied";
 import AllProjects from "./Containers/AllProjects/AllProjects";
+import Users from "./Containers/Users/Users";
 
 function App() {
   let user = useSelector((state) => state.auth?.user);
-
   return (
     <div className="App">
       <BrowserRouter>
@@ -63,6 +61,13 @@ function App() {
                   ) : (
                     <AccessDenied />
                   )
+                }
+              />
+
+              <Route
+                path="manage_users"
+                element={
+                  user?.member_status_id === 4 ? <Users /> : <AccessDenied />
                 }
               />
 
@@ -123,6 +128,7 @@ function App() {
           </Route>
 
           <Route path="login" element={<LoginPage />} />
+          <Route path="signup" element={<SignupPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

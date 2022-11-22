@@ -8,6 +8,7 @@ import ProposalReducer from "./State/Proposal/ProposalReducer";
 import MeetupReducer from "./State/Meetup/MeetupReducer";
 import ACADReducer from "./State/ACAD/ACADReducer";
 import SettingsReducer from "./State/Setings/SettingsReducer";
+import UserReducer from "./State/User/UserReducer";
 import rootSaga from "./Sagas";
 import createSagaMiddleware from "redux-saga";
 import { persistStore, persistReducer } from "redux-persist";
@@ -23,6 +24,7 @@ const rootReducers = combineReducers({
   meetup: MeetupReducer,
   acad: ACADReducer,
   settings: SettingsReducer,
+  user: UserReducer,
 });
 
 const saveUserSubsetFilter = createFilter("auth", ["user"]);

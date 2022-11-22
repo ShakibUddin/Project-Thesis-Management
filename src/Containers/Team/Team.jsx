@@ -113,8 +113,6 @@ export default function Team() {
         <Tabs
           defaultActiveKey="1"
           onChange={(key) => {
-            // setSelectedKey(key);
-            console.log("key", key);
             if (key === "1" || key === "4" || key === "5") {
               getTeamDetailsForCurrentMember();
             } else if (key === "2" && totalTeamMembers < 3) {
