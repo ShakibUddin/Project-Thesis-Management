@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Button, Form, Input, Radio, Space, Upload, Modal } from "antd";
+import {
+  Button,
+  Form,
+  Input,
+  Radio,
+  Space,
+  Upload,
+  Modal,
+  Progress,
+} from "antd";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { InboxOutlined } from "@ant-design/icons";
@@ -43,6 +52,7 @@ export default function StudentProjectThesis() {
   const [fileUploaded, setFileUploaded] = useState(false);
   const [filePath, setFilePath] = useState();
   const [paperDownloadPath, setPaperDownloadPath] = useState();
+  const [percent, setPercent] = useState(0);
   useEffect(() => {
     if (filePath) {
       setPaperDownloadPath(BASE_URL + filePath);
@@ -143,6 +153,8 @@ export default function StudentProjectThesis() {
     return isExcelFile && isLt2M;
   };
   const paperUploadProps = {
+    multiple: false,
+    showUploadList: true,
     customRequest: (options) => {
       const formData = new FormData();
       formData.append("project_file", options.file);
@@ -151,11 +163,16 @@ export default function StudentProjectThesis() {
       // You can use any AJAX library you like
       axios({
         method: "put",
-        url: paperUploadPath,
+        url: "https://smtprojectbackend.arifmannan.com/api/files/projectFile",
         data: formData,
         headers: {
           "Content-Type": "multipart/form-data",
           authorization: `Bearer ${token}`,
+        },
+        onUploadProgress: (progressEvent) => {
+          let percentComplete = progressEvent.loaded / progressEvent.total;
+          percentComplete = parseInt(percentComplete * 100);
+          setPercent(percentComplete);
         },
       })
         .then(function (response) {
@@ -164,7 +181,7 @@ export default function StudentProjectThesis() {
           message.success("File uploaded successfully.");
         })
         .catch(function (response) {
-          message.error("Avatar upload failed.");
+          message.error("File upload failed.");
         })
         .finally(() => {
           setUploading(false);
@@ -372,11 +389,13 @@ export default function StudentProjectThesis() {
                     </Upload.Dragger>
                   </Form.Item>
                   <br />
-                  <Form.Item>
-                    <FormSubmitButton>
-                      {uploading ? <Loader /> : "Upload"}
-                    </FormSubmitButton>
-                  </Form.Item>
+                  {uploading ? (
+                    <div className="w-full flex flex-col justify-center align-middle">
+                      <Progress percent={percent} />
+                    </div>
+                  ) : (
+                    ""
+                  )}
                 </Form>
               </div>
 

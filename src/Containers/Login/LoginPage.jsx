@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Form, Input, Button, Checkbox, message, Alert } from "antd";
 import loginbg from "../../../src/Assets/loginbg.jpg";
+import banner from "../../../src/Assets/banner_large.jpg";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as AuthActions from "../../State/Auth/AuthActions";
@@ -38,7 +39,10 @@ export default function LoginPage() {
       <div
         className={`flex flex-col justify-center items-center ${styles.leftDiv}`}
       >
-        <p className="text-4xl font-extrabold mb-0 ">Login</p>
+        <div className="lg:w-1/3 md:w-2/3 w-4/5 mx-auto">
+          <img className="w-full" src={banner} alt="" />
+        </div>
+        <p className="text-2xl font-extrabold mb-0 ">Login</p>
         <p className="text-xl text-center p-4 mb-4 font-bold">
           Manage your thesis or project progress
         </p>
